@@ -1,0 +1,312 @@
+#header{
+    position: relative;
+    z-index: 12;
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold ;
+    font-family: "Poppins-Bold";
+    align-items: center;
+
+        &__logo{
+            cursor: pointer;
+            // z-index: 13;
+            img{
+                max-width: clamp(150px, 15vw, 200px);
+            }
+        }
+}
+
+
+
+.header__menu,.header__menu__active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 100%;
+    height: 100vh;
+    width: 100vw;
+    gap: 30px;
+    background-color: transparent;
+    transition: 0s ease;
+
+   
+
+    &__active{
+        left: 0%;
+        transition: 0.3s ease;
+        background-color: $black;
+        overflow: visible;
+        height: 100vh;
+    }
+
+    .header__menu__item{
+        list-style-type: none;
+        a{
+            color: $white;
+            text-decoration: none;
+            font-size: 18px;
+            position: relative;
+            font-family: "Poppins-Light";
+            // text-transform: uppercase;
+            // font-weight: bold;
+            transition: color 0.3s;
+
+            @media screen and (max-width: 1024px){
+                font-size: clamp(26px, 4vw, 30px);
+            }
+
+           
+            &.active{
+                    &::after{
+                        content: "";
+                        width: 100%;
+                        height: 2px;
+                        background-color: $white;
+                        display: block;
+                        position: absolute;
+                        transition: 0.1s;
+                    }
+            }
+
+            &::after{
+                content: "";
+                width: 0%;
+                height: 2px;
+                background-color: $white;
+                display: block;
+                position: absolute;
+                transition: 0.1s;
+            }
+            &:hover{
+                @media screen and (max-width: 1024px){
+                    color: $white;
+                }
+                @media screen and (min-width: 1025px){
+                    &::after{
+                        content: "";
+                        width: 100%;
+                        transition: 0.2s;
+                    }
+                }
+            }
+        }
+       
+    }
+}
+
+
+.header__orange{
+    background-color: $orange;
+
+    .header__menu__item{
+        a{
+            &.active{
+               
+                &::after{
+                    content: "";
+                    width: 100%;
+                    height: 2px;
+                    background-color: $white;
+                    display: block;
+                    position: absolute;
+                    transition: 0.1s;
+                    
+                }
+            }
+            &::after{
+                background-color: $white;
+            }
+        
+        }
+       
+    }
+
+}
+
+
+.header__black{
+    background-color: $black;
+
+    .header__menu__item{
+        a{
+            // color: $orange;
+            color: $white;
+            &.active{
+                &::after{
+                    content: "";
+                    width: 100%;
+                    height: 2px;
+                    background-color: $white;
+                    display: block;
+                    position: absolute;
+                    transition: 0.1s;
+                }
+            }
+            &::after{
+                // background-color: $orange;
+                background-color: $white;
+            }
+        
+        }
+       
+    }
+
+    .hamburger{
+        &__line{
+            background-color: $white;
+        }
+    }
+
+}
+
+.header__text__black{
+
+    .header__menu__item{
+        a{
+            color: $black;
+            @media screen and (max-width: 1024px){
+               color: $white;
+            }
+            &.active{
+                &::after{
+                    content: "";
+                    width: 100%;
+                    height: 2px;
+                    background-color: $black;
+                    display: block;
+                    position: absolute;
+                    transition: 0.1s;
+                    @media screen and (max-width: 1024px){
+                        background-color: $white;
+                    }
+                }
+            }
+            &::after{
+                background-color: $black;
+                @media screen and (max-width: 1024px){
+                    background-color: $white;
+                }
+            }
+        
+        }
+       
+    }
+
+    .hamburger{
+        &__line{
+            background-color: $black;
+        }
+
+        &__active{
+            .hamburger__line{
+                @media screen and (max-width: 1024px){
+                    background-color: $white;
+                }
+            }
+        }
+    }
+
+}
+
+
+
+
+
+.hamburger{
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    
+    &__active{
+       z-index: 10;
+       cursor: pointer;
+       
+       .hamburger__line{
+           &:nth-child(1){
+               transform: rotate(45deg) translate(10px,5px);
+           }
+           &:nth-child(2){
+               opacity: 0;
+           }
+           &:nth-child(3){
+               transform: rotate(-45deg) translate(8.5px,-5px);
+           }
+       }
+    }
+    
+    &__line{
+        width: 30px;
+        height: 3px;
+        background-color: $white;
+        margin: 7px;
+        transition: all 0.3s ease;
+        border-radius: 4px;
+    }
+}
+
+
+
+
+
+@media screen and (min-width: 1025px){
+    .header__menu{
+       flex-direction: row;
+       left: 0;
+       height: inherit;
+       background-color: transparent;
+       position: static;
+       float: right;
+       justify-content: flex-end;
+    }
+
+    .header__menu__active{
+        flex-direction: row;
+        left: 0;
+        height: inherit;
+        background-color: transparent;
+        position: static;
+        float: right;
+        justify-content: flex-end;
+        background-color: transparent;
+        transition: 0s ease;
+    }
+
+    .hamburger,.hamburger__active{
+        display: none;
+    }
+}
+
+
+
+@media screen and (max-width: 1024px){
+
+.header__black,.header__orange{
+       
+    .header__menu__item{
+        a{
+            &.active{
+                &::after{
+                    content: "";
+                    width: 0%;
+                    height: 0px;
+                    background-color:transparent;
+                    display: block;
+                    position: absolute;
+                    transition: 0.1s;
+                }
+            }
+            &::after{
+                background-color:transparent;
+            }
+        
+        
+        }
+    
+        }
+}
+}
+

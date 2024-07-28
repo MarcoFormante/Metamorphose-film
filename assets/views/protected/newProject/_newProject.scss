@@ -1,0 +1,134 @@
+.admin-projects{
+    
+    form{
+        color: $white;
+        max-width: 319px;
+        margin: auto;
+        .inpt-container{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 20px;
+
+            &.m-40{
+                margin-top: 40px;
+
+                input{
+                    background-color: $white;
+                    color: $black;
+                    font-weight: bold;
+                    font-size: 1.2em;
+                    cursor: pointer;
+                }
+              
+            }
+
+            label{
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+
+            input{
+                max-width: 319px;
+                padding: 7px;
+                border: none;
+                appearance: none;
+                background-color: $black;
+                color: $white;
+                border: 1px solid $white;
+            }
+        }
+
+        video{
+            max-width: 319px;
+            margin-top: 20px;
+        }
+    }
+    .p-images-container{
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        width: fit-content;
+        margin: 20px auto;
+
+        img{
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+    }
+
+    .next{
+        button{
+            float: right;
+            margin-right: 50px;
+            appearance: none;
+            background-color: $black;
+            color: $white;
+            border: 1px solid $white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease-in-out;
+            margin-top: 20px;
+            margin-bottom: 20px;
+
+            &:hover{
+                background-color: $white;
+                color: $black;
+            }
+        }
+    }
+
+    .back{
+        button{
+            float: left;
+            margin-left: 50px;
+            appearance: none;
+            background-color: $black;
+            color: $white;
+            border: 1px solid $white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease-in-out;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            &:hover{
+                background-color: $white;
+                color: $black;
+            }
+        }
+    }
+
+
+    .moreStaff-btn{
+            text-align: center;
+            margin-top: 30px;
+        span{
+            appearance: none;
+            border: 1px solid $white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease-in-out;
+            margin: 20px 0 0 0;
+            background-color: $black;
+            color: $white;
+            width: fit-content;
+            margin-top: 30px;
+            padding: 8px 18px;
+            &:hover{
+                background-color: $white;
+                color: $black;
+            }
+        }
+        
+    }
+}

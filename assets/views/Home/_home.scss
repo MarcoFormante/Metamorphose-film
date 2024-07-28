@@ -1,0 +1,133 @@
+#home{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    cursor: grab;
+    display: flex;
+    flex-flow: wrap;
+
+    &:active{
+        cursor: grabbing;
+    }
+}
+
+
+.carousel{
+    display: flex;
+    scroll-snap-type: x mandatory;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+
+.carousel__player__container{
+ 
+    
+    scroll-behavior: smooth;
+    height: 100vh;
+    position: relative;
+
+    video{
+        object-fit: cover;
+        height: 100vh;
+        min-width: 100vw;
+        object-position:50%;
+    }
+
+    &__mobile{
+
+        scroll-snap-align: center;
+         
+    }
+}
+
+
+
+// carousel Button 
+.carousel__player__button{
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 0%;
+    padding-left: 32px;
+   
+
+    @media screen and (max-width: 768px) {
+        padding-left: 16px;   
+    }
+    transform: translateY(-50%);
+    
+        h3{
+            appearance: none;
+            border: none;
+            background: transparent;
+            font-size: clamp(35px, 7vw, 120px);
+            -webkit-text-stroke: 2px white;
+            width: 90vw;
+            text-wrap: wrap;
+            text-decoration: none;
+            color: transparent;
+            user-select: none;
+            font-family: "Poppins-Black";
+            cursor: pointer;
+            text-align: left;
+            line-height: 1;
+            display: inline;
+            user-select: none;
+    
+           
+
+            &:hover > a{
+                -webkit-text-stroke: 2px $orange;
+                color: $orange;
+                transition: color 0.1s;
+            }
+
+           
+        
+
+            a{
+                text-decoration: none;
+                color: transparent;
+                -webkit-text-stroke: 2px $white;
+                pointer-events: none;
+               
+               
+                &:hover{
+                    -webkit-text-stroke: 2px $orange;
+                    color: $orange;
+                    transition: color 0.3s;
+                }
+
+                &:active{
+                    -webkit-text-fill-color: $orange;
+                    transition:  color 0.3s;
+                }
+                
+            }
+
+        }
+
+        
+      
+
+     
+       
+        
+
+        p{
+            font-size: clamp(13px, 2vw, 20px);
+            font-family: "Poppins-Light";
+            font-weight: bold;
+            color: white;
+            margin-top: -1%;
+            width: fit-content;
+          
+
+            @media screen and (max-width: 768px) {
+                bottom: 25px;
+                font-size: clamp(13px, 2vw, 18px);
+            }
+        }
+}

@@ -1,0 +1,102 @@
+.admin-gallery-addImages{
+    h1{
+        color: $white;
+        padding: 10px 20px;
+        text-align: center;
+    }
+
+    form{
+      
+        display: flex;
+        flex-direction: column;
+        max-width: 200px;
+        margin: 50px auto;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        .n-files{
+            color: $white;
+        }
+
+        label{
+            cursor: pointer;
+               padding: 8px 15px;
+               font-weight: bold;
+               background-color: transparent;
+               border: 1px solid $white;
+               color: $white;
+               border-radius: 5px;
+               transition: all 0.3s ease-in-out;
+                width: 100%;
+                text-align: center;
+               
+               &:hover{
+                   background-color: $white;
+                   color: $black;
+               }
+        }
+        input{
+            display: block;
+            width: 100%;
+            appearance: none;
+
+            &#file{
+                display: none;
+            }
+
+            &:last-child{
+               cursor: pointer;
+               padding: 8px 15px;
+               font-weight: bold;
+               border: 1px solid $orange;
+               color: $white;
+               border-radius: 5px;
+               transition: all 0.3s ease-in-out;
+               background-color: $orange;
+               color: $white;
+               &:hover{
+                   border-color: $white;
+               }
+             }
+        }
+    }
+
+    .admin-gallery-addImages__images{
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+        align-items: center;
+      
+
+        .img-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+           
+
+            span{
+                color:$white;
+                font-weight: bold;
+                cursor: pointer;
+                border: 1px solid $orange;
+                padding: 2px 10px;
+                border-radius: 50%;
+                position: absolute;
+                right: 0;
+                background-color: $orange;
+            }
+        }
+    }
+
+    img.new-image{
+        width: 100%;
+        max-width: 300px;
+        object-fit: cover;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}

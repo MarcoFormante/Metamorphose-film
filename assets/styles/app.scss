@@ -1,0 +1,22 @@
+@import "./abstracts/abstracts";
+@import "../components/components";
+@import "./fonts/fonts";
+@import "../views/views";
+@import "./helpers/helpers";
+@import "./base/base";
+
+
+
+.logout-btn{
+    color: $orange;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 20px;
+}
+
+.back-btn{
+    color: blueviolet;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 20px;
+}

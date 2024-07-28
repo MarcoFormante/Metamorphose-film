@@ -1,0 +1,28 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <meta name="author" content="Metamorphose">
+        <meta property="og:image" content="Logo2_fond_blanc.png">
+        <meta name="twitter:image" content="Logo2_fond_blanc.png">
+        <link rel="preload" href="Logo2_fond_blanc.png" as="image">
+        <title>{% block title %}Metamorphose{% endblock %}</title>
+        {% block stylesheets %}
+    {{ vite_entry_link_tags('app') }}
+{% endblock %}
+
+{% block javascripts %}
+   {{ vite_entry_script_tags('app') }}
+     {% if vite_mode() == 'dev' %}
+    <script type="module" src="http://localhost:5173/@vite-plugin-checker-runtime-entry"></script>
+  {% endif %}
+{% endblock %}
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>

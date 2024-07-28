@@ -1,0 +1,188 @@
+.production{
+    color: white;
+    text-align: center;
+    min-height: 100vh;
+    position: relative;
+
+    .last-next-btns-container{
+        padding: 10px 50px;
+        @media screen and (max-width:1024px) {
+            padding: 10px 10px;
+        }
+
+        @media screen and (min-width:1300px) {
+            padding: 10px 50px;
+            position: fixed;
+            top: 50%;
+            left: 0;
+            width: 100vw;
+        }
+
+        a{
+            color: $white;
+            text-decoration: none;
+            border: 1px solid $white;
+            border-radius: 50%;
+            font-size: 20px;
+            width: 30px;
+            height: 30px;
+            display: block;
+        }
+        .next{
+            float: right;
+          
+        }
+        .last{
+            float: left;
+        }
+    }
+
+    &::after{
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0,0.6);
+        z-index: -1;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+       filter: blur(20px);
+    }
+
+    
+
+    h1{
+        font-size: 2.3rem;
+        font-family: "Poppins-Black";
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    h2{
+        font-size: 1rem;
+        margin-top: 25px;
+        font-weight: bold;
+        font-family: "Poppins-Bold";
+    }
+    p{
+        font-size: 1.1rem;
+        margin: 2px;
+    }
+
+    &__imgs{
+        display: flex;
+        width: fit-content;
+        margin: 20px auto;
+        gap: 40px;
+        flex-wrap: wrap;
+        transition: all 0.5s ease-in-out;
+
+        img{
+            max-width: 500px;
+            width: 500px;
+            margin: auto;
+           
+            @media screen and (max-width: 768px) {
+                max-width: 90vw;
+                
+            }
+        }
+    }
+
+    .carousel__player{
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left:0;
+    }
+
+    
+    .react-player{
+        max-width: 90vw;
+        max-height: min(50vw,500px);
+        margin-top: 100px;
+        @media screen and (max-width: 768px) {
+           div{
+            margin-top: 50px;
+           }
+            
+            
+        }
+    }
+
+    &__show-assets{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        width: 50px;
+        height: 50px;
+        margin: auto;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all .1s ease-in-out;
+        transform: rotate(0deg) scale(0.8);
+        
+      
+
+        span{
+            width: 20px;
+            height: 3px;
+            display: block;
+            margin-top: 20px;
+            position: relative;
+            transform: rotate(-45deg) translateX(10px) translateY(-5px);
+           
+            &:last-child{
+                transform: rotate(-135deg)  translateX(10px) translateY(5px);
+            }
+            background-color: $white;
+          
+        }
+
+        &__off{
+            border: 2px solid $white;
+            transform: rotate(180deg) scale(0.8);
+           
+        }
+
+        &__on{
+            border: 2px solid $orange;
+          
+           
+            span{
+                margin-top: 15px;
+                background-color: $orange;
+            }
+        }
+
+       
+    }
+    &__project-assets__hidden{
+       display: none;
+    }
+
+}
+
+
+.video__big{
+   position: fixed;
+   height: 100vh;
+   top: 0px;
+   min-height: calc(100vh + 60px);
+   z-index: -1;
+
+ 
+    video{
+        object-fit: cover;
+        height: 100vh;
+        min-width: 100vw;
+        object-position:50%;
+    }
+
+}
+

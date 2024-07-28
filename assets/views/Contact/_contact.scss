@@ -1,0 +1,73 @@
+.contact{
+    background-color: $orange;
+    padding: 0 32px;
+    color: $white;
+
+
+    h1{
+        font-size: min(10rem, 9vw);
+        font-family: "Poppins-Bold";
+        line-height: 1;
+        margin-top: 80px;
+    }
+
+    p{
+        font-size: min(4vw,1.3rem);
+        margin: 2px 2px 50px 2px;
+        font-weight: bold;
+      
+    }
+
+    span{
+        font-size: min(6rem, 12vw);
+        font-family: "Poppins-Bold";
+        color: transparent;
+        -webkit-text-stroke: 3px $white;
+        line-height: 0.6;
+        cursor: pointer;
+        transition: color 0.3s;
+        width: fit-content;
+
+    }
+
+    a{
+        text-decoration: none;
+        color: $black;
+        font-size: min(0.8rem, 3vw);
+        margin-left: 2px;
+        font-family: "Poppins-Bold";
+        cursor: pointer;
+    }
+
+    &__links{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        &__container{
+            width: fit-content;
+        }
+    }
+
+    &-footer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+   
+
+        @media screen and (max-width: 768px) {
+            display: none; 
+        }
+
+        span{
+            font-size: 16px;
+            -webkit-text-stroke: 0px;
+            color:$white;
+            font-weight: 800;
+            font-family: "Poppins-Light";
+            line-height: normal;
+            cursor:auto;
+        }
+    }
+}

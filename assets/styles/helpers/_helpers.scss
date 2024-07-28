@@ -1,0 +1,31 @@
+.text-bold{
+    font-weight: bold;
+}
+
+.hide-mobile{
+    @media screen and (max-width: 1024px){
+        display: none;
+    }
+}
+
+.hide-pc{
+    @media screen and (min-width: 1025px){
+        display: none;
+    }
+}
+
+.app.back__orange{
+    background-color: $orange;
+}
+
+.app.back__black{
+    background-color: $black;
+}
+
+// const colorMap = {
+//     "/services": "back__orange",
+//     "/contact": "back__orange",
+//     "/a_propos": "back__black",
+//     "/galerie": "back__black",
+//   };
+  

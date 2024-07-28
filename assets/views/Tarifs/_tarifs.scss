@@ -1,0 +1,263 @@
+.tarifs{
+    color: $white;
+    padding-bottom: 0px;
+    scroll-behavior: smooth;
+
+    .mt{
+        margin-top: 60px;
+    }
+
+    .title{
+        span{
+            @media screen and (max-width: 577px){
+                margin-left: 20%;
+            }
+        }
+    }
+    &-content{
+        padding:0 32px 40px 0;
+        @media screen and (max-width: 490px){
+            padding:5px;
+        }
+
+        .sub-tl{
+            font-size: clamp(1.1em, 2vw, 2em);
+            font-weight: bold;
+            margin-left: 50px;
+            @media screen and (max-width: 1216px){
+                margin-bottom: 50px;
+            }
+
+            @media screen and (max-width: 490px){
+                margin-left: 5px;
+            }
+
+            &-m{
+                margin-top: 40px;
+                margin-bottom: 40px;
+            }
+        }
+
+        .flex-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+            @media screen and (max-width: 1024px){
+                flex-direction: column;
+                gap: 50px;
+            }
+        }
+
+        .desc-card{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // margin-top: 40px;
+            gap: 10px;
+            
+            @media screen and (max-width: 1024px){
+                flex-direction: column;
+                height: 160px;
+                gap: 10px;
+                display: block;
+                justify-content: unset;
+                align-items: unset;
+                cursor: pointer;
+            }
+        }
+
+        .desc-card-right{
+            font-size: 4em;
+            position: relative;
+            top: -60px;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            background-color: $white;
+            width: 40px;
+            height: 40px;
+            transform: rotate(90deg);
+            @media screen and (max-width: 1355px){
+                top: -60px;
+            }
+
+            @media screen and (max-width: 1024px){
+                clip-path: polygon(0 0, 50% 100%, 100% 0);
+                transform: rotate(0deg);
+                top: 7px;
+                left: 50%;
+                transform: translate(-50%, 0);
+            }
+
+            &.d-none{
+                opacity: 0;
+            }
+        }
+
+        .desc-card-left{
+
+            @media screen and (max-width: 1024px){
+                border: 4px solid $white;
+                padding: 0;
+                border-radius: 35px ;
+                width: 200px;
+                height: 100%;
+               
+                overflow: hidden;
+             }
+
+             &__mobile{
+                background-color: $white;
+                .desc-card-left__title{
+                    // display: flex;
+                    // justify-content: center;
+                    // align-items: center;
+                    background-color: $white;
+                    // height: 120%;
+                }
+
+                h1{
+                    color: $black;
+                    background-color: $white;
+                    
+                }
+             }
+
+
+             
+
+            h1{
+                border: 4px solid $white;
+                padding: 50px 32px;
+                border-radius: 35px ;
+                text-align: center;
+
+                @media screen and (max-width: 1355px){
+                    padding: 30px 22px;
+                    font-size: clamp(0.5em, 1.3vw, 1.5em);
+                    width: 100%;
+                   
+                }
+
+
+                @media screen and (max-width: 1024px){
+                   border: none;
+                   padding: 0;
+                   border-radius: 0;
+                   font-size: 1.15em;
+                   position: relative;
+                   top: 60px;
+                   //new
+                }
+            }
+
+            h2{
+                margin-top: 20px;
+                text-align: center;
+                font-size: clamp(0.8em, 1.4vw, 1.2em);
+                font-weight: bold;
+                font-size: 0.9em;
+                
+            }
+
+            ul{
+                list-style: none;
+                text-align: center;
+                font-size: 0.9em;
+                margin-top: 4px;
+                @media screen and (max-width: 1024px){
+                    margin-top: 16px;
+                }
+               
+
+                .t-s{
+                    font-size: 0.9em;
+                }
+            }
+        }
+        
+    }
+
+    .phar-fx{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+       
+        @media screen and (max-width: 1024px){
+           flex-direction: column;
+        }
+
+        p{
+            font-size: clamp(1em, 2vw, 1.5em);
+            margin-left: 50px;
+            @media screen and (max-width: 490px){
+                margin-left: 10px;
+            }
+        }
+
+        img{
+            width: 300px;
+        }
+    }
+}
+
+.prices{
+    padding-bottom: 40px;
+    ul{
+        display: flex;
+        list-style: none;
+        gap: 40px;
+        justify-content: center;
+
+        @media screen and (max-width: 1024px){
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
+        a{
+            text-align: center;
+            text-decoration: none;
+            color: $black;
+            width: calc(100vw / 3.8);
+            height: fit-content;
+            background-color: $white;
+            display: block;
+            border-radius: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            min-width: 300px;
+
+            @media screen and (max-width: 1024px){
+                height: 180px;
+            }
+
+            @media screen and (max-width: 577px){
+                height: 160px;
+                min-width: 250px;
+                
+            }
+
+            h1{
+                font-size: 2.2em;
+                font-weight: bold;
+                line-height: 0.9;
+                width: 100%;
+
+                @media screen and (max-width: 577px){
+                    font-size: 1.8em;
+                    
+                }
+            }
+
+            p{
+                font-size: 1.8em;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
