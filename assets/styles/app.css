@@ -366,28 +366,13 @@ body:has(.fallback) {
   src: url("../fonts/Poppins-Light.ttf");
 }
 #home {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
   cursor: grab;
-  display: flex;
-  flex-flow: wrap;
 }
 #home:active {
   cursor: grabbing;
 }
 
-.carousel {
-  display: flex;
-  scroll-snap-type: x mandatory;
-  overflow-y: hidden;
-  overflow-x: scroll;
-}
-
 .carousel__player__container {
-  scroll-behavior: smooth;
   height: 100vh;
   position: relative;
 }
@@ -398,9 +383,6 @@ body:has(.fallback) {
   min-width: 100vw;
   -o-object-position: 50%;
      object-position: 50%;
-}
-.carousel__player__container__mobile {
-  scroll-snap-align: center;
 }
 
 .carousel__player__button {
@@ -472,6 +454,13 @@ body:has(.fallback) {
     bottom: 25px;
     font-size: clamp(13px, 2vw, 18px);
   }
+}
+
+.swiper-wrapper {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .services__body, .corporate {
