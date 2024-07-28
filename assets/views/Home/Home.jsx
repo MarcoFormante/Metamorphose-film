@@ -3,6 +3,8 @@ import { useEventListener } from '../../hooks/useEventListener'
 import { Figure } from '../../components/Home/Figure'
 import { axiosInstance } from '../../middleware/axiosInstance'
 import SEO from '../../components/Seo/SEO'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { A11y, Keyboard, Mousewheel, Navigation, Pagination, Parallax, Scrollbar } from 'swiper/modules'
 
 
 
@@ -56,10 +58,10 @@ const Home = () => {
     },[carouselRef]) 
     
     
-    useEventListener("mousedown",carouselRef,mouseDown,[],true)
-    useEventListener("mouseup",carouselRef,mouseUp,[],true)
-    useEventListener("mouseleave",carouselRef,mouseUp,[],true)
-    useEventListener("mousemove",carouselRef,scroll,[isHold],true)
+    // useEventListener("mousedown",carouselRef,mouseDown,[],true)
+    // useEventListener("mouseup",carouselRef,mouseUp,[],true)
+    // useEventListener("mouseleave",carouselRef,mouseUp,[],true)
+    // useEventListener("mousemove",carouselRef,scroll,[isHold],true)
 
 
 
@@ -81,22 +83,31 @@ const Home = () => {
 
     return (
         <>
-      
-       <SEO title={"Metamorphose"} url={"/"}  description={"Ici vous pouvez admirer tout les projets de Metamorphose"} name={"Metamorphose"} type={"website"} keywords={"Projets,videos,images,artistes,musique,projets creatifs"}/> 
+        <SEO title={"Metamorphose"} url={"/"}  description={"Ici vous pouvez admirer tout les projets de Metamorphose"} name={"Metamorphose"} type={"website"} keywords={"Projets,videos,images,artistes,musique,projets creatifs"}/> 
+
         <div id='home'>
-            <div ref={carouselRef} className='carousel'>
-                { projects.length > 1 ?  projects.map((project,index) =>
-                   <div key={index}>
+        <Swiper style={{color:"white"}}
+        modules={[Navigation, Pagination, Scrollbar, A11y,Keyboard,Mousewheel]}
+        spaceBetween={0}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+        scrollbar={{ draggable: true }}
+        keyboard={{ enabled: true }}
+        speed={1000}
+        direction='horizontal'
+        mousewheel={{ invert: false }}
+    >
+            {projects.length > 1 ?  projects.map((project,index) =>
+                <SwiperSlide key={index}>
                         <Figure project={project} index={index} isScrolling={isScrolling} />
-                   </div>
-                  
-                )
-            :
-            <div >
+                </SwiperSlide>)
+                :
+                <SwiperSlide>
                 <Figure project={projects[0]} index={0} isScrolling={isScrolling} />
-            </div>
+                </SwiperSlide> 
             }
-            </div>
+        </Swiper>
         </div>
         </>
     )
