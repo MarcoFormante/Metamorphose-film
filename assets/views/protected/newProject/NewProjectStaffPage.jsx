@@ -65,9 +65,9 @@ const NewProjectStaffPage = ({
           {moreStaffFieldsCounter > 0 && Array.from({length: moreStaffFieldsCounter}).map((_,index)=>
         <div  key={"Staffcounter" + index}>
           <div className='inpt-container'>
-            <label htmlFor={'staffCounter' + index}>Autre Champ</label>
-            <input type='text' id={'staffCounter-' + index} name={'moreStaff-' + index} value={moreStaffFields[index]?.value1}  onChange={(e)=>handleMoreStaffFields(e.target.value,index)}/>
-            <input type='text' id={'staffCounter2-' + index  } name={'moreStaff2-' + index} value={moreStaffFields[index]?.value2}  onChange={(e)=>handleMoreStaffFields2(e.target.value,index)}/>
+            <label htmlFor={'staffCounter-' + index}>Autre Staff</label>
+            <input type='text' id={'staffCounter-' + index} name={'moreStaff-' + index} value={moreStaffFields[index]?.value1} placeholder='Titre'  onChange={(e)=>handleMoreStaffFields(e.target.value,index)}/>
+            <input type='text' id={'staffCounter2-' + index  } name={'moreStaff2-' + index} value={moreStaffFields[index]?.value2} placeholder='Valeur'  onChange={(e)=>handleMoreStaffFields2(e.target.value,index)}/>
           </div>
         </div>
       )}

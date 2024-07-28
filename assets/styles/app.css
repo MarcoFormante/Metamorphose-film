@@ -1967,6 +1967,10 @@ gallery__images'>
   gap: 5px;
   margin-top: 20px;
 }
+.admin-projects form .inpt-container:has(input:required) label::after {
+  content: " *";
+  color: red;
+}
 .admin-projects form .inpt-container.m-40 {
   margin-top: 40px;
 }

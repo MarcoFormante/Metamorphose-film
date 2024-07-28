@@ -10,6 +10,14 @@
             gap: 5px;
             margin-top: 20px;
 
+            &:has(input:required){
+                    label::after{
+                        content: " *";
+                        color: red;
+                    }
+            }
+            
+
             &.m-40{
                 margin-top: 40px;
 
