@@ -11,12 +11,13 @@ const Project = () => {
     const location = useLocation()
     const [showAssets, setShowAssets] = useState(false)
     const [projectData,setProjectData] = useState([])
-    const [loading,setLoading] = useState(false)
+    const [loading,setLoading] = useState(true)
     const [nextProject,SetNextProject] = useState(null)
     const [lastProject,setLastProject] = useState(null)
     const [project,setProject] = useState(null)
     const [projectIndex,setProjectIndex] = useState(location.state?.index || 0)
     const [allProjects,setAllProjects] = useState(null)
+    const [fade,setFade] = useState(false)
     const navigate = useNavigate()
     const param = useParams()
 
@@ -47,6 +48,7 @@ const Project = () => {
 
     useEffect(()=>{
         if (param.name && !location.state?.project?.name) {
+            setLoading(true)
             setProject({})
             setShowAssets(false)
             setProjectData([])
@@ -59,6 +61,8 @@ const Project = () => {
                 }
             }).catch(()=>{
                 return navigate("/")
+            }).finally(()=>{
+                setLoading(false)
             })
         }
     },[param])
@@ -86,7 +90,13 @@ const Project = () => {
 
 
     useEffect(()=>{
+
+        const timeout = setTimeout(()=>{
+            setFade(false)
+        },400)
+
         if (location.state?.project.name && projectIndex !== null && projectIndex !== undefined && allProjects) {
+            setFade(true)
             setProject(null)
             setShowAssets(false)
             setProjectData([])
@@ -107,17 +117,22 @@ const Project = () => {
             }else{
                 setLastProject(null)
             }
+            
+        
         }else{
             setProject(null)
             setShowAssets(false)
             setProjectData([])
         }
+
+        return ()=> clearTimeout(timeout)
     },[projectIndex,allProjects])
 
 
 
   return project && (
-    <article className='production'>
+    <article className={`production ${fade ? "production-fadein" :""}`}>
+      
         <div className='last-next-btns-container'>
             {lastProject && <span className='last'>
                 <Link onClick={()=>setProjectIndex(prev => prev > 0 ? prev - 1 : 0)} to={"/projet/" + lastProject.name} state={{project:lastProject}}>{"<"}</Link>

@@ -96,7 +96,7 @@ const Home = () => {
         keyboard={{ enabled: true }}
         speed={1000}
         direction='horizontal'
-        mousewheel={{ invert: false }}
+        mousewheel={{enabled:true}}
     >
             {projects.length > 1 ?  projects.map((project,index) =>
                 <SwiperSlide key={index}>
