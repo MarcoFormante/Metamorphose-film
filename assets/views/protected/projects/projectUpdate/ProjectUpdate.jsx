@@ -27,7 +27,6 @@ const ProjectUpdate = () => {
   const [newVideo, setNewVideo] = useState(false)
   const [moreStaffFields, setMoreStaffFields] = useState(location?.state?.staff?.moreStaffFields)
   const [moreStaffFieldsCounter, setMoreStaffFieldsCounter] = useState( 0)
-  const [inputsHidden, setInputsHidden] = useState([])
   const [updatedValues, setUpdatedValues] = useState({imgs:[],video:false,projectName:false,abrName:false,youtubeLink:false,collab:false,production:false,madeBy:false,artists:false,montage:false,cadrage:false,droniste:false,phPlateau:false,decorateurs:false,lastMoreStaffFields:[],newMoreStaffFields:[],lastStaff:false,newStaff:false})
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
@@ -42,7 +41,6 @@ const ProjectUpdate = () => {
     }
   },[location.state.staff.moreStaffFields])
 
-console.log(updatedValues.newStaff, updatedValues.lastStaff);
 
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -64,14 +62,17 @@ console.log(updatedValues.newStaff, updatedValues.lastStaff);
       })
     }
 
-   const staff = []
+   let staff = []
 
     if (updatedValues.lastStaff === true) {
       const arrayMoreFieldsWithoutUndefined = updatedValues.lastMoreStaffFields.filter(field => field !== undefined)
       const arrayMoreFieldsWithoutUndefinedAndVoid = arrayMoreFieldsWithoutUndefined.filter(field => field.value1 !== "" && field.value2 !== "")
-      staff.push(...arrayMoreFieldsWithoutUndefinedAndVoid)
-      
-    }else{
+      if (arrayMoreFieldsWithoutUndefinedAndVoid.length === 0 && updatedValues.newStaff === false) {
+        staff = null
+      }else if(arrayMoreFieldsWithoutUndefinedAndVoid.length > 0){
+        staff.push(...arrayMoreFieldsWithoutUndefinedAndVoid)
+      }
+    }else {
       staff.push(...updatedValues.lastMoreStaffFields)
     }
 
@@ -81,8 +82,10 @@ console.log(updatedValues.newStaff, updatedValues.lastStaff);
     staff.push(...arrayMoreFieldsWithoutUndefinedAndVoid)
   }
 
-  if (staff.length > 0) {
+  if (staff !== null && staff.length > 0) {
       formData.append('staff',JSON.stringify(staff))
+  }else{
+    formData.append('staff',null)
   }
     
     formData.append('id',location.state.id)
@@ -222,7 +225,6 @@ const deleteProject = ()=>{
   })
 }
 
-console.log(updatedValues.newMoreStaffFields);
 const projectActiveToggle = ()=>{
   setLoading(true)
   const id = location.state?.id 
@@ -266,24 +268,8 @@ const handleNewMoreStaffFields2 = (value,index) => {
   setUpdatedValues({...updatedValues, newStaff:true})
 }
 
-const closeInput = (index)=>{
-  if (!inputsHidden.includes(index)) {
-      setInputsHidden([...inputsHidden,index])
-  }
-  const inputIndex = index.split(":")[1]
-  const target = index.split(":")[0]
-  if (target === "new") {
-      const newValues = updatedValues.newMoreStaffFields.filter((f,i)=> i !== inputIndex)
-      updatedValues.newMoreStaffFields = newValues
-      console.log(newValues);
-  }else{
-      const lastValues = updatedValues.lastMoreStaffFields.filter((f,i)=> i !== inputIndex)
-      updatedValues.lastMoreStaffFields = lastValues
-      console.log(lastValues);
-  }
+console.log(updatedValues.lastMoreStaffFields);
 
-  setUpdatedValues({...updatedValues})
-}
 
 
 useEffect(()=>{
@@ -444,10 +430,9 @@ useEffect(()=>{
           </div>
 
 
-          {updatedValues.lastMoreStaffFields && updatedValues.lastMoreStaffFields.length > 0 && updatedValues.lastMoreStaffFields.map((s,index)=> inputsHidden.includes("last" + index) ? null :
+          {updatedValues.lastMoreStaffFields && updatedValues.lastMoreStaffFields.length > 0 && updatedValues.lastMoreStaffFields.map((s,index)=> 
           <div  key={"Staffcounter" + index}>
             <div className='inpt-container'>
-            <span onClick={()=>closeInput("last:" + index)}>Close</span>
               <label htmlFor={'staffCounter' + index}>Titre</label>
               <input type='text' id={'staffCounter-' + index} name={'moreStaff-' + index} value={s.value1 ?? moreStaffFields[index].toString().split(":")[0] }  onChange={(e)=>handleMoreStaffFields(e.target.value,index)}/>
               <label htmlFor={'staffCounter2-' + index}>Value</label>
@@ -458,19 +443,22 @@ useEffect(()=>{
 
       
 
-{moreStaffFieldsCounter > 0 && updatedValues.newMoreStaffFields.map((f,index)=> inputsHidden.includes("new:" + index) ? null :
-        <div  key={"Staffcounter" + index}>
-          <span onClick={()=>closeInput("new"+ index)}>Close</span>
+{moreStaffFieldsCounter > 0 && updatedValues.newMoreStaffFields.map((f,index)=> 
+        <div  key={"Staffcounter" + index} >
           <div className='inpt-container'>
-            <label htmlFor={'staffCounter' + index}>Titre</label>
-            <input type='text' id={'staffCounter-' + index} name={'moreStaff-' + index} value={f.value1}  onChange={(e)=>handleNewMoreStaffFields(e.target.value,index)}/>
-            <label htmlFor={'staffCounter2-' + index}>Value</label>
-            <input type='text' id={'staffCounter2-' + index  } name={'moreStaff2-' + index} value={f.value2}  onChange={(e)=>handleNewMoreStaffFields2(e.target.value,index)}/>
+            <label htmlFor={'staffCounter' + index}>Autre Champ</label>
+            <input type='text' id={'staffCounter-' + index} name={'moreStaff-' + index} placeholder='Titre' value={f.value1}  onChange={(e)=>handleNewMoreStaffFields(e.target.value,index)}/>
+            <input type='text' id={'staffCounter2-' + index  } name={'moreStaff2-' + index} placeholder='Valeur' value={f.value2}  onChange={(e)=>handleNewMoreStaffFields2(e.target.value,index)}/>
           </div>
         </div>
       )}
 
-        <p onClick={()=>setMoreStaffFieldsCounter(prev => prev + 1)}>Ajouter Plus de staff</p>
+        {/* <p onClick={()=>setMoreStaffFieldsCounter(prev => prev + 1)}>Ajouter Plus de staff</p> */}
+        <div className='moreStaff-btn'>
+                <span onClick={()=>setMoreStaffFieldsCounter(prev => prev + 1)}>+</span>
+        </div>
+        
+
  
           <div className='inpt-container m-40'>
             <input disabled={isSubmit} type='submit' id='p-staff-p-submit' value='Submit' />

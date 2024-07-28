@@ -228,11 +228,15 @@ class ProjectController extends AbstractController
                 $project->getProjectStaff()->setDecorateurs($data['decorateurs']);
             }
          
-
+            
             if (isset($data['staff']) && is_array(json_decode($data['staff'],true))) {
                 $project->getProjectStaff()->setMoreStaffFields([$data['staff']]);
             }else{
                 $this->json(['error' => 'Error creating project : More Staff Fields'],400);
+            }
+
+            if(isset($data['staff']) && $data['staff'] == "null"){
+                $project-> getProjectStaff()->setMoreStaffFields([]);
             }
            
             $videoName = "";
