@@ -20,8 +20,7 @@
         }
 
         h1.title {
-            font-weight: bold;
-            font-family: "Poppins-Bold";
+            @extend .poppins-bold;
             line-height: 5rem;
             font-size: clamp(3rem, 10vw, 8rem);
         }
@@ -59,8 +58,7 @@
             text-align: center;
             width: 100%;
             margin: auto;
-            font-weight: bold;
-            font-family: "Poppins-Bold";
+            @extend .poppins-bold;
         }
 
         .art-pr {
@@ -70,7 +68,6 @@
             align-items: center;
             height: 100%;
             text-align: right;
-            font-family: "Poppins-Light";
             padding: 20px;
             font-weight: bold;
             float: right;
@@ -84,7 +81,6 @@
             align-items: center;
             height: 100%;
             text-align: left;
-            font-family: "Poppins-Light";
             padding: 20px;
             font-weight: bold;
 
@@ -166,8 +162,7 @@
         .services__body {
 
             h1.title {
-                font-weight: bold;
-                font-family: "Poppins-Bold";
+                @extend .poppins-bold;
                 line-height: unset;
                 font-size: clamp(3rem, 10vw, 13rem);
                 

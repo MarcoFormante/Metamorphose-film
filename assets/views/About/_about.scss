@@ -4,7 +4,7 @@
         color: $white;
         font-weight: 600;
         font-size: min(5rem,11vw);
-        font-family: "Poppins-Bold";
+        @extend .poppins-bold;
         padding: 0 0 0 32px;
         margin: 10px 0;
         line-height: 0.5;
@@ -12,7 +12,7 @@
         position: relative;
         
         span{
-          font-family: "Poppins-Light";
+          @extend .poppins-light;
           font-size:  clamp(1.2rem, 10vw, 2rem);
           margin: 0 0 0 10px;
           padding: 0;
@@ -48,7 +48,7 @@
             height:clamp(196px, 30vw, 220px);
             cursor: pointer;
             color: $orange;
-            font-family: "Poppins-Bold";
+            @extend .poppins-bold;
             text-transform: uppercase;
             background-color: white;
             display: flex;
@@ -88,7 +88,6 @@
             }
 
             .show-card{
-                font-family: "Poppins-Light";
                 font-size: 16px;
                 text-transform: none;
             }
@@ -189,14 +188,14 @@
             display:flex;
             gap:25px;
             font-size:clamp(1em, 1.8vw, 2.1em);
-            font-family:Poppins-Bold, sans-serif;
+            @extend .poppins-bold;
             color:$orange;
         }
 
         h1{
             font-size:clamp(4em, 6.5vw, 8em);
             color:black;
-            font-family:Poppins-Bold, sans-serif;
+            @extend .poppins-bold;
             line-height:0.8em;
             text-align:right;
             margin-top:20px;
@@ -206,7 +205,6 @@
             text-decoration:none;
             color:black;
             font-size:clamp(1em, 2.5vw, 1.2em);
-            font-family:Poppins-Light,sans-serif;
             color:$orange;
         }
       }
@@ -302,13 +300,13 @@
             color: $white;
 
             h2{
-                font-family: "Poppins-Bold";
+                @extend .poppins-bold;
                 font-weight: bold;
                 font-size: 1.9em;
             }
 
             p{
-                font-family: "Poppins-Light";
+                @extend .poppins-light;
                 font-size: 1rem;
                 font-weight: 600;
 

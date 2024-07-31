@@ -4,8 +4,6 @@
     padding: 32px;
     display: flex;
     justify-content: space-between;
-    font-weight: bold ;
-    font-family: "Poppins-Bold";
     align-items: center;
 
         &__logo{
@@ -50,11 +48,8 @@
             text-decoration: none;
             font-size: 18px;
             position: relative;
-            font-family: "Poppins-Light";
-            // text-transform: uppercase;
-            // font-weight: bold;
+            @extend  .poppins-light;
             transition: color 0.3s;
-
             @media screen and (max-width: 1024px){
                 font-size: clamp(26px, 4vw, 30px);
             }

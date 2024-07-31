@@ -55,7 +55,7 @@
 
     h1{
         font-size: 2.3rem;
-        font-family: "Poppins-Black";
+        @extend .poppins-black;
         text-align: center;
         margin-top: 20px;
     }
@@ -64,7 +64,7 @@
         font-size: 1rem;
         margin-top: 25px;
         font-weight: bold;
-        font-family: "Poppins-Bold";
+        @extend .poppins-bold;
     }
     p{
         font-size: 1.1rem;

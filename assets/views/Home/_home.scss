@@ -55,7 +55,7 @@
             text-decoration: none;
             color: transparent;
             user-select: none;
-            font-family: "Poppins-Black";
+            @extend .poppins-black ;
             cursor: pointer;
             text-align: left;
             line-height: 1;
@@ -104,7 +104,6 @@
 
         p{
             font-size: clamp(13px, 2vw, 20px);
-            font-family: "Poppins-Light";
             font-weight: bold;
             color: white;
             margin-top: -1%;
@@ -124,8 +123,6 @@
 
 .swiper-wrapper{
     display: flex;
-    // align-items: center;
-    // justify-content: center;
     position: fixed;
     top: 0;
     left: 0;

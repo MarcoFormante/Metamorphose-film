@@ -20,3 +20,15 @@
     text-decoration: underline;
     margin-left: 20px;
 }
+
+
+
+
+body{
+    background-color: $black;
+    max-width: 1920px;
+    margin: auto;
+    @extend  .poppins-light;
+  }
+
+  

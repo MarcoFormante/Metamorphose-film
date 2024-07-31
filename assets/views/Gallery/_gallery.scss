@@ -57,7 +57,7 @@
   a {
     color: $white;
     font-weight: bold;
-    font-family: "Poppins-Bold";
+    @extend .poppins-bold;
     font-size: min(2.4rem,8vw);
   }
 }
@@ -88,9 +88,8 @@ gallery__images'>
 
       span{
         position: absolute;
-        // top: 3%;
         font-size: 2rem;
-        font-family: "Poppins-Bold";
+        @extend .poppins-bold;
         cursor: pointer;
 
         &.btn-right{
@@ -164,14 +163,14 @@ gallery__images'>
       color: $white;
       font-weight: 600;
       font-size: min(7rem,3.5rem);
-      font-family: "Poppins-Bold";
+      @extend .poppins-bold;
       padding: 0;
       margin: 0;
       line-height: 0.5;
       margin-bottom: 50px;
       position: relative;
+
       span{
-        font-family: "Poppins-Light";
         font-size: 0.5em;
         margin: 0 0 0 10px;
         padding: 0;
@@ -181,9 +180,6 @@ gallery__images'>
           display: block;
           margin-left: 110px;
           margin-top: 17px;
-          // position: absolute;
-          // top: 160%;
-          // left: calc(10vw);
         }
       }
   }
