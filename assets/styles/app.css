@@ -1083,7 +1083,7 @@ body:has(.fallback) {
 .gallery__item:hover {
   transform: scale(1.05);
 }
-.gallery__item img {
+.gallery__item img, .gallery__item .img-spinner {
   -o-object-fit: cover;
      object-fit: cover;
   max-width: 300px;
@@ -1091,7 +1091,7 @@ body:has(.fallback) {
   width: 300px;
 }
 @media screen and (max-width: 768px) {
-  .gallery__item img {
+  .gallery__item img, .gallery__item .img-spinner {
     height: 370px;
   }
 }

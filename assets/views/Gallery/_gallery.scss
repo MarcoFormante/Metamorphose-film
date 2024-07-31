@@ -42,7 +42,7 @@
       transform: scale(1.05);
     }
 
-    img {
+    img, .img-spinner{
       object-fit: cover;
       max-width: 300px;
       height: 400px;

@@ -1,5 +1,6 @@
 import React from 'react'
 import { GalleryItem } from '../../components/Galerie/GalerieItem'
+import Fallback from '../../components/Spinner/Fallback'
 
 const galleries=[
   {
@@ -30,9 +31,12 @@ const galleries=[
 
 
 const Gallery = () => {
+  const [imgLoadedCounter, setImgLoadedCounter] = React.useState(0)
+
   return (
     <div className='gallery'>
       <ul className='gallery__list'>
+        {imgLoadedCounter < galleries.length && <Fallback />}
         {galleries.map((gallery,index)=>
         <div  key={index}>
           <GalleryItem
@@ -40,6 +44,7 @@ const Gallery = () => {
             src={gallery.src} 
             link={gallery.link}
             alt={gallery.alt}
+            setImgLoadedCounter={setImgLoadedCounter}
             />
           </div>
         )}
