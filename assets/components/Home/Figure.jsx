@@ -8,7 +8,6 @@ const navigate = useNavigate()
   return project && (
  <>
     <figure  className={`carousel__player__container ${isMobile ? "carousel__player__container__mobile" : ""}`}>
-    {!project.name && "Error"}
    { project.background_video && 
    <ReactPlayer className="carousel__player"  
          url={ "assets/uploads/videos/" +  project.background_video }
