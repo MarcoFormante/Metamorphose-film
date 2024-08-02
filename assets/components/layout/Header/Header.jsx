@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useEventListener } from '../../../hooks/useEventListener'
-
+import logo from './trace.svg'
 // const logo = {
 //   white: "/Logo2_fond_blanc.png",
 //   red: "/Logo2_fond_rouge.png"
@@ -58,7 +58,7 @@ export const Header = ({headerColor}) => {
         <img
           // onMouseEnter={onMouseEnter}
           // onMouseLeave={onMouseLeave}
-          src={`/Logo2_fond_blanc.png`}
+          src={logo}
           width={250}
           alt="Metamorphose"
         />

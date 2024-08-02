@@ -160,13 +160,14 @@ const handleSubmit = async(e) => {
         navigate(-1)
       }
   }).catch(err => {
-    alert('An error occured : '+ err.response?.data?.error)
+    alert('An error occured : '+ err)
+    console.log(err);
     setIsSubmit(false)
   }).finally(()=>{
     setLoading(false)
   })
     } catch (error) {
-      console.log(error.response.data)
+      console.log(error)
       setLoading(false)
       setIsSubmit(false)
     }

@@ -239,7 +239,7 @@ class ProjectController extends AbstractController
                 $project-> getProjectStaff()->setMoreStaffFields([]);
             }
            
-            $videoName = "";
+            $RandomVideoName = "";
            
             if ($video) {
                 if($video->getSize() > 10000000){
@@ -290,7 +290,7 @@ class ProjectController extends AbstractController
             }
 
             if($video){
-                $video->move("assets/uploads/videos/", $videoName);
+                $video->move("assets/uploads/videos/", $RandomVideoName);
             }
            
             $em->persist($project);
