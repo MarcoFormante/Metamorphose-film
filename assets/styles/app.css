@@ -2225,6 +2225,14 @@ gallery__images'>
   cursor: pointer;
 }
 
+.project_active {
+  opacity: 1;
+}
+
+.project_inactive {
+  opacity: 0.5;
+}
+
 .text-bold {
   font-weight: bold;
 }

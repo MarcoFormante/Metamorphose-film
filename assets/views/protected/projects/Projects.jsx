@@ -22,7 +22,7 @@ const Projects = () => {
       <h1>Projects</h1>
       <ul>
         {projects.map(project => 
-          <li key={project.id}>
+          <li key={project.id} className={`project_${project.isActive ? "active" : "inactive"}`}>
             <Link to={"update"} state={project}>{project.name}</Link>
             </li>
         )}
