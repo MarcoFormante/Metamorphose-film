@@ -369,7 +369,7 @@ body:has(.fallback) {
   font-style: normal;
 }
 
-.poppins-bold, .production h2, .contact a, .contact span, .contact h1, .gallery__images__gallery-name, .gallery__images .black__background span, .gallery a, .about-valeurs .flex-resp-start-row .quality__box h2, .about article h1, .about article ul, .about .cards-container-flex-col .card1, .about .title, .services__body .art-h1, .corporate .art-h1, .services__body h1.title, .corporate h1.title, .show-pages__container li a {
+.poppins-bold, .production h2, .contact a, .contact span, .contact h1, .gallery__images__gallery-name, .gallery a, .about-valeurs .flex-resp-start-row .quality__box h2, .about article h1, .about article ul, .about .cards-container-flex-col .card1, .about .title, .services__body .art-h1, .corporate .art-h1, .services__body h1.title, .corporate h1.title, .show-pages__container li a {
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-style: normal;
@@ -1122,22 +1122,30 @@ gallery__images'>
 }
 .gallery__images .black__background span {
   position: absolute;
-  font-size: 2rem;
   cursor: pointer;
 }
 .gallery__images .black__background span.btn-right {
   right: 1%;
   top: 50%;
+  opacity: 0.3;
+}
+.gallery__images .black__background span.btn-right:active {
+  opacity: 1;
 }
 .gallery__images .black__background span.btn-left {
   left: 1%;
   top: 50%;
+  transform: scaleX(-1);
+  opacity: 0.3;
+}
+.gallery__images .black__background span.btn-left:active {
+  opacity: 1;
 }
 .gallery__images .black__background span.btn-exit {
   right: 3%;
   top: 1%;
 }
-.gallery__images .black__background img {
+.gallery__images .black__background .black__background__img {
   max-width: 80vw;
   max-height: 100vh;
   -o-object-fit: cover;
@@ -1148,7 +1156,7 @@ gallery__images'>
   transform: translateX(-50%) translateY(-50%);
 }
 @media screen and (max-width: 768px) {
-  .gallery__images .black__background img {
+  .gallery__images .black__background .black__background__img {
     width: 95vw;
     max-width: 100vw;
   }
