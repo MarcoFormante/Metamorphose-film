@@ -156,7 +156,13 @@ const Project = () => {
        </div>
     
         <h1 className='production__title'>{project?.name}</h1>
-        <p className='production__text__desc'>réalisé par {project?.made_by}</p>
+            <h2>Realisé par</h2>
+            {project?.made_by && 
+            <ul>
+                {project?.made_by?.split(',').map((r, i) => <li key={i}>{r}</li>)}
+            </ul>
+            }
+            
         
         <div>
             <ReactPlayer className={"react-player"}  width={1000} height={500} controls  url={project?.youtube_video} preload="none"  style={{margin:"10px auto",height:500,objectFit:"cover"}} /> 
