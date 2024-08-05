@@ -11,7 +11,7 @@ const Projects = () => {
  
 
   useEffect(()=>{
-    axiosInstance.get('projects')
+    axiosInstance.get('admin/projects')
     .then(res => {
       if (res.status === 200) {
         if (res.data.projects) {
@@ -58,7 +58,7 @@ const PosChange = (currPos,newPos) => {
         {projects.map((project,i) => {
         return (
           <li key={project.id} data-index={i} className={`project_${project.isActive ? "active" : "inactive"}`}>
-            <Link to={"update"} state={project}>{project.name}</Link>
+            <Link to={"update"} state={project.id}>{project.name}</Link>
             </li>
         )}
         )}

@@ -114,7 +114,42 @@ class ProjectController extends AbstractController
 
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/api/projects', name: 'app_projects', methods: ['GET'])]
+    #[Route('/api/admin/projectData/{id}', name: 'app_project_data', methods: ['GET'])]
+    public function projectData(EntityManagerInterface $em, Request $request): JsonResponse{
+       $id = $request->attributes->get('id');
+        $project = $em->getRepository(Project::class)->findOneBy(['id' => $id]);
+        if(!$project){
+            return $this->json(['message' => 'No project found'],200);
+        }
+        $projectData = [
+            "id" => $project->getId(),
+            'name' => $project->getName(),
+            "abrName" => $project->getAbrName(),
+            'youtube_video' => $project->getYoutubeVideo(),
+            'background_video' => $project->getBackgroundVideo(),
+            'collab_with' => $project->getCollabWith(),
+            'isActive' => $project->isActive(),
+            "made_by" => $project->getMadeBy(),
+            'images' => array_map(function($projectImage){
+                return ["src"=> $projectImage->getSrc(),"id" => $projectImage->getId()];
+            }, $project->getProjectImages()->toArray()),
+            'staff' => [
+                "production" => $project->getProjectStaff()->getProduction(),
+                "moreStaffFields"=> $project->getProjectStaff()->getMoreStaffFields(),
+                "artists" => $project->getProjectStaff()->getArtists(),
+                "montage" => $project->getProjectStaff()->getMontage(),
+                "cadrage" => $project->getProjectStaff()->getCadrage(),
+                "droniste" => $project->getProjectStaff()->getDroniste(),
+                "phPlateau" => $project->getProjectStaff()->getPhPlateau(),
+                "decorateurs" => $project->getProjectStaff()->getDecorateurs()
+            ],
+        ];
+
+        return $this->json(['project' => $projectData],200);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/api/admin/projects', name: 'app_projects', methods: ['GET'])]
     public function projects(EntityManagerInterface $em): JsonResponse{
        
         $projects = $em->getRepository(Project::class)->findBy([],['orderIndex' => 'ASC']);
@@ -123,32 +158,10 @@ class ProjectController extends AbstractController
         }
         $arrayOfProjects = [];
         foreach($projects as $i => $project){
-            $projectImages = $project->getProjectImages();
-            $projectStaff = $project->getProjectStaff();
             $arrayOfProjects[$i] = [
                     "id" => $project->getId(),
                     'name' => $project->getName(),
-                    "abrName" => $project->getAbrName(),
-                    'youtube_video' => $project->getYoutubeVideo(),
-                    'background_video' => $project->getBackgroundVideo(),
-                    'collab_with' => $project->getCollabWith(),
                     'isActive' => $project->isActive(),
-                    "made_by" =>  $project->getMadeBy(),
-                    'images' => array_map(function($projectImage){
-                        return ["src"=> $projectImage->getSrc(),"id" => $projectImage->getId()];
-                    }, $projectImages->toArray()),
-
-                    'staff' => [
-                        "production" =>  $projectStaff->getProduction(),
-                        "moreStaffFields"=> $projectStaff->getMoreStaffFields(),
-                        "artists" =>  $projectStaff->getArtists(),
-                        "montage" =>  $projectStaff->getMontage(),
-                        "cadrage" =>  $projectStaff->getCadrage(),
-                        "droniste" =>  $projectStaff->getDroniste(),
-                        "phPlateau" =>  $projectStaff->getPhPlateau(),
-                        "decorateurs" =>  $projectStaff->getDecorateurs()
-                        
-                    ]
                 ];
         }
 

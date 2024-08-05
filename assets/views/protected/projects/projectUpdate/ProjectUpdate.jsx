@@ -7,39 +7,71 @@ import Fallback from '../../../../components/Spinner/Fallback';
 
 const ProjectUpdate = () => {
   const location = useLocation()
-  const [projectActive,setProjectActive] = useState(location.state?.isActive)
-  const [projectName, setProjectName] = useState(location?.state?.name || '')
-  const [abrName, setAbrName] = useState(location?.state?.abrName || '')
-  const [youtubeLink, setYoutubeLink] = useState(location?.state?.youtube_video || '')
-  const [collab, setCollab] = useState(location?.state?.collab_with || '')
-  const [bgVideo, setBgVideo] = useState(location?.state?.background_video || null)
-  const [images, setImages] = useState([...location?.state?.images] || [])
+  const [project,setProject] = useState(null)
+  const [projectActive,setProjectActive] = useState(null)
+  const [projectName, setProjectName] = useState(null)
+  const [abrName, setAbrName] = useState(null)
+  const [youtubeLink, setYoutubeLink] = useState(null)
+  const [collab, setCollab] = useState(null)
+  const [bgVideo, setBgVideo] = useState(null)
+  const [lastVideo, setLastVideo] = useState(null)
+  const [images, setImages] = useState([])
   const [isSubmit, setIsSubmit] = useState(false)
   // const [canSubmit, setCanSubmit] = useState(false)
-  const [production, setProduction] = useState(location?.state?.staff?.production || '')
-  const [madeBy, setMadeBy] = useState(location?.state?.made_by || '')
-  const [artists, setArtists] = useState(location?.state?.staff?.artists || '')
-  const [montage, setMontage] = useState(location?.state?.staff?.montage || '')
-  const [cadrage, setCadrage] = useState(location?.state?.staff?.cadrage || '')
-  const [droniste, setDroniste] = useState(location?.state?.staff?.droniste || '')
-  const [phPlateau, setPhPlateau] = useState(location?.state?.staff?.phPlateau || '')
-  const [decorateurs, setDecorateurs] = useState(location?.state?.staff?.decorateurs || '')
+  const [production, setProduction] = useState(null)
+  const [madeBy, setMadeBy] = useState(null)
+  const [artists, setArtists] = useState(null)
+  const [montage, setMontage] = useState(null)
+  const [cadrage, setCadrage] = useState(null)
+  const [droniste, setDroniste] = useState(null)
+  const [phPlateau, setPhPlateau] = useState(null)
+  const [decorateurs, setDecorateurs] = useState(null)
   const [newVideo, setNewVideo] = useState(false)
-  const [moreStaffFields, setMoreStaffFields] = useState(location?.state?.staff?.moreStaffFields)
-  const [moreStaffFieldsCounter, setMoreStaffFieldsCounter] = useState( 0)
+  const [moreStaffFields, setMoreStaffFields] = useState(null)
+  const [moreStaffFieldsCounter, setMoreStaffFieldsCounter] = useState(0)
   const [updatedValues, setUpdatedValues] = useState({imgs:[],video:false,projectName:false,abrName:false,youtubeLink:false,collab:false,production:false,madeBy:false,artists:false,montage:false,cadrage:false,droniste:false,phPlateau:false,decorateurs:false,lastMoreStaffFields:[],newMoreStaffFields:[],lastStaff:false,newStaff:false})
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
 
+  useEffect(()=>{
+    axiosInstance.get('admin/projectData/' + location.state)
+    .then(res => {
+      if (res.status === 200) {
+        console.log(project);
+          const proj = res.data?.project
+          setProject(proj)
+          setProjectActive(proj.isActive)
+          setProjectName(proj.name)
+          setAbrName(proj.abrName)
+          setYoutubeLink(proj.youtube_video)
+          setCollab(proj.collab_with)
+          setProduction(proj.staff.production)
+          setMadeBy(proj.made_by)
+          setArtists(proj.staff.artists)
+          setMontage(proj.staff.montage)
+          setCadrage(proj.staff.cadrage)
+          setDroniste(proj.staff.droniste)
+          setPhPlateau(proj.staff.phPlateau)
+          setDecorateurs(proj.staff.decorateurs)
+          setMoreStaffFields(proj.staff.moreStaffFields)
+          setLastVideo(proj.background_video)
+          setImages(proj.images)
+          setLastVideo(proj.background_video)
+          setProjectActive(proj.isActive)
+      }
+    })
+  },[])
+
+
 
   useEffect(()=>{
-    if (location.state.staff.moreStaffFields && location.state.staff.moreStaffFields.length > 0) {
-        const jsonArray = JSON.parse(location.state.staff.moreStaffFields)
+    if (moreStaffFields && moreStaffFields.length > 0) {
+        const jsonArray = JSON.parse(moreStaffFields)
         if (Array.isArray(jsonArray) && jsonArray.length > 0) {
           setUpdatedValues({...updatedValues,lastMoreStaffFields:[...jsonArray]})
         }
     }
-  },[location.state.staff.moreStaffFields])
+  },[moreStaffFields])
 
 
   const handleSubmit = async(e) => {
@@ -88,10 +120,10 @@ const ProjectUpdate = () => {
     formData.append('staff',null)
   }
     
-    formData.append('id',location.state.id)
+    formData.append('id',location.state)
     if (newVideo) {
       formData.append('video',bgVideo)
-      formData.append('oldVideo',location.state.background_video.trim())
+      formData.append('oldVideo',lastVideo.trim())
     }
     if (updatedValues.projectName) {
       formData.append('name',projectName.trim())
@@ -189,7 +221,7 @@ const ProjectUpdate = () => {
 
 const resetImages = (e) =>{
   e.preventDefault()
-    setImages([...location.state.images])
+    setImages(project.images)
     setUpdatedValues({...updatedValues,imgs:[]})
 }
 
@@ -209,7 +241,7 @@ const deleteProject = ()=>{
   const confirm = window.confirm("Are you suer to delete this project?")
   if (!confirm) return
   setLoading(true)
-  const id = location.state?.id 
+  const id = location.state 
   axiosInstance.delete("admin/project/" + id)
   .then(res =>{
     if (res.status === 200) {
@@ -227,7 +259,7 @@ const deleteProject = ()=>{
 
 const projectActiveToggle = ()=>{
   setLoading(true)
-  const id = location.state?.id 
+  const id = location.state
   const formData = new FormData()
   formData.append("id",id)
   axiosInstance.post("admin/project/active",formData)
@@ -282,12 +314,12 @@ useEffect(()=>{
 
 
 
-  return (
+  return projectActive !== null && (
     <div className='admin-projects' id='p-update'>
       {loading && <Fallback/>}
         <h1>Update Project</h1>
         <div className='flex-container'>
-            <button onClick={projectActiveToggle} className={`active-btn ${projectActive === false ? "active-btn-off" : "active-btn-on"}`}>{projectActive ? "Active" : "Not Active"}</button>
+            <button onClick={projectActiveToggle} className={`active-btn ${projectActive === false ? "active-btn-off" : "active-btn-on"}`}>{projectActive === true ? "Active" : "Not Active"}</button>
             <button onClick={deleteProject} className='delete-btn'>Delete Project</button>
         </div>
         
@@ -296,7 +328,7 @@ useEffect(()=>{
           <div className='inpt-container'>
               <label htmlFor='p-name'>Nom du projet</label>
               <input type='text' id='p-name' name='p-name' value={projectName} onChange={(e)=>{
-                  setUpdatedValues({...updatedValues,projectName:e.target.value !== location.state.name })
+                  setUpdatedValues({...updatedValues,projectName:e.target.value !== projectName })
                   setProjectName(e.target.value)
               }
                   } placeholder='ex. heliopolis' />
@@ -306,7 +338,7 @@ useEffect(()=>{
               <label htmlFor='p-name-abr'>Nom pour petits ecrans</label>
               <input type='text' id='p-name-abr' name='p-name-abr' value={abrName} onChange={(e)=>
               { 
-                  setUpdatedValues({...updatedValues,abrName:e.target.value !== location.state.abrName })
+                  setUpdatedValues({...updatedValues,abrName:e.target.value !== abrName})
                   setAbrName(e.target.value)
               }
                   } />
@@ -316,7 +348,7 @@ useEffect(()=>{
             <label htmlFor='p-staff-madeby'>Realisé par</label>
             <input type='text' id='p-staff-madeby' name='p-staff-madeby'  value={madeBy} onChange={(e)=>{
               setMadeBy(e.target.value)
-              setUpdatedValues({...updatedValues,madeBy:e.target.value !== location.state.made_by})
+              setUpdatedValues({...updatedValues,madeBy:e.target.value !== madeBy})
             }} />
           </div>
 
@@ -324,7 +356,7 @@ useEffect(()=>{
               <label htmlFor='p-ytb'>YouTube Link</label>
               <input type='text' id='p-ytb' value={youtubeLink} onChange={(e)=>{
                 setYoutubeLink(e.target.value)
-                setUpdatedValues({...updatedValues,youtubeLink:e.target.value !== location.state.youtube_video})
+                setUpdatedValues({...updatedValues,youtubeLink:e.target.value !== youtubeLink})
               }
                 } name='p-ytb'/>
             </div>
@@ -333,7 +365,7 @@ useEffect(()=>{
               <label htmlFor='p-coll'>Collab avec</label>
               <input type='text' id='p-coll' value={collab} onChange={(e)=>{
                 setCollab(e.target.value)
-                setUpdatedValues({...updatedValues,collab:e.target.value !== location.state.collab_with})
+                setUpdatedValues({...updatedValues,collab:e.target.value !== collab})
                 }} name='p-coll'/>
             </div>
 
@@ -345,7 +377,7 @@ useEffect(()=>{
                 }}/>
             </div>
 
-          <video controls src={!newVideo ?  "/assets/uploads/videos/" + location.state.background_video : URL.createObjectURL(bgVideo)}></video>
+          <video controls src={!newVideo ?  "/assets/uploads/videos/" + lastVideo : URL.createObjectURL(bgVideo)}></video>
           </div>
 
           <div className='inpt-container'>
@@ -375,7 +407,7 @@ useEffect(()=>{
             <label htmlFor='p-staff-production'>Production</label>
             <input type='text' id='p-staff-production' name='p-staff-production' value={production} onChange={(e)=>{
               setProduction(e.target.value)
-              setUpdatedValues({...updatedValues,production:e.target.value !== location.state.staff.production})
+              setUpdatedValues({...updatedValues,production:e.target.value !== production})
               }} />
           </div>
 
@@ -385,7 +417,7 @@ useEffect(()=>{
             <label htmlFor='p-staff-artists'>Artistes</label>
             <input type='text' id='p-staff-artists' name='p-staff-artists' value={artists} onChange={(e)=>{
               setArtists(e.target.value)
-              setUpdatedValues({...updatedValues,artists:e.target.value !== location.state.staff.artists})
+              setUpdatedValues({...updatedValues,artists:e.target.value !== artists})
             }} />
           </div>
 
@@ -393,7 +425,7 @@ useEffect(()=>{
             <label htmlFor='p-staff-montage'>Montage</label>
             <input type='text' id='p-staff-montage' name='p-staff-montage' value={montage} onChange={(e)=>{
               setMontage(e.target.value)
-              setUpdatedValues({...updatedValues,montage:e.target.value !== location.state.staff.montage})
+              setUpdatedValues({...updatedValues,montage:e.target.value !== montage})
               }} />
           </div>
 
@@ -401,7 +433,7 @@ useEffect(()=>{
             <label htmlFor='p-staff-cadrage'>Cadrage</label>
             <input type='text' id='p-staff-cadrage' name='p-staff-cadrage' value={cadrage} onChange={(e)=>{
               setCadrage(e.target.value)
-              setUpdatedValues({...updatedValues,cadrage:e.target.value !== location.state.staff.cadrage})
+              setUpdatedValues({...updatedValues,cadrage:e.target.value !== cadrage})
               }} />
           </div>
 
@@ -409,7 +441,7 @@ useEffect(()=>{
             <label htmlFor='p-staff-droniste'>Droniste</label>
             <input type='text' id='p-staff-droniste' name='p-staff-droniste' value={droniste} onChange={(e)=>{
               setDroniste(e.target.value)
-              setUpdatedValues({...updatedValues,droniste:e.target.value !== location.state.staff.droniste})
+              setUpdatedValues({...updatedValues,droniste:e.target.value !== droniste})
               }} />
           </div>
 
@@ -417,7 +449,7 @@ useEffect(()=>{
             <label htmlFor='p-staff-ph_plateau'>Ph_plateau</label>
             <input type='text' id='p-staff-ph_plateau' name='p-staff-ph_plateau' value={phPlateau} onChange={(e)=>{
               setPhPlateau(e.target.value)
-              setUpdatedValues({...updatedValues,phPlateau:e.target.value !== location.state.staff.phPlateau})
+              setUpdatedValues({...updatedValues,phPlateau:e.target.value !== phPlateau})
               }} />
           </div>
 
@@ -425,7 +457,7 @@ useEffect(()=>{
             <label htmlFor='p-staff-decorateurs'>Decorateurs</label>
             <input type='text' id='p-staff-decorateurs' name='p-staff-decorateurs' value={decorateurs} onChange={(e)=>{
               setDecorateurs(e.target.value)
-              setUpdatedValues({...updatedValues,decorateurs:e.target.value !== location.state.staff.decorateurs})
+              setUpdatedValues({...updatedValues,decorateurs:e.target.value !== decorateurs})
               }} />
           </div>
 
