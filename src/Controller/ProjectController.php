@@ -371,12 +371,11 @@ class ProjectController extends AbstractController
             $project->setActive(false);
             $project->setAbrName($data['abrName']);
             $project->setMadeBy($data['madeBy']);
-            $project->setOrderIndex($project->getId());
+           
             $imageNames = [];
             foreach ($images as $image) {
                 $newImage = new ProjectImages();
                 $newImage->setProjectId($project);
-               
                 $em->persist($newImage);
                 $randomImageName = uniqid("p-img",true);
                 $imageNames[] =  $randomImageName  . $image->getClientOriginalName();
@@ -403,7 +402,7 @@ class ProjectController extends AbstractController
         } catch (\Throwable $th) {
             return $this->json(['error' => 'Error creating project : ' . $th], 500);
         }
-        $em->persist($project);
+      
         $em->persist($staff);
 
         foreach ($imageNames as $index => $imageName) {
@@ -412,6 +411,9 @@ class ProjectController extends AbstractController
         $randomVideoName = uniqid("video-",true) . $video->getClientOriginalName();
         $project->setBackgroundVideo($randomVideoName);
         if ($video->move("assets/uploads/videos/",$randomVideoName)) {
+            $em->persist($project);
+            $em->flush();
+            $project->setOrderIndex($project->getId());
             $em->flush();
         }else{
             return $this->json(['message' => 'Error during creating new project,video Error'],200);
