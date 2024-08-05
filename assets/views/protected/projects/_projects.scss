@@ -8,14 +8,30 @@
     ul{
         display: flex;
         flex-wrap: wrap;
+        flex-direction: column;
         justify-content: center;
         gap: 30px;
         list-style: none;
         align-items: center;
-        margin-top: 40px;
-
+        width: 80%;
+        margin: 40px auto;
+        counter-reset: data-index;
         li{
-           
+            max-width: fit-content;
+            margin: auto;
+            counter-increment: data-index;
+            position: relative;
+            ::after{
+                content: counter(data-index);
+                display: block;
+                width: 20px;
+                height: 20px;
+                font-size: 0.7rem;
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+            }
 
             a{
                 text-decoration: none;
@@ -31,6 +47,8 @@
                 text-decoration: none;
                 padding: 10px 20px;
                 min-width: 200px;
+                text-align: center;
+                max-width: fit-content;
                 border: 1px solid $white;
                 &:hover{
                     background-color: $black;

@@ -28,6 +28,8 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $made_by = null;
 
+    
+
 
     #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
     private ?ProjectStaff $projectStaff = null;
@@ -47,6 +49,10 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $abrName = null;
 
+    #[ORM\Column (type: 'integer', nullable: true)]
+    private ?int $orderIndex = null;
+
+
     public function __construct()
     {
         $this->projectImages = new ArrayCollection();
@@ -55,6 +61,13 @@ class Project
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -189,6 +202,19 @@ class Project
     public function setAbrName(string $abrName): static
     {
         $this->abrName = $abrName;
+
+        return $this;
+    }
+
+
+    public function getOrderIndex(): ?int
+    {
+        return $this->orderIndex;
+    }
+
+    public function setOrderIndex(int $orderIndex): static
+    {
+        $this->orderIndex = $orderIndex;
 
         return $this;
     }

@@ -2155,11 +2155,32 @@ gallery__images'>
 .ad-projects ul {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   gap: 30px;
   list-style: none;
   align-items: center;
-  margin-top: 40px;
+  width: 80%;
+  margin: 40px auto;
+  counter-reset: data-index;
+}
+.ad-projects ul li {
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  margin: auto;
+  counter-increment: data-index;
+  position: relative;
+}
+.ad-projects ul li ::after {
+  content: counter(data-index);
+  display: block;
+  width: 20px;
+  height: 20px;
+  font-size: 0.7rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
 }
 .ad-projects ul li a {
   text-decoration: none;
@@ -2175,6 +2196,9 @@ gallery__images'>
   text-decoration: none;
   padding: 10px 20px;
   min-width: 200px;
+  text-align: center;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
   border: 1px solid #ffffff;
 }
 .ad-projects ul li a:hover {

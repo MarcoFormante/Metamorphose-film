@@ -11,9 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProjectController extends AbstractController
@@ -56,7 +53,7 @@ class ProjectController extends AbstractController
    
     #[Route('/api/home/projects', name: 'app_home_projects', methods: ['GET'])]
     public function HomeProjects(EntityManagerInterface $em){
-        $projects = $em->getRepository(Project::class)->findAll();
+        $projects = $em->getRepository(Project::class)->findBy([],['orderIndex' => 'ASC']);
         if(!$projects){
             return $this->json(['message' => 'No projects found'],404);
         }
@@ -118,9 +115,9 @@ class ProjectController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/projects', name: 'app_projects', methods: ['GET'])]
-    public function projects(EntityManagerInterface $em, CsrfTokenManagerInterface $csrfTokenManager, Request $request): JsonResponse{
+    public function projects(EntityManagerInterface $em): JsonResponse{
        
-        $projects = $em->getRepository(Project::class)->findAll();
+        $projects = $em->getRepository(Project::class)->findBy([],['orderIndex' => 'ASC']);
         if(!$projects){
             return $this->json(['message' => 'No projects found'],200);
         }
@@ -361,6 +358,7 @@ class ProjectController extends AbstractController
             $project->setActive(false);
             $project->setAbrName($data['abrName']);
             $project->setMadeBy($data['madeBy']);
+            $project->setOrderIndex($project->getId());
             $imageNames = [];
             foreach ($images as $image) {
                 $newImage = new ProjectImages();
@@ -461,5 +459,33 @@ class ProjectController extends AbstractController
         $em->persist($project);
         $em->flush();
         return $this->json(["isActive" => $newActiveState],200);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/api/admin/projects/reorder', name: 'app_project_reorder', methods: ['POST'])]
+    public function reorder(EntityManagerInterface $em, Request $request): JsonResponse
+    {
+        $currId = $request->request->get("currId");
+        $newId = $request->request->get("newId");
+    
+        $project = $em->getRepository(Project::class)->findOneBy(['id' => $currId]);
+        if (!$project) {
+            return $this->json("Project not found", 404);
+        }
+        $secondProject = $em->getRepository(Project::class)->findOneBy(['id' => $newId]);
+        if (!$secondProject) {
+            return $this->json("Project not found", 404);
+        }
+    
+        $tempOrder = $project->getOrderIndex();
+        $secondOrder = $secondProject->getOrderIndex();
+        // 
+        $project->setOrderIndex($secondOrder);
+        $secondProject->setOrderIndex($tempOrder);
+        $em->persist($project);
+        $em->persist($secondProject);
+        $em->flush();
+    
+        return $this->json(["message" => "Projects reordered"], 200);
     }
 }
