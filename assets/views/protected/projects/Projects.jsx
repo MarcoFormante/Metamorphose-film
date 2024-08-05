@@ -36,8 +36,9 @@ const PosChange = (currPos,newPos) => {
   formdata.append("newId",secondProjectID)
   axiosInstance.post('admin/projects/reorder',formdata)
   .then(res => {
-    if (res.status === 200) {
-      console.log(res.data);
+    if (res.status !== 200) {
+      alert("An error occured during reordering")
+      window.location.reload()
     }
   }).catch(err => {
     console.log(err)
