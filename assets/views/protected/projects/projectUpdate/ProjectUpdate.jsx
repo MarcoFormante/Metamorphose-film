@@ -17,7 +17,6 @@ const ProjectUpdate = () => {
   const [lastVideo, setLastVideo] = useState(null)
   const [images, setImages] = useState([])
   const [isSubmit, setIsSubmit] = useState(false)
-  // const [canSubmit, setCanSubmit] = useState(false)
   const [production, setProduction] = useState(null)
   const [madeBy, setMadeBy] = useState(null)
   const [artists, setArtists] = useState(null)
@@ -368,40 +367,47 @@ useEffect(()=>{
                 setUpdatedValues({...updatedValues,collab:e.target.value !== collab})
                 }} name='p-coll'/>
             </div>
-
-            <div className='inpt-container'>
-              <label htmlFor='p-bg-v'>BG video</label>
-              <input type='file' id='p-bg-v' name='p-bg-v' accept='.mp4' onChange={(e)=>{
-                handleVideo(e.target.files[0])
-                setUpdatedValues({...updatedValues,video:true})
+              
+            <div className='p-block'>
+              <h2>Background Video</h2>
+              <div className='inpt-container'>
+                <label htmlFor='p-bg-v'>BG video</label>
+                <input type='file' id='p-bg-v' name='p-bg-v' accept='.mp4' onChange={(e)=>{
+                  handleVideo(e.target.files[0])
+                  setUpdatedValues({...updatedValues,video:true})
                 }}/>
+              </div>
+
+            <video controls src={!newVideo ?  "/assets/uploads/videos/" + lastVideo : URL.createObjectURL(bgVideo)}></video>
             </div>
 
-          <video controls src={!newVideo ?  "/assets/uploads/videos/" + lastVideo : URL.createObjectURL(bgVideo)}></video>
+            <div className='inpt-container'>
+              <button className='pointer reset-button' onClick={resetVideo}>Reset Video</button>
+            </div>
           </div>
 
-          <div className='inpt-container'>
-            <button onClick={resetVideo}>Reset Video</button>
-          </div>
 
-      
+        <div className='p-block'>
+          <h2>Images</h2>
+          <div className='p-images-container'>
+              {images.map((img,index)=>
+              <div key={img.id}>
+                <input type='file' className='pointer' id={'p-images'+ index} name={'p-images' + index} accept='.jpg,.jpeg,.png,.webp'  onChange={(e)=>handleImages(e.target.files[0],index,img.id)}/>
+                { updatedValues.imgs.includes(img.id) ?  
+                <img key={index} src={ URL.createObjectURL(img.src) } alt=''/>
+                  : <img key={index} src={"/assets/uploads/images/projects/" + img.src} alt=''/>
+                }
+              </div>
+              )}
+            </div> 
+            <div className='inpt-container'>
+              <button className='pointer reset-button' onClick={resetImages}>Reset Images</button>
+            </div>
+        </div>
 
-        <div className='p-images-container'>
-            {images.map((img,index)=>
-            <>
-               <input type='file' id='p-images' name='p-images' accept='.jpg,.jpeg,.png,.webp'  onChange={(e)=>handleImages(e.target.files[0],index,img.id)}/>
-              { updatedValues.imgs.includes(img.id) ?  
-               <img key={index} src={ URL.createObjectURL(img.src) } alt=''/>
-                : <img key={index} src={"/assets/uploads/images/projects/" + img.src} alt=''/>
-              }
-            </>
-            )}
-          </div> 
-          <div className='inpt-container'>
-            <button onClick={resetImages}>Reset Images</button>
-          </div>
 
-        
+        <div className='p-block'>
+          <h2>Staff</h2>
         <div>
           <div className='inpt-container'>
             <label htmlFor='p-staff-production'>Production</label>
@@ -460,8 +466,7 @@ useEffect(()=>{
               setUpdatedValues({...updatedValues,decorateurs:e.target.value !== decorateurs})
               }} />
           </div>
-
-
+        </div>
           {updatedValues.lastMoreStaffFields && updatedValues.lastMoreStaffFields.length > 0 && updatedValues.lastMoreStaffFields.map((s,index)=> 
           <div  key={"Staffcounter" + index}>
             <div className='inpt-container'>
@@ -471,6 +476,7 @@ useEffect(()=>{
               <input type='text' id={'staffCounter2-' + index  } name={'moreStaff2-' + index} value={s.value2 ?? moreStaffFields[index].toString().split(":")[1].replace(/\|/g,",")  }  onChange={(e)=>handleMoreStaffFields2(e.target.value,index)}/>
             </div>
         </div>
+        
       )}
 
       
@@ -485,7 +491,6 @@ useEffect(()=>{
         </div>
       )}
 
-        {/* <p onClick={()=>setMoreStaffFieldsCounter(prev => prev + 1)}>Ajouter Plus de staff</p> */}
         <div className='moreStaff-btn'>
                 <span onClick={()=>setMoreStaffFieldsCounter(prev => prev + 1)}>+</span>
         </div>

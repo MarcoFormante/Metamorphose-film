@@ -2248,6 +2248,32 @@ gallery__images'>
   font-weight: bold;
   cursor: pointer;
 }
+#p-update .p-block {
+  margin-top: 80px;
+  margin-bottom: 20px;
+}
+#p-update .p-block h2 {
+  text-align: center;
+  border-bottom: 1px solid #ffffff;
+  padding: 10px;
+  color: cornflowerblue;
+}
+#p-update .pointer, #p-update #file-upload-button {
+  cursor: pointer;
+}
+#p-update .reset-button {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+  padding: 10px 20px;
+  color: #ffffff;
+  background-color: #FF1100;
+  font-weight: bold;
+}
+#p-update img {
+  cursor: auto;
+}
 
 .project_active {
   opacity: 1;

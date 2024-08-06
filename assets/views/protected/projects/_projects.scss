@@ -100,6 +100,34 @@
             cursor: pointer;
         }
     }
+
+    .p-block{
+        margin-top: 80px;
+        margin-bottom: 20px;
+        h2{
+            text-align: center;
+            border-bottom: 1px solid $white;
+            padding: 10px;
+            color: cornflowerblue;
+        }
+    }
+   
+    .pointer, #file-upload-button{
+        cursor: pointer;
+    }
+
+    .reset-button{
+        appearance: none;
+        border: none;
+        padding: 10px 20px;
+        color: $white;
+        background-color: $orange;
+        font-weight: bold;
+    }
+
+    img{
+        cursor:auto;
+    }
 }
 
 .project_active{
