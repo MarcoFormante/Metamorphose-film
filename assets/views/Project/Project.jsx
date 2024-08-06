@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactPlayer from 'react-player';
-import { useLocation, Navigate, Link, useNavigate, useParams, json } from 'react-router-dom'
+import { useLocation, Navigate, Link, useNavigate, useParams } from 'react-router-dom'
 import { axiosInstance } from '../../middleware/axiosInstance';
 import ProjectStaff from './ProjectStaff';
 import Fallback from '../../components/Spinner/Fallback';
@@ -15,7 +15,7 @@ const Project = () => {
     const [nextProject,SetNextProject] = useState(null)
     const [lastProject,setLastProject] = useState(null)
     const [project,setProject] = useState(null)
-    const [projectIndex,setProjectIndex] = useState(location.state?.index || 0)
+    const [projectIndex,setProjectIndex] = useState(location.state?.index)
     const [allProjects,setAllProjects] = useState(null)
     const [fade,setFade] = useState(false)
     const navigate = useNavigate()
@@ -68,6 +68,7 @@ const Project = () => {
     },[param])
     
 
+console.log(projectIndex);
 
     useEffect(()=>{
         if (!projectData.staff && showAssets) {
@@ -108,6 +109,7 @@ const Project = () => {
             const next = allProjects[projectIndex + 1]
             if (next) {
                 SetNextProject(next)
+              
             }else{
                 SetNextProject(null)
             }
@@ -117,7 +119,7 @@ const Project = () => {
             }else{
                 setLastProject(null)
             }
-            
+            location.state.index = projectIndex
         
         }else{
             setProject(null)
@@ -135,11 +137,11 @@ const Project = () => {
       
         <div className='last-next-btns-container'>
             {lastProject && <span className='last'>
-                <Link onClick={()=>setProjectIndex(prev => prev > 0 ? prev - 1 : 0)} to={"/projet/" + lastProject.name} state={{project:lastProject}}>{"<"}</Link>
+                <Link onClick={()=>setProjectIndex(prev => prev > 0 ? prev - 1 : 0)} to={"/projet/" + lastProject.name} state={{project:lastProject,index:projectIndex - 1}}>{"<"}</Link>
             </span>}
 
             {nextProject && <span className='next'>
-                <Link onClick={()=>setProjectIndex(prev => prev + 1 )} to={"/projet/" + nextProject.name} state={{project:nextProject}}>{">"}</Link>
+                <Link onClick={()=>setProjectIndex(prev => prev + 1 )} to={"/projet/" + nextProject.name} state={{project:nextProject,index:projectIndex + 1}}>{">"}</Link>
             </span>}
         </div>
        <div className={"video__big"} style={{width:"100vw",height:"100vh"}} >

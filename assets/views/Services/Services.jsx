@@ -27,8 +27,8 @@ import ServicesCards from './ServicesCards';
   
   return (
     <div className='services__body'>
-      <h1 className='title'>Services</h1>
-      <p className='p-desc hide-mobile'>Chez metamorphose, nous proposons une expérience complète, une immersion dans l'art de capturer des moments
+      <h1 className='title relative'>Services</h1>
+      <p className='p-desc hide-mobile relative'>Chez metamorphose, nous proposons une expérience complète, une immersion dans l'art de capturer des moments
        exclusifs et de raconter des histoires uniques. <br/>
         Découvrez nos services, où chaque étape est une pièce maîtresse dans la création de notre projet commun.</p>
         
@@ -40,7 +40,7 @@ import ServicesCards from './ServicesCards';
         isFlipped_Card4={isFlipped_Card4}
         />
         
-        <section className='services-footer'>
+        <section className='services-footer relative'>
             <p className='p-footer hide-mobile'>Laissez-nous être le partenaire de confiance pour concrétiser vos idées visuelles. <br/>
             Contactez-nous dès aujourd'hui pour discuter de la manière dont nous pouvons donner vie à votre projet.</p>
 

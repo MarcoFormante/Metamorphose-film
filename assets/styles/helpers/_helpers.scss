@@ -16,6 +16,26 @@
 
 .app.back__orange{
     background-color: $orange;
+
+    &::before{
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url(/papillon.webp);
+        background-repeat: repeat;
+        opacity: .04;
+        background-size: calc(600px - 2vw);
+        z-index: 0;
+        background-position: right;
+    }
+
+    .relative{
+        position: relative;
+        z-index: 1;
+    }
 }
 
 .app.back__black{

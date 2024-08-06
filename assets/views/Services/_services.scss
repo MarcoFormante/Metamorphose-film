@@ -1,11 +1,11 @@
 
       
     .services__body {
-        // background-color: $orange;
         color: white;
         padding: 32px 80px;
         min-height: 100vh;
-
+       
+      
         
         @media screen and (max-width: 1300px) {
             padding: 32px 40px;
@@ -223,24 +223,3 @@
             }
      }
     }
-
-
-    //  @media screen and (max-width: 357px){
-    //     .services__body {
-    //         .flex-c-container{
-
-    //             article{
-    //                 height: 200px;
-    //                 min-width: 90vw;
-    //             }
-
-    //             .card1,.card2{
-    //                 height: 200px;
-    //             }
-
-    //             .card-container{
-    //                 max-width: 90vw;
-    //             }
-    //         }
-    //     }
-    // }
