@@ -62,18 +62,23 @@ function App() {
   };
   },[token])
 
+
+  
   useEffect(()=>{
-    window.addEventListener("storage",()=>{
+    window.addEventListener("storage",eventStorageHandler)
+
+   return () => window.removeEventListener("storage",eventStorageHandler)
+   
+    function eventStorageHandler(){
       if (sessionStorage.getItem("token-ad")) {
-              setIsAuth(false)
-              sessionStorage.removeItem("token-ad")
-            }
-        })
-   return ()=>{ window.removeEventListener("storage",()=>{
-    if (sessionStorage.getItem("token-ad")) {
-      setIsAuth(false)
-      sessionStorage.removeItem("token-ad")
-    }})}
+        console.log("beh");
+        setIsAuth(false)
+        sessionStorage.removeItem("token-ad")
+        axiosInstance.defaults.headers.common = {}
+        axiosInstance.defaults.headers.post['X-CSRF-Token'] = ""
+        axiosInstance.defaults.headers.delete['X-CSRF-Token'] = ""
+      }
+    }
   },[])
 
 
@@ -92,8 +97,10 @@ function App() {
           <Route path="/galerie" element={<Suspense fallback={<Fallback/>}><Gallery /></Suspense>} />
           <Route path="/galerie/:name" element={<Suspense fallback={<Fallback/>}><GalleryImages /></Suspense>} />
           <Route path="projet/:name" element={<Suspense fallback={<Fallback/>}><Project /></Suspense>} />
-          <Route path='/login' element={<Suspense><Login setIsAuth={setIsAuth} /> </Suspense>}/>
-          <Route element={<ProtectedRoute isAuth={isAuth} setIsAuth={setIsAuth}/>}>
+          <Route path='/login' element={<Suspense><Login isAuth={isAuth} setIsAuth={setIsAuth} /> </Suspense>}/>
+        
+        
+        <Route element={<ProtectedRoute isAuth={isAuth} setIsAuth={setIsAuth}/>}>
                 <Route path='/admin/home' element={<Suspense><AdminHome/></Suspense>}/>
                 <Route path='/admin/newproject' element={<Suspense><NewProject/></Suspense>}/>
                 <Route path='/admin/projects/' element={<Suspense><Projects/></Suspense>}/>
@@ -103,7 +110,7 @@ function App() {
                 <Route path='/admin/projects/update' element={<Suspense><ProjectUpdate/></Suspense>} />
                 <Route path="admin/*"   element={<Navigate to="/admin/home"/>}/>
           </Route>
-        </Routes>
+          </Routes>
       </main>
     </div>
     </HelmetProvider>

@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import Fallback from '../../components/Spinner/Fallback'
 
 
-const Login = ({setIsAuth}) => {
+
+const Login = ({isAuth,setIsAuth}) => {
     const [username,setUsername] = useState("")
     const [password,setPassword] = useState("")
     const [loading,setLoading] = useState(false)
@@ -13,16 +14,19 @@ const Login = ({setIsAuth}) => {
 
 
     useEffect(()=>{
+       
+            axiosInstance.get("csrfToken")
+            .then(res =>{
+                if (res.status === 200) {
+                    const csrfToken =  res.data?.csrfToken 
+                    axiosInstance.defaults.headers.post['X-CSRF-Token'] = csrfToken
+                    axiosInstance.defaults.headers.delete['X-CSRF-Token'] = csrfToken
+                    setCsrf(csrfToken)
+                }
+            }).catch(err => {
+                console.error("error csrfToken not Valid");
+            })
         
-        axiosInstance.get("csrfToken")
-        .then(res =>{
-            if (res.status === 200) {
-                const csrfToken =  res.data?.csrfToken 
-                setCsrf(csrfToken)
-            }
-        }).catch(err => {
-            console.error("error csrfToken not Valid");
-        })
     },[])
 
 
@@ -41,7 +45,6 @@ const Login = ({setIsAuth}) => {
                 axiosInstance.defaults.headers.common = {
                     'Authorization': 'Bearer ' + token,
                 };
-            
                 sessionStorage.setItem("token-ad",token)
                 
                 setIsAuth(true)
@@ -57,7 +60,7 @@ const Login = ({setIsAuth}) => {
     }
 
 
-  return csrf && !loading &&   (
+  return (csrf || isAuth) && !loading &&   (
     <>
      {loading && <Fallback/>}
     <form onSubmit={checkLogin} id='login-form'>

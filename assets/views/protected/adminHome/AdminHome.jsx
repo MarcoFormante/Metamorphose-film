@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { axiosInstance } from '../../../middleware/axiosInstance'
+
 
 const list = [
     "Add new Project",
@@ -21,7 +21,7 @@ const AdminHome = () => {
        
         <div className='admin-pages'>
         {pages.map((item,index)=>
-              <Link to={item.path}>{item.name}</Link>
+              <Link key={item.id} to={item.path}>{item.name}</Link>
             )}
         </div>
           
