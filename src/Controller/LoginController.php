@@ -33,7 +33,6 @@ class LoginController extends AbstractController
     {
         $data = $request->request->all();
         $csrfToken = $data['csrfToken'];
-        
         if (!is_string($csrfToken) || !$csrfTokenInterface->isTokenValid(new CsrfToken('authenticate', $csrfToken))) {
                 return $this->json(['error' => 'Invalid CSRF tosken'], 400);
             }

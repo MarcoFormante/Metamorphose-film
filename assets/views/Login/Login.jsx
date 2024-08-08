@@ -9,12 +9,13 @@ const Login = ({isAuth,setIsAuth}) => {
     const [username,setUsername] = useState("")
     const [password,setPassword] = useState("")
     const [loading,setLoading] = useState(false)
-    const [csrf,setCsrf] = useState(null)
+    const [csrf,setCsrf] = useState(sessionStorage.getItem("csrfToken") || null)
     const navigate = useNavigate()
 
+   
+     
 
     useEffect(()=>{
-       
             axiosInstance.get("csrfToken")
             .then(res =>{
                 if (res.status === 200) {
@@ -22,6 +23,7 @@ const Login = ({isAuth,setIsAuth}) => {
                     axiosInstance.defaults.headers.post['X-CSRF-Token'] = csrfToken
                     axiosInstance.defaults.headers.delete['X-CSRF-Token'] = csrfToken
                     setCsrf(csrfToken)
+                    sessionStorage.setItem("csrfToken",csrfToken)
                 }
             }).catch(err => {
                 console.error("error csrfToken not Valid");
@@ -60,7 +62,7 @@ const Login = ({isAuth,setIsAuth}) => {
     }
 
 
-  return (csrf || isAuth) && !loading &&   (
+  return csrf && !loading &&   (
     <>
      {loading && <Fallback/>}
     <form onSubmit={checkLogin} id='login-form'>

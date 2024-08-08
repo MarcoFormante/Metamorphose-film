@@ -55,7 +55,7 @@ const [imgSrc,setImgSrc] = useState(null)
             }).catch(err => {
                 console.error(err)
                 setIsLoading(false)
-            })
+            }).finally(()=>setIsLoading(false))
         }
             getImages()
     }, [])

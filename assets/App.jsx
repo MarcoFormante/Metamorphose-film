@@ -81,6 +81,13 @@ function App() {
     }
   },[])
 
+  useEffect(()=>{
+    if (sessionStorage.getItem("token-ad") && sessionStorage.getItem("csrfToken")) {
+        setIsAuth(true)
+        axiosInstance.defaults.headers.post['X-CSRF-Token'] = sessionStorage.getItem("csrfToken")
+        axiosInstance.defaults.headers.delete['X-CSRF-Token'] = sessionStorage.getItem("csrfToken")
+}},[])
+
 
   return (
     <HelmetProvider context={helmetContext}>

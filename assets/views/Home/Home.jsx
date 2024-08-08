@@ -9,61 +9,7 @@ import { A11y, Keyboard, Mousewheel, Navigation, Pagination, Parallax, Scrollbar
 
 
 const Home = () => {
-    const carouselRef = useRef(null)
-    const [isHold, setIsHold] = useState(false)
-    const [isScrolling, setIsScrolling] = useState(false)
     const [projects,setProjects] = useState([])
-
-    console.log(projects);
-    // Scroll to the first slide when the page is loaded
-    useEffect(()=>{
-        if (carouselRef.current) {
-            carouselRef.current.scrollLeft = 0
-        }
-    },[carouselRef])
-
-
-    // Scroll the carousel when the mouse is down and moving
-    const  scroll = useCallback((e)=>{
-        if (isHold) {
-            setIsScrolling(true)
-            carouselRef.current.scrollLeft -= e.movementX
-        }
-    },[isHold]) 
-       
-    
-
-    // set Hold State to true when the mouse is down
-    const mouseDown = useCallback((e)=>{
-        setIsHold(true)
-    },[]) 
-
-    // set Hold State to false when the mouse is up and scroll to the closest slide
-    const  mouseUp = useCallback((e)=>{
-        if (carouselRef?.current) {
-            setIsHold(false)
-            const itemWidth = window.innerWidth  ;
-            const currentScrollPosition = carouselRef?.current?.scrollLeft;
-            const index = Math.round(currentScrollPosition / itemWidth );
-            const closestSnapPoint = index * itemWidth;
-            carouselRef.current.scrollTo({
-                left: closestSnapPoint,
-                behavior: 'smooth',
-            });
-          
-            if (carouselRef?.current?.scrollLeft === closestSnapPoint) {
-                setIsScrolling(false)
-            }
-        }
-    },[carouselRef]) 
-    
-    
-    // useEventListener("mousedown",carouselRef,mouseDown,[],true)
-    // useEventListener("mouseup",carouselRef,mouseUp,[],true)
-    // useEventListener("mouseleave",carouselRef,mouseUp,[],true)
-    // useEventListener("mousemove",carouselRef,scroll,[isHold],true)
-
-
 
     useEffect(()=>{
         if (sessionStorage.getItem("projects") && !sessionStorage.getItem("token-ad")) {
@@ -82,34 +28,34 @@ const Home = () => {
 
 
     return (
-        <>
+    <>
         <SEO title={"Metamorphose"} url={"/"}  description={"Ici vous pouvez admirer tout les projets de Metamorphose"} name={"Metamorphose"} type={"website"} keywords={"Projets,videos,images,artistes,musique,projets creatifs"}/> 
 
         <div id='home'>
-        <Swiper style={{color:"white"}}
-        modules={[Navigation, Pagination, Scrollbar, A11y,Keyboard,Mousewheel]}
-        spaceBetween={0}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
-        keyboard={{ enabled: true }}
-        speed={1000}
-        direction='horizontal'
-        mousewheel={{enabled:true}}
-    >
-            {projects.length > 1 ?  projects.map((project,index) =>
-                <SwiperSlide key={index}>
-                        <Figure project={project} index={index} isScrolling={isScrolling} />
-                </SwiperSlide>)
-                :
-                <SwiperSlide>
-                <Figure project={projects[0]} index={0} isScrolling={isScrolling} />
-                </SwiperSlide> 
-            }
-        </Swiper>
+            <Swiper style={{color:"white"}}
+                modules={[Navigation, Pagination, Scrollbar, A11y,Keyboard,Mousewheel]}
+                spaceBetween={0}
+                slidesPerView={1}
+                navigation
+                pagination={{ clickable: true }}
+                scrollbar={{ draggable: true }}
+                keyboard={{ enabled: true }}
+                speed={1000}
+                direction='horizontal'
+                mousewheel={{enabled:true}}
+            >
+                {projects.length > 1 ?  projects.map((project,index) =>
+                    <SwiperSlide key={index}>
+                            <Figure project={project} index={index}  />
+                    </SwiperSlide>)
+                    :
+                    <SwiperSlide>
+                    <Figure project={projects[0]} index={0}  />
+                    </SwiperSlide> 
+                }
+            </Swiper>
         </div>
-        </>
+    </>
     )
 }
 
