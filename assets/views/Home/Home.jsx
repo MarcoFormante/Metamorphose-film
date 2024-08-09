@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useEventListener } from '../../hooks/useEventListener'
+import React, { useEffect, useState } from 'react'
 import { Figure } from '../../components/Home/Figure'
 import { axiosInstance } from '../../middleware/axiosInstance'
 import SEO from '../../components/Seo/SEO'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { A11y, Keyboard, Mousewheel, Navigation, Pagination, Parallax, Scrollbar } from 'swiper/modules'
+import { A11y, Keyboard, Mousewheel, Navigation, Pagination, Scrollbar } from 'swiper/modules'
 
 
 
@@ -42,7 +41,7 @@ const Home = () => {
                 keyboard={{ enabled: true }}
                 speed={1000}
                 direction='horizontal'
-                mousewheel={{enabled:true}}
+                mousewheel={{enabled:true,forceToAxis: true, releaseOnEdges: true,}}
             >
                 {projects.length > 1 ?  projects.map((project,index) =>
                     <SwiperSlide key={index}>

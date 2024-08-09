@@ -68,7 +68,7 @@ const Project = () => {
     },[param])
     
 
-console.log(projectIndex);
+
 
     useEffect(()=>{
         if (!projectData.staff && showAssets) {

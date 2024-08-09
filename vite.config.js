@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import symfonyPlugin from "vite-plugin-symfony";
-import react from "@vitejs/plugin-react";
+import viteReact from "@vitejs/plugin-react";
 
 /* if you're using React */
 // import react from '@vitejs/plugin-react';
@@ -8,9 +8,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({mode: "production",
     
     plugins: [
-        react(), // if you're using React */
+        viteReact(), // if you're using React */
         symfonyPlugin(),
     ],
+    
 
     build: {
         rollupOptions: {
@@ -19,4 +20,6 @@ export default defineConfig({mode: "production",
             },
         }
     },
+   
+    
 });

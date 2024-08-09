@@ -36,7 +36,6 @@ const ProjectUpdate = () => {
     axiosInstance.get('admin/projectData/' + location.state)
     .then(res => {
       if (res.status === 200) {
-        console.log(project);
           const proj = res.data?.project
           setProject(proj)
           setProjectActive(proj.isActive)
@@ -299,7 +298,6 @@ const handleNewMoreStaffFields2 = (value,index) => {
   setUpdatedValues({...updatedValues, newStaff:true})
 }
 
-console.log(updatedValues.lastMoreStaffFields);
 
 
 

@@ -71,9 +71,9 @@ function App() {
    
     function eventStorageHandler(){
       if (sessionStorage.getItem("token-ad")) {
-        console.log("beh");
         setIsAuth(false)
         sessionStorage.removeItem("token-ad")
+        sessionStorage.removeItem("csrfToken")
         axiosInstance.defaults.headers.common = {}
         axiosInstance.defaults.headers.post['X-CSRF-Token'] = ""
         axiosInstance.defaults.headers.delete['X-CSRF-Token'] = ""
