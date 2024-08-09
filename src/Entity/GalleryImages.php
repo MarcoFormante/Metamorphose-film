@@ -19,6 +19,9 @@ class GalleryImages
     #[ORM\Column]
     private ?string $gallery_name = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $order_index = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class GalleryImages
     public function setGalleryName(string $gallery_name): static
     {
         $this->gallery_name = $gallery_name;
+
+        return $this;
+    }
+
+    public function getOrderIndex(): ?int
+    {
+        return $this->order_index;
+    }
+
+    public function setOrderIndex(?int $order_index): static
+    {
+        $this->order_index = $order_index;
 
         return $this;
     }

@@ -36,7 +36,7 @@ const GalleryImages = () => {
         if(!galleries.includes(location?.state?.toLowerCase())){
             navigate('/galerie')
         }
-        if (sessionStorage.getItem("gallery-"+location.state)) {
+        if (sessionStorage.getItem("gallery-"+location.state) && !sessionStorage.getItem("token-ad")) {
             setImages(JSON.parse(sessionStorage.getItem("gallery-"+location.state)))
             setIsLoading(false)
             return
@@ -69,22 +69,6 @@ const GalleryImages = () => {
         )}
         {images.length < 1 && <p className='c-white t-center'>Il n'y a pas d'images dans cette galerie</p>}
         </div>
-
-        {/* {images[0] && <div className='gallery__images__structure__mobile'>
-                <div className='col1 col'>
-                {images.map((image,index)=>
-                    index >= 0 && index <= 7 && 
-                    <img onClick={(e)=>showImage(e,index)} className={`${index === imgSrc && isShowingImage ? "big" : ""}`} src={image} alt=''/>
-                )}  
-                </div>
-                <div className='col2 col'>
-                {images.map((image,index)=>
-                    index >= 7 && index <= 14 && 
-                    <img onClick={(e)=>showImage(e,index)} className={`${index === imgSrc && isShowingImage ? "big" : ""}`} src={image} alt=''/>
-                )}  
-                </div>
-                
-        </div>} */}
     </div>
   )
 }

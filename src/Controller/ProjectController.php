@@ -363,7 +363,12 @@ class ProjectController extends AbstractController
         }
 
         try {
-            
+            $qb = $em->createQueryBuilder();
+            $qb->select('MAX(p.orderIndex)')
+                ->from(Project::class, 'p');
+            $maxOrderIndex = $qb->getQuery()->getSingleScalarResult();
+            $orderIndex = $maxOrderIndex ? $maxOrderIndex + 1 : 0;
+
             $project = new Project();
             $project->setName($data['name']);
             $project->setYoutubeVideo($data['yt']);
@@ -371,7 +376,8 @@ class ProjectController extends AbstractController
             $project->setActive(false);
             $project->setAbrName($data['abrName']);
             $project->setMadeBy($data['madeBy']);
-           
+            $project->setOrderIndex($orderIndex);
+
             $imageNames = [];
             foreach ($images as $image) {
                 $newImage = new ProjectImages();
@@ -400,7 +406,7 @@ class ProjectController extends AbstractController
             }
           
         } catch (\Throwable $th) {
-            return $this->json(['error' => 'Error creating project : ' . $th], 500);
+            return $this->json(['error' => 'Error creating project : '], 500);
         }
       
         $em->persist($staff);
@@ -411,10 +417,10 @@ class ProjectController extends AbstractController
         $randomVideoName = uniqid("video-",true) . $video->getClientOriginalName();
         $project->setBackgroundVideo($randomVideoName);
         if ($video->move("assets/uploads/videos/",$randomVideoName)) {
+          
             $em->persist($project);
             $em->flush();
-            $project->setOrderIndex($project->getId());
-            $em->flush();
+         
         }else{
             return $this->json(['message' => 'Error during creating new project,video Error'],200);
         }

@@ -20,6 +20,7 @@ class ProjectImages
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project_id = null;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,4 +49,5 @@ class ProjectImages
 
         return $this;
     }
+
 }

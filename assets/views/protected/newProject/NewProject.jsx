@@ -158,6 +158,9 @@ const handleSubmit = async(e) => {
         setMoreStaffFieldsCounter(0)
         setInputsHidden([])
         navigate(-1)
+      }else{
+        setIsSubmit(false)
+        alert('An error occured')
       }
   }).catch(err => {
     alert('An error occured : '+ err)

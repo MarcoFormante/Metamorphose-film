@@ -24,13 +24,15 @@ const Projects = () => {
   },[])
 
 const PosChange = (currPos,newPos) => {
+  if (currPos === newPos) {
+    return
+  }
   setLoading(true)
   let newProjects = [...projects]
   let project = newProjects.splice(currPos,1)
   let projectID = project[0].id
   let secondProjectID = projects[newPos].id
   newProjects.splice(newPos,0,...project)
-  setProjects(newProjects)
   const formdata = new FormData()
   formdata.append("currId",projectID)
   formdata.append("newId",secondProjectID)
@@ -39,6 +41,8 @@ const PosChange = (currPos,newPos) => {
     if (res.status !== 200) {
       alert("An error occured during reordering")
       window.location.reload()
+    }else{
+      setProjects(newProjects)
     }
   }).catch(err => {
     console.log(err)
@@ -62,9 +66,8 @@ const PosChange = (currPos,newPos) => {
             </li>
         )}
         )}
-         </Draggable>}
-
-
+         </Draggable>
+         }
       </ul>
     </div>
   )

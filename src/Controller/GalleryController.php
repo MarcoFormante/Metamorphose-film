@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\GalleryImages;
+use App\Entity\ProjectImages;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,7 @@ class GalleryController extends AbstractController
     #[Route('/api/gallery/{name}', name: 'app_gallery', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9_]+$'])]
     public function index(string $name, EntityManagerInterface $em): JsonResponse
     {
-        $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $name]);
+        $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $name], ['order_index' => 'ASC']);
 
         if (!$gallery) {
             throw new NotFoundHttpException('The gallery was not found.');
@@ -85,7 +86,6 @@ class GalleryController extends AbstractController
     #[Route('/api/admin/gallery/addImages', name: 'app_gallery_image_add', methods: ['POST'] )]
     public function addImages(Request $request, EntityManagerInterface $em): JsonResponse
     {
-        // // $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $request->get('galleryName')]);
         $galleries=[
             "Concert",
             "Tournage",
@@ -115,8 +115,16 @@ class GalleryController extends AbstractController
         $imageTypes = ['image/jpeg', 'image/png', 'image/webp'];
        
         $errors = [];
+        $qb = $em->createQueryBuilder();
+        $qb->select('MAX(g.order_index)')
+            ->from(GalleryImages::class, 'g')
+            ->where('g.gallery_name = :galleryName')
+            ->setParameter('galleryName', $galleryName);
+        $maxOrderIndex = $qb->getQuery()->getSingleScalarResult();
+        $orderIndex = $maxOrderIndex ? $maxOrderIndex + 1 : 0;
+       
     
-        foreach ($images as $image) {
+        foreach ($images as $index => $image) {
             if (getimagesize($image) === false){
                 return $this->json(['error' => 'Invalid image'], 400);
             }
@@ -127,8 +135,8 @@ class GalleryController extends AbstractController
             $newImage->setGalleryName($request->get('galleryName'));
             $randomName = uniqid("g-img",true);
             $newImage->setSrc($randomName . $image->getClientOriginalName());
+            $newImage->setOrderIndex($orderIndex + $index);
             $em->persist($newImage);
-         
             if(!$image->move("assets/uploads/images/galleries/", $randomName .  $image->getClientOriginalName())){
                 $errors[] = ['error' => 'Image not uploaded. name: ' . $image->getClientOriginalName()];
             }
@@ -137,6 +145,35 @@ class GalleryController extends AbstractController
            return  $this->json(["error"=>$errors], 400);
         }
         $em->flush();
+        
         return $this->json(['success' => 'Images added'], 200);
+    }
+
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/api/admin/gallery/image/reorder', name: 'app_image_reorder', methods: ['POST'])]
+    public function reorderImage(Request $request, EntityManagerInterface $em,): JsonResponse
+    {
+        $currId = $request->request->get("currId");
+        $newId = $request->request->get("newId");
+    
+        $firstImage = $em->getRepository(GalleryImages::class)->findOneBy(['id' => $currId]);
+        if (!$firstImage) {
+            return $this->json("Image not found", 404);
+        }
+        $secondImage = $em->getRepository(GalleryImages::class)->findOneBy(['id' => $newId]);
+        if (!$secondImage) {
+            return $this->json("Image not found", 404);
+        }
+    
+        $tempOrder = $firstImage->getOrderIndex();
+        $secondOrder = $secondImage->getOrderIndex();
+        $firstImage->setOrderIndex($secondOrder);
+        $secondImage->setOrderIndex($tempOrder);
+        $em->persist($firstImage);
+        $em->persist($secondImage);
+        $em->flush();
+    
+        return $this->json(["message" => "Projects reordered"], 200);
     }
 }
