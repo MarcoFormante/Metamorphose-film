@@ -46,7 +46,7 @@ const Tarifs = () => {
                 De plus, le budget pour une capsule reste beaucoup plus abordable qu'un clip offrant un avantage créatif décuplé pour l'artiste.
                 </p>
 
-                <img src="/assets/static/images/gallery/studio.webp" alt="" />
+                <img src="/assets/static/images/tarifs.webp" alt="" />
               </div>
           </div>
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactPlayer from 'react-player';
-import { useLocation, Navigate, Link, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
 import { axiosInstance } from '../../middleware/axiosInstance';
 import ProjectStaff from './ProjectStaff';
 import Fallback from '../../components/Spinner/Fallback';
@@ -52,12 +52,13 @@ const Project = () => {
             setProject({})
             setShowAssets(false)
             setProjectData([])
-            const formdata = new FormData()
-            formdata.append("name",param?.name)
-            axiosInstance.post("projectByName",formdata)
+          
+            axiosInstance.get("projectByName/" + param?.name)
             .then(res => {
                 if (res.status === 200) {
                     setProject(res.data.project[0])
+                }else{
+                    return navigate("/")
                 }
             }).catch(()=>{
                 return navigate("/")
@@ -79,9 +80,11 @@ const Project = () => {
                     setProjectData(res.data.project)
                 }else{
                     console.error("Error: no project data")
+                    navigate("/")
                 }
             }).catch(err=>{
                 console.error("Error: no project data")
+                navigate("/")
             }).finally(()=>{
                 setLoading(false)
             })

@@ -492,8 +492,6 @@ useEffect(()=>{
         <div className='moreStaff-btn'>
                 <span onClick={()=>setMoreStaffFieldsCounter(prev => prev + 1)}>+</span>
         </div>
-        
-
  
           <div className='inpt-container m-40'>
             <input disabled={isSubmit} type='submit' id='p-staff-p-submit' value='Submit' />

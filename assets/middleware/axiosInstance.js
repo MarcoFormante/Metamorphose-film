@@ -9,7 +9,7 @@ export const axiosInstance = axios.create({
     return response;
  }, error => {
    if (error.response.status === 401) {
-      window.location.href = '/login';
+      window.location.href = '/';
    }
    return error;
  });

@@ -6,6 +6,7 @@ use App\Entity\Project;
 use App\Entity\ProjectImages;
 use App\Entity\ProjectStaff;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,36 +19,41 @@ class ProjectController extends AbstractController
     #[Route('/api/project/{id}', name: 'app_project',requirements: ['id' => '^[0-9]+$'], methods: ['GET'])]
     public function index(int $id, EntityManagerInterface $em): JsonResponse
     {
-        $project = $em->getRepository(Project::class)->findOneBy(['id' => $id]);
+        try {
+            $project = $em->getRepository(Project::class)->findOneBy(['id' => $id]);
 
-        if(!$project){
-            return $this->json(['error' => 'Project not found'],404);
-        }
-        
-        $staff = $project->getProjectStaff();
-        $projectImages = $project->getProjectImages();
-        $data = [];
-
-        if (!$staff && !$projectImages) {
-            return $this->json(['error' => 'No staff or images found'],404);
-        }
-      
-            $data["staff"]= [
-                "production" => $staff->getProduction(),
-                "artists" => $staff->getArtists(),
-                "montage" => $staff->getMontage(),
-                "cadrage" => $staff->getCadrage(),
-                "droniste" => $staff->getDroniste(),
-                "ph_plateau" => $staff->getPhPlateau(),
-                "decorateurs" => $staff->getDecorateurs(),
-                "moreStaffFields"=>$staff->getMoreStaffFields(),
-             ];
-         
-            foreach($projectImages as $projectImage){
-                $data["images"][] = $projectImage->getSrc();
+            if(!$project){
+                throw new Exception ('Project not found');
             }
+            
+            $staff = $project->getProjectStaff();
+            $projectImages = $project->getProjectImages();
+            $data = [];
+    
+            if (!$staff && !$projectImages) {
+                throw new Exception ('No staff or images found');
+            }
+          
+                $data["staff"]= [
+                    "production" => $staff->getProduction(),
+                    "artists" => $staff->getArtists(),
+                    "montage" => $staff->getMontage(),
+                    "cadrage" => $staff->getCadrage(),
+                    "droniste" => $staff->getDroniste(),
+                    "ph_plateau" => $staff->getPhPlateau(),
+                    "decorateurs" => $staff->getDecorateurs(),
+                    "moreStaffFields"=>$staff->getMoreStaffFields(),
+                 ];
+             
+                foreach($projectImages as $projectImage){
+                    $data["images"][] = $projectImage->getSrc();
+                }
+            
+            return $this->json(['project' => $data],200);
+        } catch (\Throwable $th) {
+            $this->json(['errorasd' => $th],405);
+        }
         
-        return $this->json(['project' => $data],200);
     }
 
    
@@ -77,19 +83,19 @@ class ProjectController extends AbstractController
         return $this->json(['projects' => $arrayOfProjects],200);
     }
 
-
-    #[Route('/api/projectByName', name: 'app_project_byName', methods: ['POST'])]
+    
+    #[Route('/api/projectByName/{name}', name: 'app_project_byName', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9-]+$'])]
     public function projectByName( EntityManagerInterface $em, Request $request): JsonResponse
     {
-        $name = $request->request->get("name");
-        if($name === "" || !is_string($name)){
-            return $this->json("Not Found",404);
+        $name = $request->attributes->get('name');
+        
+        if($name === "" || !is_string($name) || is_numeric($name)){
+            return $this->json("Project Not Found",404);
         }
-
         $project = $em->getRepository(Project::class)->findOneBy(['name' => $name]);
 
         if(!$project){
-            return $this->json(['error' => 'Project not found'],404);
+            return $this->json(['error' => 'Project Not found'],404);
         }
         
         $data = [];
@@ -189,52 +195,52 @@ class ProjectController extends AbstractController
             $oldVideo = $request->request->get('oldVideo');
             $oldImages = json_decode($request->request->get('oldImages'), true);
 
-            if (isset($data['name'])) {
+            if (isset($data['name']) && !is_string($data['name']) && $data['name'] === "") {
                 $project->setName($data['name']);
             }
 
-            if (isset($data['yt'])) {
+            if (isset($data['yt']) && !filter_var($data['yt'], FILTER_VALIDATE_URL)) {
                 $project->setYoutubeVideo($data['yt']);
             }
 
-            if (isset($data['collab'])) {
+            if (isset($data['collab']) && !is_string($data['collab']) && $data['collab'] === "") {
                 $project->setCollabWith($data['collab']);
             }
 
-            if (isset($data['abrName'])) {
+            if (isset($data['abrName']) && !is_string($data['abrName']) && $data['abrName'] === "") {
                 $project->setAbrName($data['abrName']);
             }
             
-            if (isset($data['madeBy'])) {
+            if (isset($data['madeBy']) && !is_string($data['madeBy']) && $data['madeBy'] === "") {
                 $project->setMadeBy($data['madeBy']);
             }
 
-            if (isset($data['production'])) {
+            if (isset($data['production']) && !is_string($data['production']) && $data['production'] === "") {
                 $project->getProjectStaff()->setProduction($data['production']);
             }
 
 
-            if (isset($data['artists'])) {
+            if (isset($data['artists']) && !is_string($data['artists']) && $data['artists'] === "") {
                 $project->getProjectStaff()->setArtists($data['artists']);
             }
 
-            if (isset($data['montage'])) {
+            if (isset($data['montage']) && !is_string($data['montage']) && $data['montage'] === "") {
                 $project->getProjectStaff()->setMontage($data['montage']);
             }
 
-            if (isset($data['cadrage'])) {
+            if (isset($data['cadrage']) && !is_string($data['montage']) && $data['montage'] === "") {
                 $project->getProjectStaff()->setCadrage($data['cadrage']);
             }
 
-            if (isset($data['droniste'])) {
+            if (isset($data['droniste'])&& !is_string($data['montage']) && $data['montage'] === "") {
                 $project->getProjectStaff()->setDroniste($data['droniste']);
             }
 
-            if (isset($data['phPlateau'])) {
+            if (isset($data['phPlateau'])&& !is_string($data['montage']) && $data['montage'] === "") {
                 $project->getProjectStaff()->setPhPlateau($data['phPlateau']);
             }
 
-            if (isset($data['decorateurs'])) {
+            if (isset($data['decorateurs'])&& !is_string($data['montage']) && $data['montage'] === "") {
                 $project->getProjectStaff()->setDecorateurs($data['decorateurs']);
             }
          
@@ -245,7 +251,7 @@ class ProjectController extends AbstractController
                 $this->json(['error' => 'Error creating project : More Staff Fields'],400);
             }
 
-            if(isset($data['staff']) && $data['staff'] == "null"){
+            if(isset($data['staff']) && $data['staff'] == "null") {
                 $project-> getProjectStaff()->setMoreStaffFields([]);
             }
            
