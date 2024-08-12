@@ -63,18 +63,14 @@
 }
 
 
-
-
-/*
-gallery__images'>
-        <div className='gallery__images__grid'>
-                {[0,0,0,0,0,0,0].map((item,index)=>
-                <img src={'/assets/uploads/images/img' +
-*/
-
 .gallery__images{
   padding: 24px;
-
+  
+    .back{
+      position: relative;
+      top: -15px;
+      cursor: pointer;
+    }
     
     .black__background{
       position: fixed;

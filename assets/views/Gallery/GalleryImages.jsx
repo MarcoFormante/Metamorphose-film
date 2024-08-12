@@ -1,8 +1,9 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ShowImage } from '../../components/ShowImage/ShowImage'
 import { axiosInstance } from '../../middleware/axiosInstance'
 import Fallback from '../../components/Spinner/Fallback'
+import back from './back.svg'
 
 const GalleryImages = () => {
     const [isShowingImage,setIsShowingImage] = useState(false)
@@ -59,6 +60,7 @@ const GalleryImages = () => {
   return (
     <div className='gallery__images'>
        {isLoading && <Fallback/>}
+        <img className='back' src={back} alt="retour"  onClick={()=> navigate("/galerie")}/>
         {location.state && <h1 className='gallery__images__gallery-name'>Galerie<span>{location.state}</span></h1>}
         <ShowImage isShowingImage={isShowingImage} isSrc={true} imgSrc={imgSrc} setImgSrc={setImgSrc} setIsShowingImage={setIsShowingImage} images={images}/>
         <div className='gallery__images__flex'>
