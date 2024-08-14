@@ -4,6 +4,7 @@ import { ShowImage } from '../../components/ShowImage/ShowImage'
 import { axiosInstance } from '../../middleware/axiosInstance'
 import Fallback from '../../components/Spinner/Fallback'
 import back from './back.svg'
+import { purifyImages } from '../../security/Dompurify/purify'
 
 const GalleryImages = () => {
     const [isShowingImage,setIsShowingImage] = useState(false)
@@ -37,21 +38,32 @@ const GalleryImages = () => {
         if(!galleries.includes(location?.state?.toLowerCase())){
             navigate('/galerie')
         }
-        if (sessionStorage.getItem("gallery-"+location.state) && !sessionStorage.getItem("token-ad")) {
-            setImages(JSON.parse(sessionStorage.getItem("gallery-"+location.state)))
-            setIsLoading(false)
-            return
+
+        try {
+            if (sessionStorage.getItem("gallery-"+location.state) && !sessionStorage.getItem("token-ad")) {
+                const jsonImages = JSON.parse(sessionStorage.getItem("gallery-"+location.state))
+                const purifiedImgs = purifyImages(jsonImages)
+                setImages(purifiedImgs)
+                setIsLoading(false)
+                return
+            }
+        } catch (error) {
+            console.log("Error parsing images");
         }
+       
         const getImages = async()=>{
         axiosInstance.get("gallery/"+ location.state)
         .then(res => {
             if (res.status === 200) {
-                sessionStorage.setItem("gallery-"+location.state,JSON.stringify(res.data?.images))
-                setImages(res.data?.images)
+                const dataImages = res.data?.images
+                const purifiedImgs = purifyImages(dataImages)
+                sessionStorage.setItem("gallery-"+location.state,JSON.stringify(purifyImages))
+                setImages(purifiedImgs)
             }
         }).catch(err => console.error("error fetching images"))
         .finally(()=> setIsLoading(false))
         }
+
         getImages()
     },[location.state])
 

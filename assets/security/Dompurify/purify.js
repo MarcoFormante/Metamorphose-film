@@ -27,3 +27,13 @@ export const purifyProjectData = (p) => {
             production: DOMPurify.sanitize(p.staff.production),
         }
     }}
+
+export const purifyImages = (images) => {
+    if (Array.isArray(images) && images.length === 0) {
+        return []
+    }
+    if (Array.isArray(images) && images.length === 1) {
+        return [{src:DOMPurify.sanitize(images[0].src)}]
+    }
+    return images.map(i => ({src: DOMPurify.sanitize(i.src)}))
+}
