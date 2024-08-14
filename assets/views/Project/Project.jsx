@@ -4,7 +4,7 @@ import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
 import { axiosInstance } from '../../middleware/axiosInstance';
 import ProjectStaff from './ProjectStaff';
 import Fallback from '../../components/Spinner/Fallback';
-
+import { purifyProjects,purifyProjectData } from '../../security/Dompurify/purify';
 
 
 const Project = () => {
@@ -23,9 +23,17 @@ const Project = () => {
 
 
 
+
     useEffect(()=>{
-        if (sessionStorage.getItem("projects")) {
-            setAllProjects(JSON.parse(sessionStorage.getItem("projects")))
+        try {
+            if (sessionStorage.getItem("projects")) {
+                const JsonProjects = JSON.parse(sessionStorage.getItem("projects"))
+                const purifiedProjects = purifyProjects(JsonProjects)
+                setAllProjects(purifiedProjects)
+            }
+        } catch (error) {
+            console.log("Error parsing projects");
+            navigate("/")
         }
     },[])
 
@@ -56,7 +64,9 @@ const Project = () => {
             axiosInstance.get("projectByName/" + param?.name)
             .then(res => {
                 if (res.status === 200) {
-                    setProject(res.data.project[0])
+                    const project = res.data.project
+                    const purifiedProjects = purifyProjects(project)
+                    setProject(purifiedProjects[0])
                 }else{
                     return navigate("/")
                 }
@@ -70,14 +80,14 @@ const Project = () => {
     
 
 
-
     useEffect(()=>{
         if (!projectData.staff && showAssets) {
             setLoading(true)
-            axiosInstance.get("project/" + project.id)
+            axiosInstance.get("projectData/" + project.id)
             .then(res => {
                 if (res.status === 200) {
-                    setProjectData(res.data.project)
+                    const resProjectData = purifyProjectData(res.data.projectData)
+                    setProjectData(resProjectData)
                 }else{
                     console.error("Error: no project data")
                     navigate("/")

@@ -4,21 +4,29 @@ import { axiosInstance } from '../../middleware/axiosInstance'
 import SEO from '../../components/Seo/SEO'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { A11y, Keyboard, Mousewheel, Navigation, Pagination, Scrollbar } from 'swiper/modules'
-
+import { purifyProjects } from '../../security/Dompurify/purify';
 
 
 const Home = () => {
     const [projects,setProjects] = useState([])
 
     useEffect(()=>{
-        if (sessionStorage.getItem("projects") && !sessionStorage.getItem("token-ad")) {
-                return setProjects(JSON.parse(sessionStorage.getItem("projects")))
+        try {
+            if (sessionStorage.getItem("projects") && !sessionStorage.getItem("token-ad")) {
+                const jsonProjects = JSON.parse(sessionStorage.getItem("projects"))
+                const purifiedProjects = purifyProjects(jsonProjects)
+                return setProjects(purifiedProjects)
             }
+        } catch (error) {
+            console.log("Error parsing projects");
+        }
         axiosInstance.get("home/projects")
         .then(res => {
             if (res.status === 200) {
-                setProjects(res.data.projects)
-                sessionStorage.setItem("projects",JSON.stringify(res.data.projects))
+                const resProjects = res.data?.projects
+                const purifiedProjects = purifyProjects(resProjects)
+                setProjects(purifiedProjects)
+                sessionStorage.setItem("projects",JSON.stringify(resProjects))
             }else{
                 console.error("Error: No projects")
             }

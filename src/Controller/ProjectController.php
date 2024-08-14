@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProjectController extends AbstractController
 {
-    #[Route('/api/project/{id}', name: 'app_project',requirements: ['id' => '^[0-9]+$'], methods: ['GET'])]
+    #[Route('/api/projectData/{id}', name: 'app_project',requirements: ['id' => '^[0-9]+$'], methods: ['GET'])]
     public function index(int $id, EntityManagerInterface $em): JsonResponse
     {
         try {
@@ -49,7 +49,7 @@ class ProjectController extends AbstractController
                     $data["images"][] = $projectImage->getSrc();
                 }
             
-            return $this->json(['project' => $data],200);
+            return $this->json(['projectData' => $data],200);
         } catch (\Throwable $th) {
             $this->json(['errorasd' => $th],405);
         }
