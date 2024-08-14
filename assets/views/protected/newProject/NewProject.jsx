@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import NewProjectBasePage from './NewProjectBasePage';
 import NewProjectStaffPage from './NewProjectStaffPage';
 import NewProjectImagesPage from './NewProjectImagesPage';
+import { newProjectSchema } from '../../../security/Zod/zod';
 
 const NewProject = () => {
   const [projectName, setProjectName] = useState('')
@@ -133,7 +134,34 @@ const handleSubmit = async(e) => {
       const arrayMoreFieldsWithoutUndefinedAndVoid = arrayMoreFieldsWithoutUndefined.filter(field => field.value1 !== "" && field.value2 !== "")
       formdata.append('moreStaffFields',JSON.stringify(arrayMoreFieldsWithoutUndefinedAndVoid))
     }
+    const objectToVerify = {
+      name: projectName.trim(),
+      abrName: abrName.trim(),
+      yt: youtubeLink.trim(),
+      collab: collab.trim(),
+      video: bgVideo,
+      production: production.trim(),
+      madeBy: madeBy.trim(),
+      artists: artists.trim(),
+      montage: montage.trim(),
+      cadrage: cadrage.trim(),
+      droniste: droniste.trim(),
+      phPlateau: phPlateau.trim(),
+      decorateurs: decorateurs.trim(),
+      moreStaffFields: moreStaffFields,
+      images: [...compressedImages]
+    }
+
    
+    const validate = newProjectSchema.safeParse(objectToVerify)
+    if (!validate.success) {
+      setLoading(false)
+      setIsSubmit(false)
+      console.log(validate.error.errors);
+      console.log(objectToVerify);
+      
+      return alert(validate.error.errors[0].message)
+    }
     axiosInstance.post('admin/project/new',
     formdata
     ).then(res => {
