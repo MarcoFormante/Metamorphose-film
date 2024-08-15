@@ -4,8 +4,12 @@
     .admin-pages{
         display: flex;
         justify-content: center;
+        flex-direction: column;
+        flex-wrap: wrap;
         gap: 40px;
-        margin-top: 40px;
+        max-width: fit-content;
+        text-align: center;
+        margin: 40px auto;
 
         a{
             text-decoration: none;

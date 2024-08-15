@@ -1812,8 +1812,13 @@ body:has(.fallback) {
 .admin-home .admin-pages {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
   gap: 40px;
-  margin-top: 40px;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  text-align: center;
+  margin: 40px auto;
 }
 .admin-home .admin-pages a {
   text-decoration: none;
