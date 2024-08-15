@@ -198,7 +198,7 @@ const ProtectedRoute = ({isAuth,setIsAuth})=>{
   const logout = ()=>{
     delete axiosInstance.defaults.headers.common['Authorization']
     sessionStorage.removeItem("token-ad")
-    sessionStorage.removeItem("csrf")
+    sessionStorage.removeItem("csrfToken")
     setIsAuth(false)
   }
 

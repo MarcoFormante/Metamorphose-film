@@ -65,12 +65,17 @@ const ProjectUpdate = () => {
 
 
   useEffect(()=>{
-    if (moreStaffFields && moreStaffFields.length > 0) {
+    try {
+      if (moreStaffFields && moreStaffFields.length > 0) {
         const jsonArray = JSON.parse(moreStaffFields)
         if (Array.isArray(jsonArray) && jsonArray.length > 0) {
           setUpdatedValues({...updatedValues,lastMoreStaffFields:[...jsonArray]})
         }
     }
+    } catch (error) {
+      console.log(error);
+    }
+    
   },[moreStaffFields])
 
 
@@ -85,7 +90,7 @@ const ProjectUpdate = () => {
     const formData = new FormData()
     if (updatedValues.imgs.length > 0) {
       const ids = updatedValues.imgs.map(id=>id)
-      const imgs = images.filter((img,index)=> ids.includes(img.id))
+      const imgs = images.filter((img)=> ids.includes(img.id))
       formData.append('oldImages',JSON.stringify(ids))
        compressedImages = await compressImages(imgs)
       if (!compressedImages) {
@@ -248,7 +253,6 @@ const deleteProject = ()=>{
   const confirm = window.confirm("Are you suer to delete this project?")
   if (!confirm) return
   setLoading(true)
-  console.log(location.state);
   const validateID = z.string().safeParse(location.state)
   if (!validateID.success) {
     alert("An error occurred during deleting the project. try again")
@@ -326,7 +330,6 @@ useEffect(()=>{
 },[moreStaffFieldsCounter])
 
 
-console.log(projectActive);
 
   return projectActive !== null && (
     <div className='admin-projects' id='p-update'>
@@ -347,7 +350,6 @@ console.log(projectActive);
               }
                   } placeholder='ex. heliopolis' />
             </div>
-            
             <div className='inpt-container'>
               <label htmlFor='p-name-abr'>Nom pour petits ecrans</label>
               <input type='text' id='p-name-abr' name='p-name-abr' value={abrName} required={!abrName} onChange={(e)=>

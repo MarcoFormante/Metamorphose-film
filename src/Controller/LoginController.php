@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,22 +29,21 @@ class LoginController extends AbstractController
 }
 
     #[Route('/api/login', name: 'app_login',methods: ['POST'])]
-    public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface): JsonResponse
+    public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger): JsonResponse
     {
+        try {
         $data = $request->request->all();
         $csrfToken = $data['csrfToken'];
         if (!is_string($csrfToken) || !$csrfTokenInterface->isTokenValid(new CsrfToken('authenticate', $csrfToken))) {
                 return $this->json(['error' => 'Invalid CSRF tosken'], 400);
             }
        
-
         $user = $userRepository->findOneBy(['username' => $data['username']]);
         if (!$user) {
             return $this->json([
                 "error" => "User not found"
             ],404);
         }
-
 
         if (!password_verify($data['password'], $user->getPassword())) {
             
@@ -53,7 +52,6 @@ class LoginController extends AbstractController
             ],401);
         }
 
-       
 
         $payload = [
             "username" => $data['username'],
@@ -65,6 +63,10 @@ class LoginController extends AbstractController
         return $this->json([
             "token" => $token
         ],200);
-          
+
+    } catch (\Throwable $th) {
+        $logger->error($th->getMessage());
+        return $this->json(['error' => 'An error occurred during LOGIN'], 500);
+    }
     }
 }

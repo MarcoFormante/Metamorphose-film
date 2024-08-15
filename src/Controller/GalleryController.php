@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\GalleryImages;
-use App\Entity\ProjectImages;
+use App\Security\Sanitizer;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class GalleryController extends AbstractController
 {
+
+    private Sanitizer $s;
+    private LoggerInterface $logger;
+    public function __construct(Sanitizer $s, LoggerInterface $logger)
+    {
+        $this->s = $s;
+        $this->logger = $logger;
+    }   
     /**
      * GET IMAGES OF GALLERY
      * @param string $name
@@ -24,20 +33,25 @@ class GalleryController extends AbstractController
     #[Route('/api/gallery/{name}', name: 'app_gallery', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9_]+$'])]
     public function index(string $name, EntityManagerInterface $em): JsonResponse
     {
-        $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $name], ['order_index' => 'ASC']);
+        try {
+            $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $this->s->sanitize($name,"string")], ['order_index' => 'ASC']);
 
-        if (!$gallery) {
-            throw new NotFoundHttpException('The gallery was not found.');
-        }
-       
-        $images = [];
-
-        foreach ($gallery as $gallery) {
-            if ($this->isGranted("ROLE_ADMIN")) {
-                $images[] = ["src" => $gallery->getSrc(),"id" => $gallery->getId()];
-            }else{
-                $images[] = ["src" => $gallery->getSrc()];
+            if (!$gallery) {
+                throw new NotFoundHttpException('The gallery was not found.');
             }
+           
+            $images = [];
+    
+            foreach ($gallery as $gallery) {
+                if ($this->isGranted("ROLE_ADMIN")) {
+                    $images[] = ["src" => $gallery->getSrc(),"id" => $gallery->getId()];
+                }else{
+                    $images[] = ["src" => $gallery->getSrc()];
+                }
+            }
+        } catch (\Throwable $th) {
+            $this->logger->error($th->getMessage());
+            return $this->json(['error' => 'An error occurred getting Gallery'], 500);
         }
        
         return $this->json(['images' => $images],200);
@@ -54,22 +68,25 @@ class GalleryController extends AbstractController
      */
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/gallery/image/{id}', name: 'app_image_delete', methods: ['DELETE'], requirements: ['id' => '^[0-9]+$'])]
-    public function deleteImage(Request $request, EntityManagerInterface $em,): JsonResponse
+    public function deleteImage(Request $request, EntityManagerInterface $em): JsonResponse
     {
-        if ($request->get('id') === null){
-            return $this->json(['error' => 'Id is required'], 400);
+        try {
+            if ($request->get('id') === null || $request->get('id') === ""){
+                return $this->json(['error' => 'Id is required'], 400);
+            }
+            $image = $em->getRepository(GalleryImages::class)->findOneBy(['id' => $this->s->sanitize($request->get('id'),"int")]);
+            if (!$image) {
+                return $this->json(['error' => 'Image not found'], 404);
+            }
+            if (file_exists("assets/uploads/images/galleries/".$image->getSrc())) {
+                unlink("assets/uploads/images/galleries/".$image->getSrc());
+            }
+            $em->remove($image);
+            $em->flush();
+        } catch (\Throwable $th) {
+            $this->logger->error($th->getMessage());
+            return $this->json(['error' => 'An error occurred deleting Image'], 500);
         }
-
-        $image = $em->getRepository(GalleryImages::class)->findOneBy(['id' => $request->get('id')]);
-        if (!$image) {
-            return $this->json(['error' => 'Image not found'], 404);
-        }
-
-        if (file_exists("assets/uploads/images/galleries/".$image->getSrc())) {
-            unlink("assets/uploads/images/galleries/".$image->getSrc());
-        }
-        $em->remove($image);
-        $em->flush();
         return $this->json(['success'=>"Image has been deleted"], 200);
     }
 
@@ -86,6 +103,9 @@ class GalleryController extends AbstractController
     #[Route('/api/admin/gallery/addImages', name: 'app_gallery_image_add', methods: ['POST'] )]
     public function addImages(Request $request, EntityManagerInterface $em): JsonResponse
     {
+
+    try {
+        
         $galleries=[
             "Concert",
             "Tournage",
@@ -93,7 +113,7 @@ class GalleryController extends AbstractController
             "Evenements"
         ];
 
-        $galleryName = $request->get('galleryName');
+        $galleryName = $this->s->sanitize($request->get('galleryName'),"string");
         if (!$galleryName) {
             return $this->json(['error' => 'Gallery name is required'], 400);
         }
@@ -132,20 +152,24 @@ class GalleryController extends AbstractController
                 return $this->json(['error' => 'Invalid image type'], 400);
             }
             $newImage = new GalleryImages();
-            $newImage->setGalleryName($request->get('galleryName'));
+            $newImage->setGalleryName($galleryName);
             $randomName = uniqid("g-img",true);
-            $newImage->setSrc($randomName . $image->getClientOriginalName());
+            $newImage->setSrc($randomName . $this->s->sanitize($image->getClientOriginalName(),"string"));
             $newImage->setOrderIndex($orderIndex + $index);
             $em->persist($newImage);
-            if(!$image->move("assets/uploads/images/galleries/", $randomName .  $image->getClientOriginalName())){
-                $errors[] = ['error' => 'Image not uploaded. name: ' . $image->getClientOriginalName()];
+            if(!$image->move("assets/uploads/images/galleries/", $randomName .  $this->s->sanitize($image->getClientOriginalName(),"string"))){
+                $errors[] = ['error' => 'Image not uploaded. name: ' . $this->s->sanitize($image->getClientOriginalName(),"string")];
             }
         }
         if ($errors) {
            return  $this->json(["error"=>$errors], 400);
         }
         $em->flush();
-        
+
+    } catch (\Throwable $th) {
+        $this->logger->error($th->getMessage());
+        return $this->json(['error' => 'An error occurred adding Images'], 500);
+    }
         return $this->json(['success' => 'Images added'], 200);
     }
 
@@ -154,18 +178,17 @@ class GalleryController extends AbstractController
     #[Route('/api/admin/gallery/image/reorder', name: 'app_image_reorder', methods: ['POST'])]
     public function reorderImage(Request $request, EntityManagerInterface $em,): JsonResponse
     {
-        $currId = $request->request->get("currId");
-        $newId = $request->request->get("newId");
-    
+    try {
+        $currId = $this->s->sanitize($request->request->get("currId"),"int");
+        $newId =  $this->s->sanitize($request->request->get("newId"),"int");
         $firstImage = $em->getRepository(GalleryImages::class)->findOneBy(['id' => $currId]);
         if (!$firstImage) {
-            return $this->json("Image not found", 404);
+            return $this->json("First Image not found", 404);
         }
         $secondImage = $em->getRepository(GalleryImages::class)->findOneBy(['id' => $newId]);
         if (!$secondImage) {
-            return $this->json("Image not found", 404);
+            return $this->json("Second Image not found", 404);
         }
-    
         $tempOrder = $firstImage->getOrderIndex();
         $secondOrder = $secondImage->getOrderIndex();
         $firstImage->setOrderIndex($secondOrder);
@@ -173,7 +196,11 @@ class GalleryController extends AbstractController
         $em->persist($firstImage);
         $em->persist($secondImage);
         $em->flush();
-    
+
+    } catch (\Throwable $th) {
+        $this->logger->error($th->getMessage());
+        return $this->json(['error' => 'An error occurred reordering Images'], 500);
+       }
         return $this->json(["message" => "Projects reordered"], 200);
     }
 }
