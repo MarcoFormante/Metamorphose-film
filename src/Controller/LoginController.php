@@ -16,18 +16,36 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class LoginController extends AbstractController
 {
+
+      /**
+     * GET CSRF TOKEN
+     * @method GET
+     * @param SessionInterface $sessionInterface
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @return JsonResponse
+     * set cookie
+     */
     #[Route('/api/csrfToken', name: 'app_csrfToken', methods: ['GET'])]
     public function getCSRF(CsrfTokenManagerInterface $csrfTokenManager,SessionInterface $sessionInterface): JsonResponse
-{
-    $csrfToken = $csrfTokenManager->getToken("authenticate")->getValue();
-   
-    $response = new JsonResponse(['success' => 'CSRF token generated', 'csrfToken' => $csrfToken], 200);
-     
-    $response->headers->setCookie(new Cookie(session_name(), $sessionInterface->getId()));
-  
-    return $response;
-}
+    {
+        $csrfToken = $csrfTokenManager->getToken("authenticate")->getValue();
+    
+        $response = new JsonResponse(['success' => 'CSRF token generated', 'csrfToken' => $csrfToken], 200);
+        
+        $response->headers->setCookie(new Cookie(session_name(), $sessionInterface->getId()));
+    
+        return $response;
+    }
 
+     /**
+     * LOGIN
+     * @method POST
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param CsrfTokenManagerInterface $csrfTokenInterface
+     * @param LoggerInterface $logger
+     * @return JsonResponse $token
+     */
     #[Route('/api/login', name: 'app_login',methods: ['POST'])]
     public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger): JsonResponse
     {

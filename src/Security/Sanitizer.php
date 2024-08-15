@@ -1,12 +1,8 @@
 <?php
 
 namespace App\Security;
-
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-use function PHPSTORM_META\map;
-
 class Sanitizer extends AbstractController
 {
    

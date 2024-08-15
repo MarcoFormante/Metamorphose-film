@@ -12,12 +12,12 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Psr\Log\LoggerInterface;
 
 
 
@@ -25,14 +25,13 @@ class TokenAuthenticator extends AbstractAuthenticator
 {
    private CsrfTokenManagerInterface $csrfTokenManager;
 
-
     public function __construct(
         private UserRepository $userRepository,
         CsrfTokenManagerInterface $csrfTokenManager ,
-       
+        private LoggerInterface $logger
     ) {
         $this->csrfTokenManager = $csrfTokenManager;
-        
+        $this->logger = $logger;
     }
    
 
@@ -90,11 +89,18 @@ class TokenAuthenticator extends AbstractAuthenticator
         $data = [
             // you may want to customize or obfuscate the message first
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-
+                
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
         ];
+        $this->logger->error($exception->getMessage(),$data);
 
-        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+        return new JsonResponse("Error during Authentication", Response::HTTP_UNAUTHORIZED);
     }
+
+
+    // public function supportsRememberMe(): bool
+    // {
+    //     return true;
+    // }
 }

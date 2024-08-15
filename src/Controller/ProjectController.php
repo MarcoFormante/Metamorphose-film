@@ -12,7 +12,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Log\Logger;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -29,21 +28,25 @@ class ProjectController extends AbstractController
         $this->logger = $logger;
     }
 
-
+  /**
+     * GET PROJECT DATA
+     * @method GET
+     * @param int $id
+     * @param EntityManagerInterface $em
+     * @return JsonResponse 
+     * get project data by id
+     */
     #[Route('/api/projectData/{id}', name: 'app_project',requirements: ['id' => '^[0-9]+$'], methods: ['GET'])]
-    public function index(int $id, EntityManagerInterface $em,): JsonResponse
+    public function index(int $id, EntityManagerInterface $em): JsonResponse
     {
         try {
             $project = $em->getRepository(Project::class)->findOneBy(['id' => $this->sanitizer->sanitize($id,"int")]);
-
             if(!$project){
                 throw new Exception ('Project not found');
             }
-            
             $staff = $project->getProjectStaff();
             $projectImages = $project->getProjectImages();
             $data = [];
-    
             if (!$staff && !$projectImages) {
                 throw new Exception ('No staff or images found');
             }
@@ -73,7 +76,13 @@ class ProjectController extends AbstractController
         
     }
 
-   
+      /**
+     * GET HOME PROJECTS
+     * @method GET
+     * @param EntityManagerInterface $em
+     * @return JsonResponse 
+     * get all projects
+     */
     #[Route('/api/home/projects', name: 'app_home_projects', methods: ['GET'])]
     public function HomeProjects(EntityManagerInterface $em){
         try {
@@ -107,7 +116,15 @@ class ProjectController extends AbstractController
         }
     }
 
-    
+      /**
+     * GET PROJECT BY NAME
+     * @method GET
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return JsonResponse
+     * get project by name
+     */
+
     #[Route('/api/projectByName/{name}', name: 'app_project_byName', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9-]+$'])]
     public function projectByName( EntityManagerInterface $em, Request $request): JsonResponse
     {
@@ -146,7 +163,15 @@ class ProjectController extends AbstractController
         return $this->json(['project' => $data],200);
     }
 
-
+  /**
+     * GET PROJECT DATA FOR ADMIN PAGE
+     * @method GET
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param role ROLE_ADMIN
+     * @return JsonResponse 
+     * get project data for admin page
+     */
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/projectData/{id}', name: 'app_project_data', methods: ['GET'])]
@@ -192,6 +217,15 @@ class ProjectController extends AbstractController
         }
     }
 
+    /**
+     * GET PROJECTS FOR ADMIN PAGE
+     * @method GET
+     * @param EntityManagerInterface $em
+     * @param role ROLE_ADMIN
+     * @return JsonResponse 
+     * get all projects for admin page
+     */
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/projects', name: 'app_projects', methods: ['GET'])]
     public function projects(EntityManagerInterface $em): JsonResponse{
@@ -218,7 +252,16 @@ class ProjectController extends AbstractController
     }
 
 
-  
+      /**
+     * UPDATE PROJECT
+     * @method POST
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param role ROLE_ADMIN
+     * @return JsonResponse 
+     * update project
+     */
+
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/project/update', name: 'app_project_update', methods: ['POST'])]
     public function updateProject(EntityManagerInterface $em, Request $request):JsonResponse{
@@ -363,6 +406,16 @@ class ProjectController extends AbstractController
     }
 
 
+    
+    /**
+     * CREATE NEW PROJECT
+     * @method POST
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return JsonResponse 
+     * @param role ROLE_ADMIN
+     * create new project
+     */
 
 
     #[IsGranted('ROLE_ADMIN')]
@@ -485,11 +538,21 @@ class ProjectController extends AbstractController
         return $this->json(['message' => 'Project created'],200);
     }
 
-  
 
+      /**
+     * DELETE PROJECT
+     * @method DELETE
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param int $id
+     * @param role ROLE_ADMIN
+     * @return JsonResponse 
+     * delete project
+     */
+  
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/project/{id}', name: 'app_project_delete', methods: ['DELETE'],requirements: ['id' => '\d+'])]
-    public function deleteProject(EntityManagerInterface $em,int $id,LoggerInterface $logger, Sanitizer $s):JsonResponse{
+    public function deleteProject(EntityManagerInterface $em,int $id):JsonResponse{
         try {
             $project = $em->getRepository(Project::class)->findOneBy(['id' => $this->sanitizer->sanitize($id,"int")]);
             if (!$project) {
@@ -510,7 +573,7 @@ class ProjectController extends AbstractController
           
             return $this->json(["success" =>"Project Deleted"],200);
         } catch (\Throwable $th) {
-            $logger->error("An error occurred while deleting the project: {$th->getMessage()}", [
+            $this->logger->error("An error occurred while deleting the project: {$th->getMessage()}", [
                 'exception' => $th
             ]);
             return $this->json(["error" => "An error occurred while deleting the project"], 500);
@@ -519,6 +582,15 @@ class ProjectController extends AbstractController
     }
 
 
+      /**
+     * TOGGLE PROJECT ACTIVE STATE
+     * @method DELETE
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param role ROLE_ADMIN
+     * @return JsonResponse 
+     * toggle project active state
+     */
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/project/active', name: 'app_project_active', methods: ['POST'])]
@@ -543,6 +615,18 @@ class ProjectController extends AbstractController
             return $this->json(["error" => "An error occurred while toggling project active state"], 500);
         }
     }
+
+
+
+      /**
+     * REORDER PROJECTS
+     * @method POST
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param role ROLE_ADMIN
+     * @return JsonResponse 
+     * reorder projects
+     */
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/projects/reorder', name: 'app_project_reorder', methods: ['POST'])]

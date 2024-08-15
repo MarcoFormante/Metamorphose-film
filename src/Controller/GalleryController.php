@@ -174,6 +174,14 @@ class GalleryController extends AbstractController
     }
 
 
+     /**
+     * REORDER IMAGES IN GALLERY
+     * @method POST
+     * @param Request $currID, $newID (int)
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     * @role ROLE_ADMIN
+     */
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/gallery/image/reorder', name: 'app_image_reorder', methods: ['POST'])]
     public function reorderImage(Request $request, EntityManagerInterface $em,): JsonResponse
