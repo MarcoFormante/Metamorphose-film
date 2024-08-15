@@ -96,72 +96,74 @@ const handleImages = (files) => {
   setImages([...files])
 }
 
+
+//SUBMIT NEW PROJECT
 const handleSubmit = async(e) => {
+  try {
     e.preventDefault()
-    setIsSubmit(true)
-    if (!canSubmit) {
-     return
-    }
-    setLoading(true)
-    try {
+      setLoading(true)
+      setIsSubmit(true)
+      if (!canSubmit) {
+        setLoading(false)
+        return
+      }
       const formdata = new FormData()
       const compressedImages = await compressImages(images)
-    if (!compressedImages) {
-      setLoading(false)
-      setIsSubmit(false)
-      return alert('An error occurred while compressing images, please try again')
-    }
-    compressedImages.forEach((img, index) => {
-      formdata.append('images[]',img)
-  })
-    
-    formdata.append('name',projectName.trim())
-    formdata.append('abrName',abrName.trim())
-    formdata.append('yt',youtubeLink.trim())
-    formdata.append('collab',collab.trim())
-    formdata.append('video',bgVideo)
-    formdata.append('production',production.trim())
-    formdata.append('madeBy',madeBy.trim())
-    formdata.append('artists',artists.trim())
-    formdata.append('montage',montage.trim())
-    formdata.append('cadrage',cadrage.trim())
-    formdata.append('droniste',droniste.trim())
-    formdata.append('phPlateau',phPlateau.trim())
-    formdata.append('decorateurs',decorateurs.trim())
+      if (!compressedImages) {
+        setLoading(false)
+        setIsSubmit(false)
+        return alert('An error occurred while compressing images, please try again')
+      }
+      const objectToVerify = {
+        name: projectName.trim(),
+        abrName: abrName.trim(),
+        yt: youtubeLink.trim(),
+        collab: collab.trim(),
+        video: bgVideo,
+        production: production.trim(),
+        madeBy: madeBy.trim(),
+        artists: artists.trim(),
+        montage: montage.trim(),
+        cadrage: cadrage.trim(),
+        droniste: droniste.trim(),
+        phPlateau: phPlateau.trim(),
+        decorateurs: decorateurs.trim(),
+        moreStaffFields: moreStaffFields,
+        images: [...compressedImages]
+      }
 
-    if (moreStaffFields.length > 0) {
-      const arrayMoreFieldsWithoutUndefined = moreStaffFields.filter(field => field !== undefined)
-      const arrayMoreFieldsWithoutUndefinedAndVoid = arrayMoreFieldsWithoutUndefined.filter(field => field.value1 !== "" && field.value2 !== "")
-      formdata.append('moreStaffFields',JSON.stringify(arrayMoreFieldsWithoutUndefinedAndVoid))
-    }
-    const objectToVerify = {
-      name: projectName.trim(),
-      abrName: abrName.trim(),
-      yt: youtubeLink.trim(),
-      collab: collab.trim(),
-      video: bgVideo,
-      production: production.trim(),
-      madeBy: madeBy.trim(),
-      artists: artists.trim(),
-      montage: montage.trim(),
-      cadrage: cadrage.trim(),
-      droniste: droniste.trim(),
-      phPlateau: phPlateau.trim(),
-      decorateurs: decorateurs.trim(),
-      moreStaffFields: moreStaffFields,
-      images: [...compressedImages]
-    }
-
-   
     const validate = newProjectSchema.safeParse(objectToVerify)
     if (!validate.success) {
       setLoading(false)
       setIsSubmit(false)
-      console.log(validate.error.errors);
-      console.log(objectToVerify);
-      
       return alert(validate.error.errors[0].message)
     }
+      validate.data.images.forEach(img => {
+      formdata.append('images[]',img)
+    })
+    
+    formdata.append('name',validate.data.name)
+    formdata.append('abrName',validate.data.abrName)
+    formdata.append('yt',validate.data.yt)
+    formdata.append('collab',validate.data.collab)
+    formdata.append('video',validate.data.video)
+    formdata.append('production',validate.data.production)
+    formdata.append('madeBy',validate.data.madeBy)
+    formdata.append('artists',validate.data.artists)
+    formdata.append('montage',validate.data.montage)
+    formdata.append('cadrage',validate.data.cadrage)
+    formdata.append('droniste',validate.data.droniste)
+    formdata.append('phPlateau',validate.data.phPlateau)
+    formdata.append('decorateurs',validate.data.decorateurs)
+
+
+    if (moreStaffFields.length > 0) {
+      const arrayMoreFieldsWithoutUndefined = validate.data.moreStaffFields.filter(field => field !== undefined)
+      const arrayMoreFieldsWithoutUndefinedAndVoid = arrayMoreFieldsWithoutUndefined.filter(field => field.value1 !== "" && field.value2 !== "")
+      formdata.append('moreStaffFields',JSON.stringify(arrayMoreFieldsWithoutUndefinedAndVoid))
+    }
+    
+
     axiosInstance.post('admin/project/new',
     formdata
     ).then(res => {

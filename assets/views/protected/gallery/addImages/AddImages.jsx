@@ -4,6 +4,8 @@ import { ShowImage } from '../../../../components/ShowImage/ShowImage'
 import { axiosInstance } from '../../../../middleware/axiosInstance'
 import Fallback from '../../../../components/Spinner/Fallback'
 import Resizer from "react-image-file-resizer";
+import { z } from 'zod'
+
 
 const galleries=[
     "Concert",
@@ -50,11 +52,32 @@ const AddImages = () => {
             return alert('An error occurred while compressing images, please try again')
         }
         const formData = new FormData()
-        compressedImages.forEach((image, index) => {
+
+        const validImages = z.array(z.instanceof(File).superRefine((f,ctx)=>{
+            if (!["image/webp"].includes(f.type)) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "Le fichier doit être un fichier image de type webp"
+                })
+            }
+            if (f.size > (4 * 1024 * 1024)) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "La taille du fichier IMAGE ne doit pas dépasser 3MB"
+                })
+            }
+        })).safeParse(compressedImages)
+        if (!validImages.success) {
+            return alert('An error occurred while compressing images, please try again')
+        }
+
+        validImages.data.forEach((image) => {
             formData.append('images[]', image)
         })
-        formData.append("galleryName", location.state?.name)
-        axiosInstance.post("admin/gallery/addImages", formData)
+
+        const validName = z.string().safeParse(location.state?.name)
+        formData.append("galleryName", validName.data)
+       axiosInstance.post("admin/gallery/addImages", formData)
         .then(res => {
             if (res.status === 200) {
                 alert('Images uploaded successfully')
@@ -87,9 +110,8 @@ const AddImages = () => {
             if (types.includes(type.toLowerCase())) {
                 imgArray.push(file)
             }
-         
-      })
-      setIsLoading(false)
+        })
+        setIsLoading(false)
         setImages([...imgArray])
     }
 
@@ -102,7 +124,6 @@ const AddImages = () => {
 
 
     useEffect(() => {
-      
         if (!galleries.includes(location.state?.name)) {
             window.history.back()
         }
@@ -115,7 +136,7 @@ const AddImages = () => {
     }
 
     const compressImages = (images) => {
-        const resizedImages = images.map(async(image,index) => await resizeFile(image))
+        const resizedImages = images.map(async(image) => await resizeFile(image))
         const files = Promise.all(resizedImages)
         return files
     }

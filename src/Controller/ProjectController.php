@@ -194,53 +194,51 @@ class ProjectController extends AbstractController
             $video = $request->files->get('video');
             $oldVideo = $request->request->get('oldVideo');
             $oldImages = json_decode($request->request->get('oldImages'), true);
-
-            if (isset($data['name']) && !is_string($data['name']) && $data['name'] === "") {
+            
+            if (isset($data['name']) && is_string($data['name']) && $data['name'] !== "") {
                 $project->setName($data['name']);
             }
 
-            if (isset($data['yt']) && !filter_var($data['yt'], FILTER_VALIDATE_URL)) {
+            if (isset($data['yt']) && filter_var($data['yt'], FILTER_VALIDATE_URL) && $data['yt'] !== "") {
                 $project->setYoutubeVideo($data['yt']);
             }
 
-            if (isset($data['collab']) && !is_string($data['collab']) && $data['collab'] === "") {
+            if (isset($data['collab']) && is_string($data['collab']) && $data['collab'] !== "") {
                 $project->setCollabWith($data['collab']);
             }
-
-            if (isset($data['abrName']) && !is_string($data['abrName']) && $data['abrName'] === "") {
+            if (isset($data['abrName']) && is_string($data['abrName']) && $data['abrName'] !== "") {
                 $project->setAbrName($data['abrName']);
             }
             
-            if (isset($data['madeBy']) && !is_string($data['madeBy']) && $data['madeBy'] === "") {
+            if (isset($data['madeBy']) && is_string($data['madeBy']) && $data['madeBy'] !== "") {
                 $project->setMadeBy($data['madeBy']);
             }
 
-            if (isset($data['production']) && !is_string($data['production']) && $data['production'] === "") {
+            if (isset($data['production']) && is_string($data['production']) && $data['production'] !== "") {
                 $project->getProjectStaff()->setProduction($data['production']);
             }
 
-
-            if (isset($data['artists']) && !is_string($data['artists']) && $data['artists'] === "") {
+            if (isset($data['artists']) && is_string($data['artists']) ) {
                 $project->getProjectStaff()->setArtists($data['artists']);
             }
 
-            if (isset($data['montage']) && !is_string($data['montage']) && $data['montage'] === "") {
+            if (isset($data['montage']) && is_string($data['montage']) ) {
                 $project->getProjectStaff()->setMontage($data['montage']);
             }
 
-            if (isset($data['cadrage']) && !is_string($data['montage']) && $data['montage'] === "") {
+            if (isset($data['cadrage']) && is_string($data['montage']) ) {
                 $project->getProjectStaff()->setCadrage($data['cadrage']);
             }
 
-            if (isset($data['droniste'])&& !is_string($data['montage']) && $data['montage'] === "") {
+            if (isset($data['droniste'])&& is_string($data['montage']) ) {
                 $project->getProjectStaff()->setDroniste($data['droniste']);
             }
 
-            if (isset($data['phPlateau'])&& !is_string($data['montage']) && $data['montage'] === "") {
+            if (isset($data['phPlateau'])&& is_string($data['montage']) ) {
                 $project->getProjectStaff()->setPhPlateau($data['phPlateau']);
             }
 
-            if (isset($data['decorateurs'])&& !is_string($data['montage']) && $data['montage'] === "") {
+            if (isset($data['decorateurs'])&& is_string($data['montage']) ) {
                 $project->getProjectStaff()->setDecorateurs($data['decorateurs']);
             }
          
@@ -275,7 +273,7 @@ class ProjectController extends AbstractController
             }
 
             if($images){
-                $imageTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                $imageTypes = ['image/webp'];
                 $newImageNames = [];
                 foreach ($images as $index => $image ) {
                     if (getimagesize($image) === false){
@@ -322,7 +320,7 @@ class ProjectController extends AbstractController
     #[Route('/api/admin/project/new', name: 'app_project_new', methods: ['POST'])]
     public function newProject(EntityManagerInterface $em, Request $request): JsonResponse
     {
-        $data = $request->request->all();
+        $data =  $request->request->all();
         $images = $request->files->get('images');
         $video = $request->files->get('video');
       

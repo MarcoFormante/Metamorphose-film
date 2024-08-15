@@ -2281,6 +2281,9 @@ body:has(.fallback) {
   cursor: auto;
   width: 100%;
 }
+#p-update input:required {
+  border: 1px solid red;
+}
 
 .project_active {
   opacity: 1;

@@ -3,19 +3,22 @@ import { axiosInstance } from '../../../middleware/axiosInstance'
 import {  Link } from 'react-router-dom'
 import { Draggable } from "react-drag-reorder";
 import Fallback from '../../../components/Spinner/Fallback';
+import {purifyProjects} from '../../../security/Dompurify/purify'
+import {z} from 'zod'
 
 
 const Projects = () => {
   const [projects, setProjects] = useState([])
- const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
  
-
+//GET PROJECTS
   useEffect(()=>{
     axiosInstance.get('admin/projects')
     .then(res => {
       if (res.status === 200) {
         if (res.data.projects) {
-          setProjects(res.data.projects)
+          const purifiedProjects = purifyProjects(res.data.projects)
+          setProjects(purifiedProjects)
         }
       }
     }).catch(err => {
@@ -23,33 +26,47 @@ const Projects = () => {
     }).finally(()=> setLoading(false))
   },[])
 
-const PosChange = (currPos,newPos) => {
-  if (currPos === newPos) {
+
+//REORDER PROJECTS
+  const PosChange = (currPos,newPos) => {
+    if (currPos === newPos) {
+      return
+    }
+  //VALIDATE Values
+  const firstPos = z.string().safeParse(projects[currPos].id)
+  const secondPos = z.string().safeParse(projects[newPos].id)
+  if (!firstPos.success || !secondPos.success) {
+    alert("An error occured during reordering")
+    window.location.reload()
     return
   }
+  
   setLoading(true)
-  let newProjects = [...projects]
-  let project = newProjects.splice(currPos,1)
-  let projectID = project[0].id
-  let secondProjectID = projects[newPos].id
-  newProjects.splice(newPos,0,...project)
   const formdata = new FormData()
-  formdata.append("currId",projectID)
-  formdata.append("newId",secondProjectID)
+  formdata.append("currId",firstPos.data)
+  formdata.append("newId",secondPos.data)
   axiosInstance.post('admin/projects/reorder',formdata)
   .then(res => {
     if (res.status !== 200) {
       alert("An error occured during reordering")
+      setLoading(false)
       window.location.reload()
     }else{
-      setProjects(newProjects)
+      let newProjects = [...projects]
+      const first = newProjects[currPos]
+      const second = newProjects[newPos]
+      projects[currPos] = second
+      projects[newPos] = first
+      setProjects([...projects])
+      setLoading(false)
     }
   }).catch(err => {
     console.log(err)
+    setLoading(false)
     alert("An error occured during reordering")
     window.location.reload()
   });
-  setLoading(false)
+  
 }
 
   return (
@@ -57,7 +74,7 @@ const PosChange = (currPos,newPos) => {
       <h1>Projects</h1>
      { loading &&  <Fallback/>}
       <ul>
-       { projects.length > 0 && 
+       { projects.length > 0 && !loading && 
        <Draggable onPosChange={PosChange}>
         {projects.map((project,i) => {
         return (

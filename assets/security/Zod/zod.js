@@ -3,13 +3,13 @@ import {z} from 'zod';
 export const newProjectSchema = z.object({
     name: z.string().min(1,"Le nom du project est obligatoire").max(255,"Le nom du project ne doit pas dépasser 255 caractères"),
     abrName: z.string().min(1,"L'abréviation du project est obligatoire").max(255,"L'abréviation du project ne doit pas dépasser 255 caractères"),
-    yt: z.string().min(5).max(255,"Le lien youtube ne doit pas dépasser 255 caractères").refine((value) => {
+    yt: z.string().min(5,"YouTubeLink doit avoir aumoins 5 characters").max(255,"Le lien youtube ne doit pas dépasser 255 caractères").refine((value) => {
         if (!value.includes("youtube.com/watch?v=")) {
             return false
         }
        
         return true
-    }),
+    },"Le lien doit être un lien youtube valide"),
     collab: z.string().min(1,"Le nom du collaborateur est obligatoire").max(255,"Le nom du collaborateur ne doit pas dépasser 255 caractères"),
     video: z.instanceof(File).superRefine((f,ctx) => {
         if (!["video/mp4"].includes(f.type)) {
@@ -48,7 +48,7 @@ export const newProjectSchema = z.object({
             })
         }
 
-        if (f.size > (3 * 1024 * 1024)) {
+        if (f.size > (4 * 1024 * 1024)) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 message: "La taille du fichier IMAGE ne doit pas dépasser 3MB"
@@ -56,3 +56,13 @@ export const newProjectSchema = z.object({
     }}))
 })
 
+
+
+
+
+export const integerSchema = z.number().int().min(0).max(1000)
+
+export const ImagesSchemaAdmin = z.array(z.object({
+    src: z.string().min(1).max(255),
+    id: z.number().int().min(0)
+}))

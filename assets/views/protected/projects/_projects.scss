@@ -129,6 +129,10 @@
         cursor:auto;
         width: 100%;
     }
+
+    input:required{
+        border: 1px solid red;
+    }
 }
 
 .project_active{

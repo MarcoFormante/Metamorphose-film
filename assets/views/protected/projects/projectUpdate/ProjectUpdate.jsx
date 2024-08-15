@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Resizer from "react-image-file-resizer";
 import { axiosInstance } from '../../../../middleware/axiosInstance';
 import Fallback from '../../../../components/Spinner/Fallback';
-
+import { purifyProjectDataAdminPage } from '../../../../security/Dompurify/purify';
+import {z} from 'zod'
 
 const ProjectUpdate = () => {
   const location = useLocation()
@@ -36,7 +37,8 @@ const ProjectUpdate = () => {
     axiosInstance.get('admin/projectData/' + location.state)
     .then(res => {
       if (res.status === 200) {
-          const proj = res.data?.project
+          const data = res.data?.project
+          const proj = purifyProjectDataAdminPage(data)
           setProject(proj)
           setProjectActive(proj.isActive)
           setProjectName(proj.name)
@@ -78,12 +80,14 @@ const ProjectUpdate = () => {
     if (images.length !== 6) {
       return alert("You have to upload 6 images")
     }
+
+    let compressedImages = []
     const formData = new FormData()
     if (updatedValues.imgs.length > 0) {
       const ids = updatedValues.imgs.map(id=>id)
       const imgs = images.filter((img,index)=> ids.includes(img.id))
       formData.append('oldImages',JSON.stringify(ids))
-      const compressedImages = await compressImages(imgs)
+       compressedImages = await compressImages(imgs)
       if (!compressedImages) {
         return alert('An error occurred while compressing images, please try again')
       }
@@ -159,6 +163,8 @@ const ProjectUpdate = () => {
     if (updatedValues.decorateurs) {
       formData.append('decorateurs',decorateurs.trim())
     }
+
+
     setLoading(true)
     axiosInstance.post('admin/project/update',formData)
     .then(res => {
@@ -172,7 +178,7 @@ const ProjectUpdate = () => {
     }).catch(err => { 
       alert('An error occurred while updating project, please try again')
       setIsSubmit(false)
-    }).finally(()=> setLoading(false))
+    }).finally(()=> {setLoading(false),setIsSubmit(false)})
   }
 
   const handleVideo = (file) => {
@@ -180,6 +186,9 @@ const ProjectUpdate = () => {
     setNewVideo(true)
   }
 
+console.log(projectName);
+
+  
 
   const resizeFile = (file) =>
     new Promise((resolve) => {
@@ -239,7 +248,14 @@ const deleteProject = ()=>{
   const confirm = window.confirm("Are you suer to delete this project?")
   if (!confirm) return
   setLoading(true)
-  const id = location.state 
+  console.log(location.state);
+  const validateID = z.string().safeParse(location.state)
+  if (!validateID.success) {
+    alert("An error occurred during deleting the project. try again")
+    setLoading(false)
+    return
+  } 
+  const id = validateID.data
   axiosInstance.delete("admin/project/" + id)
   .then(res =>{
     if (res.status === 200) {
@@ -263,7 +279,7 @@ const projectActiveToggle = ()=>{
   axiosInstance.post("admin/project/active",formData)
   .then(res => {
       if (res.status === 200) {
-         setProjectActive(res.data?.isActive)
+         setProjectActive(res.data?.isActive.toString())
          alert("Project Updated")
          
       }else{
@@ -310,13 +326,14 @@ useEffect(()=>{
 },[moreStaffFieldsCounter])
 
 
+console.log(projectActive);
 
   return projectActive !== null && (
     <div className='admin-projects' id='p-update'>
       {loading && <Fallback/>}
         <h1>Update Project</h1>
         <div className='flex-container'>
-            <button onClick={projectActiveToggle} className={`active-btn ${projectActive === false ? "active-btn-off" : "active-btn-on"}`}>{projectActive === true ? "Active" : "Not Active"}</button>
+            <button onClick={projectActiveToggle} className={`active-btn ${projectActive === "true" ? "active-btn-on" : "active-btn-off"}`}>{projectActive === "true" ? "Active" : "Not Active"}</button>
             <button onClick={deleteProject} className='delete-btn'>Delete Project</button>
         </div>
         
@@ -324,7 +341,7 @@ useEffect(()=>{
         <div>
           <div className='inpt-container'>
               <label htmlFor='p-name'>Nom du projet</label>
-              <input type='text' id='p-name' name='p-name' value={projectName} onChange={(e)=>{
+              <input type='text' id='p-name' name='p-name' value={projectName} required={!projectName} onChange={(e)=>{
                   setUpdatedValues({...updatedValues,projectName:e.target.value !== projectName })
                   setProjectName(e.target.value)
               }
@@ -333,7 +350,7 @@ useEffect(()=>{
             
             <div className='inpt-container'>
               <label htmlFor='p-name-abr'>Nom pour petits ecrans</label>
-              <input type='text' id='p-name-abr' name='p-name-abr' value={abrName} onChange={(e)=>
+              <input type='text' id='p-name-abr' name='p-name-abr' value={abrName} required={!abrName} onChange={(e)=>
               { 
                   setUpdatedValues({...updatedValues,abrName:e.target.value !== abrName})
                   setAbrName(e.target.value)
@@ -343,7 +360,7 @@ useEffect(()=>{
 
             <div className='inpt-container'>
             <label htmlFor='p-staff-madeby'>Realisé par</label>
-            <input type='text' id='p-staff-madeby' name='p-staff-madeby'  value={madeBy} onChange={(e)=>{
+            <input type='text' id='p-staff-madeby' name='p-staff-madeby' required={!madeBy}  value={madeBy} onChange={(e)=>{
               setMadeBy(e.target.value)
               setUpdatedValues({...updatedValues,madeBy:e.target.value !== madeBy})
             }} />
@@ -351,7 +368,7 @@ useEffect(()=>{
 
             <div className='inpt-container'>
               <label htmlFor='p-ytb'>YouTube Link</label>
-              <input type='text' id='p-ytb' value={youtubeLink} onChange={(e)=>{
+              <input type='text' id='p-ytb' value={youtubeLink}  required={!youtubeLink} onChange={(e)=>{
                 setYoutubeLink(e.target.value)
                 setUpdatedValues({...updatedValues,youtubeLink:e.target.value !== youtubeLink})
               }
@@ -360,7 +377,7 @@ useEffect(()=>{
 
             <div className='inpt-container'>
               <label htmlFor='p-coll'>Collab avec</label>
-              <input type='text' id='p-coll' value={collab} onChange={(e)=>{
+              <input type='text' id='p-coll' value={collab} required={!collab} onChange={(e)=>{
                 setCollab(e.target.value)
                 setUpdatedValues({...updatedValues,collab:e.target.value !== collab})
                 }} name='p-coll'/>
@@ -370,7 +387,7 @@ useEffect(()=>{
               <h2>Background Video</h2>
               <div className='inpt-container'>
                 <label htmlFor='p-bg-v'>BG video</label>
-                <input type='file' id='p-bg-v' name='p-bg-v' accept='.mp4' onChange={(e)=>{
+                <input type='file' id='p-bg-v' name='p-bg-v' required={!newVideo && !lastVideo} accept='.mp4' onChange={(e)=>{
                   handleVideo(e.target.files[0])
                   setUpdatedValues({...updatedValues,video:true})
                 }}/>
@@ -390,7 +407,7 @@ useEffect(()=>{
           <div className='p-images-container'>
               {images.map((img,index)=>
               <div key={img.id}>
-                <input type='file' className='pointer' id={'p-images'+ index} name={'p-images' + index} accept='.jpg,.jpeg,.png,.webp'  onChange={(e)=>handleImages(e.target.files[0],index,img.id)}/>
+                <input type='file' className='pointer' required={!img.src} id={'p-images'+ index} name={'p-images' + index} accept='.jpg,.jpeg,.png,.webp'  onChange={(e)=> e.target.files[0]  ? handleImages(e.target.files[0],index,img.id) : null}/>
                 { updatedValues.imgs.includes(img.id) ?  
                 <img key={index} src={ URL.createObjectURL(img.src) } alt=''/>
                   : <img key={index} src={"/assets/uploads/images/projects/" + img.src} alt=''/>
@@ -409,7 +426,7 @@ useEffect(()=>{
         <div>
           <div className='inpt-container'>
             <label htmlFor='p-staff-production'>Production</label>
-            <input type='text' id='p-staff-production' name='p-staff-production' value={production} onChange={(e)=>{
+            <input type='text' id='p-staff-production' required={!production} name='p-staff-production' value={production} onChange={(e)=>{
               setProduction(e.target.value)
               setUpdatedValues({...updatedValues,production:e.target.value !== production})
               }} />

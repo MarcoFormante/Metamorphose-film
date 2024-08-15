@@ -4,7 +4,8 @@ import { axiosInstance } from '../../../middleware/axiosInstance'
 import Fallback from '../../../components/Spinner/Fallback'
 import { ShowImage } from '../../../components/ShowImage/ShowImage'
 import { Draggable } from 'react-drag-reorder'
-
+import {z} from 'zod'
+import { purifyImagesAdminPage } from '../../../security/Dompurify/purify'
 
 const galleries=[
     "Concert",
@@ -20,7 +21,6 @@ const [images, setImages] = useState([])
 const [isLoading, setIsLoading] = useState(true)
 const [isShowingImage,setIsShowingImage] = useState(false)
 const [imgSrc,setImgSrc] = useState(null)
-const [loading, setLoading] = useState(false)
 
 
     useEffect(() => {
@@ -45,10 +45,17 @@ const [loading, setLoading] = useState(false)
     useEffect(() => {
         const getImages = async() => {
             setIsLoading(true)
-            axiosInstance.get(`/gallery/${param.name}`)
+            const validParam = z.string().safeParse(param.name)
+            if (!validParam.success) {
+                setIsLoading(false)
+                return
+            }
+            axiosInstance.get(`/gallery/${validParam.data}`)
             .then((res)=>{
                 if(res.status === 200){
-                    setImages(res.data.images)
+                    const purifyImages= purifyImagesAdminPage(res.data?.images)
+                    console.log(purifyImages);
+                    setImages(purifyImages)
                     setIsLoading(false)
                 }
                 if (res?.data?.error) {
@@ -62,15 +69,17 @@ const [loading, setLoading] = useState(false)
             getImages()
     }, [])
 
+
+
     const deleteImg = (id) => {
         setIsLoading(true)
-        axiosInstance.delete(`admin/gallery/image/${id}`)
+        const validID = z.string().safeParse(id)
+        axiosInstance.delete(`admin/gallery/image/${validID.data}`)
         .then(res => {
             if(res.status === 200){
-                const newImages = images.filter(img => img.id !== id)
+                const newImages = images.filter(img => img.id !== validID.data)
                 setImages([...newImages])
                 alert('Image deleted successfully')
-              
             }else{
                 alert('An error occured during deletion')
             }
@@ -83,34 +92,41 @@ const [loading, setLoading] = useState(false)
 
 
     const PosChange = (currPos,newPos) => {
-        console.log(currPos,newPos);
         if (currPos === newPos) {
             return
-            
         }
-        setLoading(true)
-        const  newImages = [...images]
-        let firstImage = newImages.splice(currPos,1)
-        let firstImageID = firstImage[0].id
-        let secondImageID = newImages[newPos].id
-        newImages.splice(newPos,0,...images)
+        setIsLoading(true)
+        const firstImageID = images[currPos].id
+        const secondImageID = images[newPos].id
+        const validaFirstID = z.string().safeParse(firstImageID)
+        const validaSecondID = z.string().safeParse(secondImageID)
         const formdata = new FormData()
-        formdata.append("currId",firstImageID)
-        formdata.append("newId",secondImageID)
+        formdata.append("currId",validaFirstID.data)
+        formdata.append("newId",validaSecondID.data)
         axiosInstance.post('admin/gallery/image/reorder',formdata)
         .then(res => {
           if (res.status !== 200) {
             alert("An error occured during reordering")
+            setImages([...images])
+            setIsLoading(false)
             window.location.reload()
           }else{
-            setImages(newImages)
+            const newImages = [...images]
+            const first = newImages[currPos]
+            const second = newImages[newPos]
+            images[currPos] = second
+            images[newPos] = first
+            setImages([...images])
+            setIsLoading(false)
           }
         }).catch(err => {
           console.log(err)
           alert("An error occured during reordering")
+          setIsLoading(false)
+          setImages([...images])
           window.location.reload()
         });
-        setLoading(false)
+        
       }
 
   return (
@@ -127,11 +143,11 @@ const [loading, setLoading] = useState(false)
     
         <div className="gallery-images">
            { !isLoading && <ul>
-            {images.length > 0 ?
-            <Draggable draggable onPosChange={PosChange} >
+            {images.length > 0 &&  !isLoading  ?
+           <Draggable  onPosChange={PosChange} >
                 {images.map((img, index) => {
                     return (
-                        <li draggable key={img.id} className="gallery-images__img-container">
+                        <li  key={img.id} className="gallery-images__img-container">
                             <img onClick={(e)=>showImage(e,index)} src={"/assets/uploads/images/galleries/" + img.src} alt="Img-gallery" />
                             <span onClick={()=>deleteImg(img.id)}>X</span>
                         </li>
