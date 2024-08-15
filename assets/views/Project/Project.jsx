@@ -29,6 +29,9 @@ const Project = () => {
             if (sessionStorage.getItem("projects")) {
                 const JsonProjects = JSON.parse(sessionStorage.getItem("projects"))
                 const purifiedProjects = purifyProjects(JsonProjects)
+                if (!purifiedProjects) {
+                    throw new Error("Error parsing projects")
+                }
                 setAllProjects(purifiedProjects)
             }
         } catch (error) {
@@ -75,6 +78,8 @@ const Project = () => {
             }).finally(()=>{
                 setLoading(false)
             })
+        }else if(location.state?.project?.name && !sessionStorage.getItem("projects")){
+            navigate("/")
         }
     },[param])
     
