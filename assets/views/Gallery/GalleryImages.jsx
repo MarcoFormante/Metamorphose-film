@@ -57,7 +57,7 @@ const GalleryImages = () => {
             if (res.status === 200) {
                 const dataImages = res.data?.images
                 const purifiedImgs = purifyImages(dataImages)
-                sessionStorage.setItem("gallery-"+location.state,JSON.stringify(purifyImages))
+                sessionStorage.setItem("gallery-" + location.state,JSON.stringify(purifiedImgs))
                 setImages(purifiedImgs)
             }
         }).catch(err => console.error("error fetching images"))

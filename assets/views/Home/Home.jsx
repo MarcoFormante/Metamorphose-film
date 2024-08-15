@@ -9,9 +9,12 @@ import { purifyProjects } from '../../security/Dompurify/purify';
 
 const Home = () => {
     const [projects,setProjects] = useState([])
+    
+    
 
     useEffect(()=>{
         try {
+            
             if (sessionStorage.getItem("projects") && !sessionStorage.getItem("token-ad")) {
                 const jsonProjects = JSON.parse(sessionStorage.getItem("projects"))
                 const purifiedProjects = purifyProjects(jsonProjects)

@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { Routes, Route, useLocation, Outlet, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, Outlet, Navigate, useNavigate  } from 'react-router-dom';
 import  Fallback  from './components/Spinner/Fallback';
 import { HelmetProvider } from 'react-helmet-async';
 import './styles/app.css';
@@ -40,6 +40,7 @@ const colorMap = {
  * App component
  * 
  */
+
 function App() {
   const [isShowingPages, setIsShowingPages] = useState(false);
   const [isAuth, setIsAuth] = useState(sessionStorage.getItem("token-ad"));
@@ -61,6 +62,66 @@ function App() {
     }
   };
   },[token])
+
+  useEffect(()=>{
+    if (!sessionStorage.getItem("reload")) {
+      sessionStorage.setItem("reload", new Date().getTime());
+    }
+  },[])
+
+
+  const handleFocus = () => {
+    console.log("asdasd");
+    
+    if (sessionStorage.getItem("token-ad") && pathname.includes("admin")) {
+      return;
+    }
+    if (!sessionStorage.getItem("reload")) {
+      sessionStorage.setItem("reload", new Date().getTime());
+    } else {
+      if (!pathname.match(/projet|galerie\//) || !pathname.includes("/")) {
+        return;
+      }
+      const lastTime = parseInt(sessionStorage.getItem("reload"), 10);
+      const currentTime = new Date().getTime();
+      const diff = currentTime - lastTime;
+      const twoHours = 1000 * 4;
+      if (diff > twoHours) {
+        sessionStorage.clear();
+        sessionStorage.setItem("reload", new Date().getTime());
+        window.location.reload();
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("focus", ()=>{
+      const lastTime = parseInt(sessionStorage.getItem("reload"), 10);
+      const currentTime = new Date().getTime();
+      const diff = currentTime - lastTime;
+      const twoHours = 1000 * 60 * 60 * 2;
+      if (diff > twoHours) {
+        sessionStorage.clear();
+        sessionStorage.setItem("reload", new Date().getTime());
+        window.location.reload();
+      }
+    });
+
+    return () => {
+      window.removeEventListener("focus", ()=>{
+        const lastTime = parseInt(sessionStorage.getItem("reload"), 10);
+        const currentTime = new Date().getTime();
+        const diff = currentTime - lastTime;
+        const twoHours = 1000 * 60 * 60 * 2;
+        if (diff > twoHours) {
+          sessionStorage.clear();
+          sessionStorage.setItem("reload", new Date().getTime());
+          window.location.reload();
+        }
+      });
+  }},[]);
+
+
 
 
   
