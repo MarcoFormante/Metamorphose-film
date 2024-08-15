@@ -194,11 +194,11 @@ export default App;
 
 
 const ProtectedRoute = ({isAuth,setIsAuth})=>{
-
+  const navigate = useNavigate()
   const logout = ()=>{
     delete axiosInstance.defaults.headers.common['Authorization']
-    sessionStorage.removeItem("token-ad")
-    sessionStorage.removeItem("csrfToken")
+    sessionStorage.clear()
+    navigate("/")
     setIsAuth(false)
   }
 
