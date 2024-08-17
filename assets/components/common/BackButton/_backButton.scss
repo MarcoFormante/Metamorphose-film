@@ -1,0 +1,15 @@
+button.backButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    font-family: Poppins, sans-serif;
+    font-style: normal;
+    margin-bottom: 40px;
+    border: none;
+    cursor: pointer;
+    span{
+        color: $white;
+    }
+}

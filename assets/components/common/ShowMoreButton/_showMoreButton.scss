@@ -1,0 +1,36 @@
+
+
+.moreItems-btn{
+    border: 1px solid #ffffff;
+    color: #fff;
+    padding: 5px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    cursor: pointer;
+    max-width: 200px;
+    border-radius: 20px;
+    margin-bottom: 60px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    &:hover{
+        background-color: $white;
+        color: $black;
+    }
+
+    &:active{
+        background-color: $white;
+        color: $black;
+    }
+
+    &:not(:active):not(:hover){
+        background-color: $black;
+        color: $white;
+    }
+    &--hidden{
+        display: none;
+    }
+}
+
