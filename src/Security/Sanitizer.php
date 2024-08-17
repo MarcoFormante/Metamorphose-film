@@ -8,7 +8,8 @@ class Sanitizer extends AbstractController
    
     public function sanitize($value,string $type)
     {
-        if (empty($value)) {
+        
+        if (empty($value) && $value !== "0") {
             return "";
         }
         switch($type){
@@ -25,10 +26,10 @@ class Sanitizer extends AbstractController
                 return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
                 break;
             case "int":
-                if (!filter_var($value, FILTER_VALIDATE_INT)) {
+                if (!is_numeric($value) ) {
                     throw new Exception("Invalid Int");
                 }
-                return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                return (int)$value;
                 break;
 
             case "arrayString":

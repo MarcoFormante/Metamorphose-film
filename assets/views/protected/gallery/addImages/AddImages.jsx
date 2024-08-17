@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ShowImage } from '../../../../components/ShowImage/ShowImage'
 import { axiosInstance } from '../../../../middleware/axiosInstance'
-import Fallback from '../../../../components/Spinner/Fallback'
+import Fallback from '../../../../components/UI/Spinner/Spinner'
 import Resizer from "react-image-file-resizer";
 import { z } from 'zod'
 

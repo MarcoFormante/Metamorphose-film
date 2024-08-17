@@ -64,8 +64,21 @@
 
 
 .gallery__images{
-  padding: 24px;
+  padding: 0 24px 24px 24px;
   
+
+  .spinner{
+    animation: spin 1s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-hidden{
+      display: none;
+    }
+  }
+
+
     .back{
       position: relative;
       top: -15px;
@@ -207,10 +220,31 @@
     img{
       width: 100%;
       object-fit: cover;
+      animation: fadein 1s linear;  
     }
    }
   }
 
 
    
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+  
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { GalleryItem } from '../../components/Galerie/GalerieItem'
-import Fallback from '../../components/Spinner/Fallback'
+import Fallback from '../../components/UI/Spinner/Spinner'
 
 const galleries=[
   {

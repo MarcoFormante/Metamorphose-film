@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { axiosInstance } from '../../middleware/axiosInstance'
 import { useNavigate } from 'react-router-dom'
-import Fallback from '../../components/Spinner/Fallback'
+import Fallback from '../../components/UI/Spinner/Spinner'
 
 
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Resizer from "react-image-file-resizer";
 import { axiosInstance } from '../../../../middleware/axiosInstance';
-import Fallback from '../../../../components/Spinner/Fallback';
+import Fallback from '../../../../components/UI/Spinner/Spinner';
 import { purifyProjectDataAdminPage } from '../../../../security/Dompurify/purify';
 import {z} from 'zod'
 

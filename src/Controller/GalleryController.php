@@ -31,9 +31,56 @@ class GalleryController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/api/gallery/{name}', name: 'app_gallery', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9_]+$'])]
-    public function index(string $name, EntityManagerInterface $em): JsonResponse
+    public function index(string $name, EntityManagerInterface $em,Request $request): JsonResponse
     {
         try {
+            $offset = $this->s->sanitize($request->query->get('offset'),"int");
+            $total = 0;
+            if ((int)$offset < 1) {
+                $imagesCount = $em->createQueryBuilder()
+                ->select('COUNT(g)')
+                ->from(GalleryImages::class, 'g')
+                ->where('g.gallery_name = :gallery_name')
+                ->setParameter('gallery_name', $this->s->sanitize($name,"string"))                
+                ->getQuery()
+                ->getResult();
+
+                if(is_integer($imagesCount[0][1])){
+                    $total = $imagesCount[0][1];
+                }
+            }
+            
+            $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $this->s->sanitize($name,"string")], ['order_index' => 'ASC'], 10, $offset * 10);
+
+            if (!$gallery) {
+                throw new NotFoundHttpException('The gallery was not found.');
+            }
+           
+            $images = [];
+    
+            foreach ($gallery as $gallery) {
+                if ($this->isGranted("ROLE_ADMIN")) {
+                    $images[] = ["src" => $gallery->getSrc(),"id" => $gallery->getId()];
+                }else{
+                    $images[] = ["src" => $gallery->getSrc(),];
+                }
+            }
+        } catch (\Throwable $th) {
+            $this->logger->error($th->getMessage());
+            return $this->json(['error' => 'An error occurred getting Gallery'], 500);
+        }
+       
+        return $this->json(['images' => $images,"total" => $total],200);
+    }
+
+
+    #[Route('/api/admin/gallery', name: 'app_gallery_admin', methods: ['POST'], requirements: ['name' => '^[a-zA-Z0-9_]+$'])]
+    public function getAdminGallery(EntityManagerInterface $em,Request $request): JsonResponse
+    {
+        $name = $request->request->get('galleryName');
+      
+        try {
+            
             $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $this->s->sanitize($name,"string")], ['order_index' => 'ASC']);
 
             if (!$gallery) {
@@ -46,7 +93,7 @@ class GalleryController extends AbstractController
                 if ($this->isGranted("ROLE_ADMIN")) {
                     $images[] = ["src" => $gallery->getSrc(),"id" => $gallery->getId()];
                 }else{
-                    $images[] = ["src" => $gallery->getSrc()];
+                    $images[] = ["src" => $gallery->getSrc(),];
                 }
             }
         } catch (\Throwable $th) {
@@ -103,73 +150,68 @@ class GalleryController extends AbstractController
     #[Route('/api/admin/gallery/addImages', name: 'app_gallery_image_add', methods: ['POST'] )]
     public function addImages(Request $request, EntityManagerInterface $em): JsonResponse
     {
-
-    try {
+        try {
         
-        $galleries=[
-            "Concert",
-            "Tournage",
-            "Studio",
-            "Evenements"
-        ];
-
-        $galleryName = $this->s->sanitize($request->get('galleryName'),"string");
-        if (!$galleryName) {
-            return $this->json(['error' => 'Gallery name is required'], 400);
-        }
-
-        if (!is_string($galleryName)) {
-            return $this->json(['error' => 'Gallery name is required'], 400);
-        }
-        if(!in_array($galleryName, $galleries)){
-            return $this->json(['error' => 'Gallery name is invalid'], 400);
-        }
-       
-
-        $images = $request->files->get('images');
+            $galleries=[
+                "Concert",
+                "Tournage",
+                "Studio",
+                "Evenements"
+            ];
+            $galleryName = $this->s->sanitize($request->get('galleryName'),"string");
+            if (!$galleryName) {
+                return $this->json(['error' => 'Gallery name is required'], 400);
+            }
+            if (!is_string($galleryName)) {
+                return $this->json(['error' => 'Gallery name is required'], 400);
+            }
+            if(!in_array($galleryName, $galleries)){
+                return $this->json(['error' => 'Gallery name is invalid'], 400);
+            }
         
-        if (!$images) {
-            return $this->json(['error' => 'Images are required'], 400);
-        }
+            $images = $request->files->get('images');
+            
+            if (!$images) {
+                return $this->json(['error' => 'Images are required'], 400);
+            }
+            $imageTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        
+            $errors = [];
+            $qb = $em->createQueryBuilder();
+            $qb->select('MAX(g.order_index)')
+                ->from(GalleryImages::class, 'g')
+                ->where('g.gallery_name = :galleryName')
+                ->setParameter('galleryName', $galleryName);
+            $maxOrderIndex = $qb->getQuery()->getSingleScalarResult();
+            $orderIndex = $maxOrderIndex ? $maxOrderIndex + 1 : 0;
+        
+        
+            foreach ($images as $index => $image) {
+                if (getimagesize($image) === false){
+                    return $this->json(['error' => 'Invalid image'], 400);
+                }
+                if (!in_array(getimagesize($image)['mime'], $imageTypes)) {
+                    return $this->json(['error' => 'Invalid image type'], 400);
+                }
+                $newImage = new GalleryImages();
+                $newImage->setGalleryName($galleryName);
+                $randomName = uniqid("g-img",true);
+                $newImage->setSrc($randomName . $this->s->sanitize($image->getClientOriginalName(),"string"));
+                $newImage->setOrderIndex($orderIndex + $index);
+                $em->persist($newImage);
+                if(!$image->move("assets/uploads/images/galleries/", $randomName .  $this->s->sanitize($image->getClientOriginalName(),"string"))){
+                    $errors[] = ['error' => 'Image not uploaded. name: ' . $this->s->sanitize($image->getClientOriginalName(),"string")];
+                }
+            }
+            if ($errors) {
+            return  $this->json(["error"=>$errors], 400);
+            }
+            $em->flush();
 
-        $imageTypes = ['image/jpeg', 'image/png', 'image/webp'];
-       
-        $errors = [];
-        $qb = $em->createQueryBuilder();
-        $qb->select('MAX(g.order_index)')
-            ->from(GalleryImages::class, 'g')
-            ->where('g.gallery_name = :galleryName')
-            ->setParameter('galleryName', $galleryName);
-        $maxOrderIndex = $qb->getQuery()->getSingleScalarResult();
-        $orderIndex = $maxOrderIndex ? $maxOrderIndex + 1 : 0;
-       
-    
-        foreach ($images as $index => $image) {
-            if (getimagesize($image) === false){
-                return $this->json(['error' => 'Invalid image'], 400);
-            }
-            if (!in_array(getimagesize($image)['mime'], $imageTypes)) {
-                return $this->json(['error' => 'Invalid image type'], 400);
-            }
-            $newImage = new GalleryImages();
-            $newImage->setGalleryName($galleryName);
-            $randomName = uniqid("g-img",true);
-            $newImage->setSrc($randomName . $this->s->sanitize($image->getClientOriginalName(),"string"));
-            $newImage->setOrderIndex($orderIndex + $index);
-            $em->persist($newImage);
-            if(!$image->move("assets/uploads/images/galleries/", $randomName .  $this->s->sanitize($image->getClientOriginalName(),"string"))){
-                $errors[] = ['error' => 'Image not uploaded. name: ' . $this->s->sanitize($image->getClientOriginalName(),"string")];
-            }
+        }catch (\Throwable $th) {
+            $this->logger->error($th->getMessage());
+            return $this->json(['error' => 'An error occurred adding Images'], 500);
         }
-        if ($errors) {
-           return  $this->json(["error"=>$errors], 400);
-        }
-        $em->flush();
-
-    } catch (\Throwable $th) {
-        $this->logger->error($th->getMessage());
-        return $this->json(['error' => 'An error occurred adding Images'], 500);
-    }
         return $this->json(['success' => 'Images added'], 200);
     }
 

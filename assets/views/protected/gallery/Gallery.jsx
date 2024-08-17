@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState} from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { axiosInstance } from '../../../middleware/axiosInstance'
-import Fallback from '../../../components/Spinner/Fallback'
+import Fallback from '../../../components/UI/Spinner/Spinner'
 import { ShowImage } from '../../../components/ShowImage/ShowImage'
 import { Draggable } from 'react-drag-reorder'
 import {z} from 'zod'
@@ -50,11 +50,17 @@ const [imgSrc,setImgSrc] = useState(null)
                 setIsLoading(false)
                 return
             }
-            axiosInstance.get(`/gallery/${validParam.data}`)
+            const data = {
+                galleryName: validParam.data
+            };
+            axiosInstance.post(`admin/gallery`,data,{
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
             .then((res)=>{
                 if(res.status === 200){
                     const purifyImages= purifyImagesAdminPage(res.data?.images)
-                    console.log(purifyImages);
                     setImages(purifyImages)
                     setIsLoading(false)
                 }

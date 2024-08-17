@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route, useLocation, Outlet, Navigate, useNavigate  } from 'react-router-dom';
-import  Fallback  from './components/Spinner/Fallback';
+import Fallback from './components/UI/Spinner/Spinner';
 import { HelmetProvider } from 'react-helmet-async';
 import './styles/app.css';
 

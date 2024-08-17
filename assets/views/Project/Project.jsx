@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
 import { axiosInstance } from '../../middleware/axiosInstance';
 import ProjectStaff from './ProjectStaff';
-import Fallback from '../../components/Spinner/Fallback';
+import Fallback from '../../components/UI/Spinner/Spinner';
 import { purifyProjects,purifyProjectData } from '../../security/Dompurify/purify';
 
 
