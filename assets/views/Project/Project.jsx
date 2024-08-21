@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import ReactPlayer from 'react-player';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
-import { axiosInstance } from '../../middleware/axiosInstance';
 import ProjectStaff from './ProjectStaff';
 import Fallback from '../../components/UI/Spinner/Spinner';
-import { purifyProjects,purifyProjectData } from '../../security/Dompurify/purify';
+import { purifyProjects } from '../../security/Dompurify/purify';
+import { getProjectByName } from '../../api/projectsApi';
 
 
 const Project = () => {
     const location = useLocation()
     const [showAssets, setShowAssets] = useState(false)
-    const [projectData,setProjectData] = useState([])
-    const [loading,setLoading] = useState(true)
+    const [loading,setLoading] = useState(false)
     const [nextProject,SetNextProject] = useState(null)
     const [lastProject,setLastProject] = useState(null)
-    const [project,setProject] = useState(null)
+    const [project,setProject] = useState(location.state?.project || null)
     const [projectIndex,setProjectIndex] = useState(location.state?.index)
     const [allProjects,setAllProjects] = useState(null)
     const [fade,setFade] = useState(false)
     const navigate = useNavigate()
     const param = useParams()
 
-
-
+    
 
     useEffect(()=>{
         try {
@@ -35,15 +33,17 @@ const Project = () => {
                 setAllProjects(purifiedProjects)
             }
         } catch (error) {
-            console.log("Error parsing projects");
+            console.log(error);
             navigate("/")
         }
     },[])
 
+
+
     useEffect(()=>{
         if (showAssets) {
             window.scrollTo({
-                top: 400,
+                top: 700,
                 behavior: 'smooth'
             })
         }else{
@@ -54,62 +54,33 @@ const Project = () => {
         }
     },[showAssets])
 
-
-    
+    const fetchProject = async () => {
+        try {
+            const projectByName = await getProjectByName(param.name)
+            const purifiedProject =  purifyProjects(projectByName)
+            setProject(purifiedProject[0])
+            setLoading(false)
+        } catch (error) {
+            console.log(error);
+            navigate("/")
+        }finally{
+            setLoading(false)
+        }
+    }
 
     useEffect(()=>{
         if (param.name && !location.state?.project?.name) {
             setLoading(true)
             setProject({})
             setShowAssets(false)
-            setProjectData([])
-          
-            axiosInstance.get("projectByName/" + param?.name)
-            .then(res => {
-                if (res.status === 200) {
-                    const project = res.data.project
-                    const purifiedProjects = purifyProjects(project)
-                    setProject(purifiedProjects[0])
-                }else{
-                    return navigate("/")
-                }
-            }).catch(()=>{
-                return navigate("/")
-            }).finally(()=>{
-                setLoading(false)
-            })
+            fetchProject()
         }else if(location.state?.project?.name && !sessionStorage.getItem("projects")){
             navigate("/")
         }
     },[param])
-    
 
 
     useEffect(()=>{
-        if (!projectData.staff && showAssets) {
-            setLoading(true)
-            axiosInstance.get("projectData/" + project.id)
-            .then(res => {
-                if (res.status === 200) {
-                    const resProjectData = purifyProjectData(res.data.projectData)
-                    setProjectData(resProjectData)
-                }else{
-                    console.error("Error: no project data")
-                    navigate("/")
-                }
-            }).catch(err=>{
-                console.error("Error: no project data")
-                navigate("/")
-            }).finally(()=>{
-                setLoading(false)
-            })
-        }       
-    },[showAssets,projectData])
-
-
-
-    useEffect(()=>{
-
         const timeout = setTimeout(()=>{
             setFade(false)
         },400)
@@ -118,8 +89,6 @@ const Project = () => {
             setFade(true)
             setProject(null)
             setShowAssets(false)
-            setProjectData([])
-          
             if (!allProjects) {
                 return
             }
@@ -142,17 +111,16 @@ const Project = () => {
         }else{
             setProject(null)
             setShowAssets(false)
-            setProjectData([])
         }
 
         return ()=> clearTimeout(timeout)
-    },[projectIndex,allProjects])
+    },[projectIndex,allProjects,location.state?.project.name])
 
 
 
   return project && (
+    
     <article className={`production ${fade ? "production-fadein" :""}`}>
-      
         <div className='last-next-btns-container'>
             {lastProject && <span className='last'>
                 <Link onClick={()=>setProjectIndex(prev => prev > 0 ? prev - 1 : 0)} to={"/projet/" + lastProject.name} state={{project:lastProject,index:projectIndex - 1}}>{"<"}</Link>
@@ -173,34 +141,29 @@ const Project = () => {
          width="100%"
          height="100vh"
     />
-       </div>
-    
-        <h1 className='production__title'>{project?.name}</h1>
+        </div>
+            <h1 className='production__title'>{project?.name}</h1>
             <h2>Realisé par</h2>
             {project?.made_by && 
-            <ul>
-                {project?.made_by?.split(',').map((r, i) => <li key={i}>{r}</li>)}
-            </ul>
+                <ul>
+                    {project?.made_by?.split(',').map((r, i) => <li key={i}>{r}</li>)}
+                </ul>
             }
-            
-        
-        <div>
-            <ReactPlayer className={"react-player"}  width={1000} height={500} controls  url={project?.youtube_video} preload="none"  style={{margin:"10px auto",height:500,objectFit:"cover"}} /> 
-            <div className={`production__show-assets ${!showAssets ? "production__show-assets__off" : "production__show-assets__on" }`} onClick={()=>setShowAssets(!showAssets)}>
-            <span></span>
-            <span></span>
+            <div>
+                <ReactPlayer className={"react-player"}  width={1000} height={500} controls  url={project?.youtube_video} preload="none"  style={{margin:"10px auto",height:500,objectFit:"cover"}} /> 
+                <div className={`production__show-assets ${!showAssets ? "production__show-assets__off" : "production__show-assets__on" }`} onClick={()=>setShowAssets(!showAssets)}>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-        </div>
-       
         <div className={`production__project-assets ${!showAssets && "production__project-assets__hidden"}`}> 
         {loading  && <Fallback inline={true}/>}
-            { projectData.staff && 
+            { showAssets && 
                 <>
-                    {!loading && <ProjectStaff projectData={projectData} project={project}/>}
+                    <ProjectStaff project={project}/>
                 </>
             }
         </div>
-        
     </article>
   )
 }

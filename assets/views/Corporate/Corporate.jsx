@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { qualities } from './utils'
-import Quality from '../../components/About/Quality'
+import Quality from '../About/Quality';
 import ReactCardFlip from 'react-card-flip';
 
 const Corporate = () => {

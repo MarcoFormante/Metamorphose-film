@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Resizer from "react-image-file-resizer";
-import { axiosInstance } from '../../../../middleware/axiosInstance';
+import { axiosInstance } from '../../../../api/axiosInstance';
 import Fallback from '../../../../components/UI/Spinner/Spinner';
 import { purifyProjectDataAdminPage } from '../../../../security/Dompurify/purify';
 import {z} from 'zod'
@@ -58,7 +58,12 @@ const ProjectUpdate = () => {
           setImages(proj.images)
           setLastVideo(proj.background_video)
           setProjectActive(proj.isActive)
+      }else{
+        navigate("/admin/home/")
       }
+    }).catch(err => {
+      console.log(err);
+      navigate("/admin/home/")
     })
   },[])
 
@@ -191,8 +196,6 @@ const ProjectUpdate = () => {
     setNewVideo(true)
   }
 
-console.log(projectName);
-
   
 
   const resizeFile = (file) =>
@@ -250,7 +253,7 @@ const resetVideo = (e) => {
 
 
 const deleteProject = ()=>{
-  const confirm = window.confirm("Are you suer to delete this project?")
+  const confirm = window.confirm("Are you sure to delete this project?")
   if (!confirm) return
   setLoading(true)
   const validateID = z.string().safeParse(location.state)

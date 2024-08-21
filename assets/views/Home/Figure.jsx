@@ -1,18 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactPlayer from 'react-player'
 import { Link, useNavigate } from 'react-router-dom'
 
-export const Figure = ({project,index,}) => {
-const navigate = useNavigate()
-
+const Figure = ({project,index,}) => {
+  const navigate = useNavigate()
 
   return project && (
     <>
       <figure  className={`carousel__player__container ${isMobile ? "carousel__player__container__mobile" : ""}`}>
         { project.background_video && 
-        <ReactPlayer className="carousel__player"  
-              url={ "assets/uploads/videos/" +  project.background_video }
+        <ReactPlayer  className="carousel__player"  
+              url={  "assets/uploads/videos/" +  project.background_video }
               playing
               loop
               muted
@@ -30,3 +29,6 @@ const navigate = useNavigate()
     </>
   )
 }
+
+
+export default Figure

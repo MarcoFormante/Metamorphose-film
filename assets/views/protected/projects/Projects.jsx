@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { axiosInstance } from '../../../middleware/axiosInstance'
+import { axiosInstance } from '../../../api/axiosInstance';
 import {  Link } from 'react-router-dom'
 import { Draggable } from "react-drag-reorder";
 import Fallback from '../../../components/UI/Spinner/Spinner';

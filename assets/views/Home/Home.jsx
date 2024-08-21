@@ -1,46 +1,50 @@
 import React, { useEffect, useState } from 'react'
-import { Figure } from '../../components/Home/Figure'
-import { axiosInstance } from '../../middleware/axiosInstance'
+import Figure from './Figure';
 import SEO from '../../components/Seo/SEO'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { A11y, Keyboard, Mousewheel, Navigation, Pagination, Scrollbar } from 'swiper/modules'
 import { purifyProjects } from '../../security/Dompurify/purify';
+import { getProjects } from '../../api/projectsApi';
 
 
 const Home = () => {
-    const [projects,setProjects] = useState([])
-    
-    
+    const [projects,setProjects] = useState([])    
+    const [error,setError] = useState("")
 
-    useEffect(()=>{
-        try {
-            
-            if (sessionStorage.getItem("projects") && !sessionStorage.getItem("token-ad")) {
-                const jsonProjects = JSON.parse(sessionStorage.getItem("projects"))
-                const purifiedProjects = purifyProjects(jsonProjects)
-                return setProjects(purifiedProjects)
+    useEffect(() => {
+          const fetchProjects = async () => {
+            try {
+              const data = await getProjects();
+              if (!data) {
+                throw new Error("Error: No projects found");
+              }
+              const purifiedProjects = purifyProjects(data);
+              setProjects(purifiedProjects);
+              sessionStorage.setItem("projects", JSON.stringify(purifiedProjects));
+            } catch (error) {
+              console.error(error.message);
+              setError(error.message);
             }
-        } catch (error) {
-            console.log("Error parsing projects");
         }
-        axiosInstance.get("home/projects")
-        .then(res => {
-            if (res.status === 200) {
-                const resProjects = res.data?.projects
-                const purifiedProjects = purifyProjects(resProjects)
-                setProjects(purifiedProjects)
-                sessionStorage.setItem("projects",JSON.stringify(resProjects))
-            }else{
-                console.error("Error: No projects")
-            }
-        }).catch(()=>"Error: No projects")
-    },[])
+        fetchProjects();
+      }, []);
 
 
-    return (
+    if (error) return <h1 style={{color:"white",textAlign:"center"}}>Erreur : Aucun projet</h1>;
+
+    return projects.length > 0 && (
     <>
-        <SEO title={"Metamorphose"} url={"/"}  description={"Ici vous pouvez admirer tout les projets de Metamorphose"} name={"Metamorphose"} type={"website"} keywords={"Projets,videos,images,artistes,musique,projets creatifs"}/> 
-
+        <SEO
+            title={"Metamorphose"}
+            url={"/"}
+            description={
+              "Ici vous pouvez admirer tout les projets de Metamorphose"
+            }
+            name={"Metamorphose"}
+            type={"website"}
+            keywords={"Projets,videos,images,artistes,musique,projets creatifs"}
+          />
+          
         <div id='home'>
             <Swiper style={{color:"white"}}
                 modules={[Navigation, Pagination, Scrollbar, A11y,Keyboard,Mousewheel]}
@@ -52,17 +56,25 @@ const Home = () => {
                 keyboard={{ enabled: true }}
                 speed={1000}
                 direction='horizontal'
-                mousewheel={{enabled:true,forceToAxis: true, releaseOnEdges: true,}}
+                mousewheel={true}
             >
-                {projects.length > 1 ?  projects.map((project,index) =>
-                    <SwiperSlide key={index}>
-                            <Figure project={project} index={index}  />
-                    </SwiperSlide>)
-                    :
+                {projects.length > 0 ? (
+                    projects.length > 1 ? (
+                        projects.map((project,i) => (
+                        <SwiperSlide key={project.id}>
+                            <Figure project={project} index={i} />
+                        </SwiperSlide>
+                        ))
+                    ) : (
+                        <SwiperSlide>
+                        <Figure project={projects[0]} index={i}  />
+                        </SwiperSlide>
+                    )
+                    ) : (
                     <SwiperSlide>
-                    <Figure project={projects[0]} index={0}  />
-                    </SwiperSlide> 
-                }
+                        <p>No projects available</p>
+                    </SwiperSlide>
+                    )}
             </Swiper>
         </div>
     </>

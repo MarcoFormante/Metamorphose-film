@@ -44,7 +44,6 @@ class GalleryController extends AbstractController
                 ->setParameter('gallery_name', $this->s->sanitize($name,"string"))                
                 ->getQuery()
                 ->getResult();
-
                 if(is_integer($imagesCount[0][1])){
                     $total = $imagesCount[0][1];
                 }

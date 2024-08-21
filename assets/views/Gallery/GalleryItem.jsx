@@ -1,11 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
-
-
-
-
-export const GalleryItem = ({name,src,link,alt,setImgLoadedCounter}) => {
+const GalleryItem = ({name,src,link,alt,setImgLoadedCounter}) => {
   
 
     return (
@@ -21,3 +17,5 @@ export const GalleryItem = ({name,src,link,alt,setImgLoadedCounter}) => {
       </li>
     )
   }
+
+export default GalleryItem

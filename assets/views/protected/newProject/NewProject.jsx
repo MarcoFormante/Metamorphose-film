@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { axiosInstance } from '../../../middleware/axiosInstance'
+import { axiosInstance } from '../../../api/axiosInstance';
 import Resizer from "react-image-file-resizer";
 import Fallback from '../../../components/UI/Spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
@@ -53,9 +53,9 @@ const NewProject = () => {
     });
 
 
-    const compressImages = (images) => {
-      const resizedImages = images.map(async(image,index) => await resizeFile(image))
-      const files = Promise.all(resizedImages)
+    const compressImages = async(images) => {
+      const resizedImages = images.map((image) => resizeFile(image))
+      const files = await Promise.all(resizedImages)
       return files
   }
 

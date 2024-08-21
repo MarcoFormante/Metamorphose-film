@@ -66,3 +66,19 @@ export const ImagesSchemaAdmin = z.array(z.object({
     src: z.string().min(1).max(255),
     id: z.number().int().min(0)
 }))
+
+
+export const validatedNewImages = z.array(z.instanceof(File).superRefine((f,ctx)=>{
+    if (!["image/webp"].includes(f.type)) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Le fichier doit être un fichier image de type webp"
+        })
+    }
+    if (f.size > (4 * 1024 * 1024)) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "La taille du fichier IMAGE ne doit pas dépasser 3MB"
+        })
+    }
+}))

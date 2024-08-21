@@ -2,10 +2,9 @@ import React from 'react'
 import close from './close.svg'
 import arrow from './arrow.svg'
 
-export const ShowImage = ({isShowingImage,imgSrc,setImgSrc,setIsShowingImage,images,isSrc}) => {
+const ImageViewer  = ({isShowingImage,imgSrc,setImgSrc,setIsShowingImage,images,isSrc}) => {
   return (
     <>
-    
     { isShowingImage && <div className='black__background'>
         <img className='black__background__img' src={isSrc ? "/assets/uploads/images/galleries/" + images[imgSrc].src : images[imgSrc].src } alt=''/>
         <span 
@@ -51,3 +50,5 @@ export const ShowImage = ({isShowingImage,imgSrc,setImgSrc,setIsShowingImage,ima
         </>
   )
 }
+
+export default ImageViewer

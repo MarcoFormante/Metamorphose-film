@@ -1,13 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-
-const list = [
-    "Add new Project",
-    "Handle Projects",
-    "Add images in Gallery page"
-]
-
 const pages = [
   {id:1, name:"New Project", path:"/admin/newProject"},
   {id:2, name:"Projects", path:"/admin/projects"},

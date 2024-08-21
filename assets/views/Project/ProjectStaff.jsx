@@ -1,11 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import StaffList from './StaffList'
+import { getProjectData } from '../../api/projectsApi'
+import { purifyProjectData } from '../../security/Dompurify/purify'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
-const 
-ProjectStaff = ({projectData,project}) => {
+const ProjectStaff = ({project}) => {
+const [projectData, setProjectData] = useState(null)
+const [loading, setLoading] = useState(true)
+
+useEffect(() => {
+  const getData = async ()=>{
+    const data = await getProjectData(project.id)
+    const purifiedData = purifyProjectData(data);
+    setProjectData(purifiedData || null);
+    setLoading(false)
+  } 
+  getData()
+}, [])
 
 
-  return (
+if (loading) return <Spinner inline={true} />;
+  
+
+  return projectData &&(
     <React.Fragment>
        <div className='production__imgs'>
            <img src={"/assets/uploads/images/projects/" + projectData?.images[0] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />

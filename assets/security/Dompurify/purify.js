@@ -14,8 +14,6 @@ export  const purifyProjects = (projects) => {
 }
 
 
-
-
 export const purifyProjectDataAdminPage = (p) => {
     return{
         id: DOMPurify.sanitize(p.id),
@@ -40,7 +38,6 @@ export const purifyProjectDataAdminPage = (p) => {
     }}
 
 
-
     export const purifyProjectData = (p) => {
         return{
             images: p.images.map(i => DOMPurify.sanitize(i)),
@@ -56,6 +53,8 @@ export const purifyProjectDataAdminPage = (p) => {
             }
         }}
 
+
+
 export const purifyImages = (images) => {
     if (Array.isArray(images) && images.length === 0) {
         return []
@@ -65,6 +64,8 @@ export const purifyImages = (images) => {
     }
     return images.map(i => ({src: DOMPurify.sanitize(i.src)}))
 }
+
+
 
 export const purifyImagesAdminPage = (images) => {
     if (Array.isArray(images) && images.length === 0) {

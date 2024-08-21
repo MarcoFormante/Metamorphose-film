@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { ShowImage } from '../../../../components/ShowImage/ShowImage'
-import { axiosInstance } from '../../../../middleware/axiosInstance'
+import { axiosInstance } from '../../../../api/axiosInstance';
 import Fallback from '../../../../components/UI/Spinner/Spinner'
 import Resizer from "react-image-file-resizer";
 import { z } from 'zod'
+import ImageViewer from '../../../../components/UI/imageViewer/ImageViewer'
+import { validatedNewImages } from '../../../../security/Zod/zod';
 
 
 const galleries=[
@@ -53,20 +54,9 @@ const AddImages = () => {
         }
         const formData = new FormData()
 
-        const validImages = z.array(z.instanceof(File).superRefine((f,ctx)=>{
-            if (!["image/webp"].includes(f.type)) {
-                ctx.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message: "Le fichier doit être un fichier image de type webp"
-                })
-            }
-            if (f.size > (4 * 1024 * 1024)) {
-                ctx.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message: "La taille du fichier IMAGE ne doit pas dépasser 3MB"
-                })
-            }
-        })).safeParse(compressedImages)
+        
+        const validImages = validatedNewImages.safeParse(compressedImages)
+
         if (!validImages.success) {
             return alert('An error occurred while compressing images, please try again')
         }
@@ -76,6 +66,9 @@ const AddImages = () => {
         })
 
         const validName = z.string().safeParse(location.state?.name)
+        if (!validName.success) {
+            return alert('An error occurred while uploading images, please try again')
+        }
         formData.append("galleryName", validName.data)
        axiosInstance.post("admin/gallery/addImages", formData)
         .then(res => {
@@ -123,6 +116,7 @@ const AddImages = () => {
     },[setIsShowingImage,setImgSrc])
 
 
+
     useEffect(() => {
         if (!galleries.includes(location.state?.name)) {
             window.history.back()
@@ -130,10 +124,12 @@ const AddImages = () => {
     }, [location])
 
 
+
     const deleteImg = (index) => {
         const newImages = images.filter((img, i) => i !== index)
         setImages([...newImages])
     }
+    
 
     const compressImages = (images) => {
         const resizedImages = images.map(async(image) => await resizeFile(image))
@@ -169,7 +165,7 @@ const AddImages = () => {
         }
         </div>
         <div className="gallery__images">
-            <ShowImage isShowingImage={isShowingImage} imgSrc={imgSrc} setImgSrc={setImgSrc} setIsShowingImage={setIsShowingImage} images={images.map(image=>URL.createObjectURL(image))}/>
+            <ImageViewer isShowingImage={isShowingImage} imgSrc={imgSrc} setImgSrc={setImgSrc} setIsShowingImage={setIsShowingImage} images={images.map(image=>URL.createObjectURL(image))}/>
         </div>
       
     </div>

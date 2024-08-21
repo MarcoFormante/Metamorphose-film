@@ -181,7 +181,7 @@ class ProjectController extends AbstractController
             $id = $this->sanitizer->sanitize($request->attributes->get('id'),"int");
             $project = $em->getRepository(Project::class)->findOneBy(['id' => $id]);
             if(!$project){
-                return $this->json(['message' => 'No project found'],200);
+                return $this->json(['message' => 'No project found'],404);
             }
             $projectData = [
                 "id" => $project->getId(),

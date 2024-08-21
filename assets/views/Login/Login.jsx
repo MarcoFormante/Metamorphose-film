@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { axiosInstance } from '../../middleware/axiosInstance'
+import { axiosInstance } from '../../api/axiosInstance'
 import { useNavigate } from 'react-router-dom'
 import Fallback from '../../components/UI/Spinner/Spinner'
 

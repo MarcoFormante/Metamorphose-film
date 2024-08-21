@@ -1,4 +1,4 @@
-const Quality = ({title,type,text})=>{
+const Quality = ({title,text})=>{
 
     return (
         <div className={`quality__box quality__box--orange`}>

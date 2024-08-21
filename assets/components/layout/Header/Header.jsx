@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { useEventListener } from '../../../hooks/useEventListener'
+import useEventListener from '../../../hooks/useEventListener'
 import logo from './trace.svg'
 // const logo = {
 //   white: "/Logo2_fond_blanc.png",
 //   red: "/Logo2_fond_rouge.png"
 // }
 
-export const Header = ({headerColor}) => {
+function Header({headerColor}){
   const [menuActive, setMenuActive] = useState(false)
   const[ windowWidth,setWindowWidth] = useState(window.innerWidth)
   const location = useLocation()
@@ -97,3 +98,6 @@ export const Header = ({headerColor}) => {
     </header>
   );
 }
+
+
+export default Header

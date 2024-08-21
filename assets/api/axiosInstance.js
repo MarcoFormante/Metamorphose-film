@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const axiosInstance = axios.create({
     baseURL: '/api/',
-    timeout: 100000,
+    timeout: 10000,
   });
 
   axiosInstance.interceptors.response.use(response => {
