@@ -21,7 +21,8 @@ export async function getProjects() {
 export const getProjectData = async (id) => {
     try {
         const response = await axiosInstance.get("projectData/" + id);
-        
+            console.log(response);
+            
         if (response.status !== 200) {
             throw new Error("Error fetching project data");
         }

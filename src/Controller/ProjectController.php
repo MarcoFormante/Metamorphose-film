@@ -14,16 +14,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 
 class ProjectController extends AbstractController
 {
-
+    private $apiLimiter;
     private Sanitizer $sanitizer;
     private LoggerInterface $logger;
 
-    public function __construct(Sanitizer $sanitizer, LoggerInterface $logger)
+    public function __construct(Sanitizer $sanitizer, LoggerInterface $logger,RateLimiterFactory $apiLimiter)
     {
+        $this->apiLimiter = $apiLimiter->create('api');
         $this->sanitizer = $sanitizer;
         $this->logger = $logger;
     }
@@ -37,9 +41,14 @@ class ProjectController extends AbstractController
      * get project data by id
      */
     #[Route('/api/projectData/{id}', name: 'app_project',requirements: ['id' => '^[0-9]+$'], methods: ['GET'])]
-    public function index(int $id, EntityManagerInterface $em): JsonResponse
+    public function index(int $id, EntityManagerInterface $em,RateLimiterFactory $apiLimiter,Request $request): JsonResponse
     {
         try {
+           
+            $limiter = $apiLimiter->create($request->getClientIp());
+            if (false === $limiter->consume(1)->isAccepted()) {
+                throw new TooManyRequestsHttpException();
+            }
             $project = $em->getRepository(Project::class)->findOneBy(['id' => $this->sanitizer->sanitize($id,"int")]);
             if(!$project){
                 throw new Exception ('Project not found');
@@ -84,8 +93,13 @@ class ProjectController extends AbstractController
      * get all projects
      */
     #[Route('/api/home/projects', name: 'app_home_projects', methods: ['GET'])]
-    public function HomeProjects(EntityManagerInterface $em){
+    public function HomeProjects(EntityManagerInterface $em,RateLimiterFactory $apiLimiter,Request $request){
+       
         try {
+            $limiter = $apiLimiter->create($request->getClientIp());
+            if (false === $limiter->consume(1)->isAccepted()) {
+                throw new TooManyRequestsHttpException();
+            }
             $projects = $em->getRepository(Project::class)->findBy([],['orderIndex' => 'ASC']);
             if(!$projects){
                 return $this->json(['message' => 'No projects found'],404);
@@ -126,9 +140,14 @@ class ProjectController extends AbstractController
      */
 
     #[Route('/api/projectByName/{name}', name: 'app_project_byName', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9-]+$'])]
-    public function projectByName( EntityManagerInterface $em, Request $request): JsonResponse
+    public function projectByName( EntityManagerInterface $em, Request $request,RateLimiterFactory $apiLimiter): JsonResponse
     {
+        
         try {
+            $limiter = $apiLimiter->create($request->getClientIp());
+            if (false === $limiter->consume(1)->isAccepted()) {
+                throw new TooManyRequestsHttpException();
+            }
             $name = $this->sanitizer->sanitize($request->attributes->get('name'),"string");
             if($name === "" || !is_string($name) || is_numeric($name)){
                 return $this->json("Project Not Found",404);
@@ -176,7 +195,7 @@ class ProjectController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/projectData/{id}', name: 'app_project_data', methods: ['GET'])]
     public function projectData(EntityManagerInterface $em, Request $request): JsonResponse{
-    
+
         try {
             $id = $this->sanitizer->sanitize($request->attributes->get('id'),"int");
             $project = $em->getRepository(Project::class)->findOneBy(['id' => $id]);
