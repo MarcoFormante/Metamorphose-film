@@ -23,6 +23,7 @@ const GalleryImages = lazy(() => import('./views/Gallery/GalleryImages'));
 const AdminGallery = lazy(() => import('./views/protected/gallery/Gallery'));
 const AddImages = lazy(() => import('./views/protected/gallery/addImages/AddImages'));
 const ProjectUpdate = lazy(() => import('./views/protected/projects/projectUpdate/ProjectUpdate'));
+const ErrorHandler = lazy(()=> import('./views/ErrorHandler/ErrorHandler'));
 
 
 const colorMap = {
@@ -123,7 +124,7 @@ function App() {
             <Route path="/galerie/:name" element={<Suspense fallback={<Spinner/>}><GalleryImages /></Suspense>} />
             <Route path="projet/:name" element={<Suspense fallback={<Spinner/>}><Project /></Suspense>} />
             <Route path='/login' element={<Suspense><Login isAuth={isAuth} setIsAuth={setIsAuth} /> </Suspense>}/>
-          
+            <Route path='/error/:status' element={<Suspense><ErrorHandler/></Suspense>}/>
           
             <Route element={<ProtectedRoute isAuth={isAuth} setIsAuth={setIsAuth}/>}>
                   <Route path='/admin/home' element={<Suspense><AdminHome/></Suspense>}/>

@@ -21,13 +21,12 @@ use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 class ProjectController extends AbstractController
 {
-    private $apiLimiter;
+    
     private Sanitizer $sanitizer;
     private LoggerInterface $logger;
 
-    public function __construct(Sanitizer $sanitizer, LoggerInterface $logger,RateLimiterFactory $apiLimiter)
+    public function __construct(Sanitizer $sanitizer, LoggerInterface $logger)
     {
-        $this->apiLimiter = $apiLimiter->create('api');
         $this->sanitizer = $sanitizer;
         $this->logger = $logger;
     }
