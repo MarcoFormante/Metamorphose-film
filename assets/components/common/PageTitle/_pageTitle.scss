@@ -1,0 +1,26 @@
+.page-title {
+color: $white;
+&.pl{
+    padding-left: 80px;
+}
+
+&.mt{
+    margin-top: 60px;
+    
+}
+
+&.mb{
+    margin-bottom: 40px;
+}
+    &-title{
+        @extend .poppins-bold;
+        line-height: 5rem;
+        font-size: clamp(3rem, 10vw, 8rem);
+        @media screen and (max-width: 1024px){
+            line-height: unset;
+            font-size: clamp(3rem, 10vw, 13rem);
+            
+        }
+    }
+    
+}

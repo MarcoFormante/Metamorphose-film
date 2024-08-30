@@ -44,7 +44,7 @@ const ProjectUpdate = () => {
           setProjectName(proj.name)
           setAbrName(proj.abrName)
           setYoutubeLink(proj.youtube_video)
-          setCollab(proj.collab_with)
+          setCollab(proj.collab_with.replace("&amp;","&"))
           setProduction(proj.staff.production)
           setMadeBy(proj.made_by)
           setArtists(proj.staff.artists)

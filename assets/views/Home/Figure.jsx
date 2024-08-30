@@ -3,7 +3,7 @@ import { isMobile } from 'react-device-detect'
 import ReactPlayer from 'react-player'
 import { Link, useNavigate } from 'react-router-dom'
 
-const Figure = ({project,index,}) => {
+const Figure = ({project,index}) => {
   const navigate = useNavigate()
 
   return project && (
@@ -23,7 +23,7 @@ const Figure = ({project,index,}) => {
             <h3 onClick={ ()=> navigate("/projet/"+ project.name,{state:{project,index}}) }>
                 <Link to={"/projet/" + project.name}>{!isMobile ? project.name.toUpperCase() : project.abrName.toUpperCase()}</Link>
             </h3>
-            {project.collab_with &&  <p>AVEC {project.collab_with.toUpperCase()}</p>}
+            {project.collab_with &&  <p>AVEC {project.collab_with.replace("&amp;","&").toUpperCase()}</p>}
         </figcaption>
       </figure>
     </>

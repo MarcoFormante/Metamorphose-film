@@ -1,27 +1,26 @@
 import React, { useState } from 'react'
-import ReactCardFlip from 'react-card-flip';
 import Prices from './Prices';
 import TarifsPcCards from './TarifsPcCards';
 import TarifsMobileCards from './TarifsMobileCards';
 
 
 const Tarifs = () => {
-  const [isFlipped_Card1, setIsFlippedCard_1] = useState(true);
-  const [isFlipped_Card2, setIsFlippedCard_2] = useState(true);
-  const [isFlipped_Card3, setIsFlippedCard_3] = useState(true);
-  const [isFlipped_Card4, setIsFlippedCard_4] = useState(true);
+  const [isFlipped_Card1, setIsFlippedCard_1] = useState(false);
+  const [isFlipped_Card2, setIsFlippedCard_2] = useState(false);
+  const [isFlipped_Card3, setIsFlippedCard_3] = useState(false);
+  const [isFlipped_Card4, setIsFlippedCard_4] = useState(false);
   
 
   const handleClick = (e)=> {
     e.preventDefault();
     const target = e.currentTarget
-    if (target.classList.contains("desc-card1")) {
+    if (target.classList.contains("card-container1")) {
       setIsFlippedCard_1(!isFlipped_Card1);
-    }else if (target.classList.contains("desc-card2")) {
+    }else if (target.classList.contains("card-container2")) {
       setIsFlippedCard_2(!isFlipped_Card2);
-    }else if (target.classList.contains("desc-card3")) {
+    }else if (target.classList.contains("card-container3")) {
       setIsFlippedCard_3(!isFlipped_Card3);
-    }else if (target.classList.contains("desc-card4")) {
+    }else if (target.classList.contains("card-container4")) {
       setIsFlippedCard_4(!isFlipped_Card4);
     }
   }
@@ -51,7 +50,7 @@ const Tarifs = () => {
           </div>
 
           <div className='tarifs-content' id='clip'>
-              <h2 className='sub-tl sub-tl-m'>Comment se déroule la réalisation d'un clip?</h2>
+              <h2 className='sub-tl sub-tl-m'>Comment se déroule la réalisation d'un projet?</h2>
           </div>
       </div>
 

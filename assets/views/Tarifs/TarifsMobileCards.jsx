@@ -3,7 +3,7 @@ import ReactCardFlip from 'react-card-flip'
 
 const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlipped_Card3,isFlipped_Card4}) => {
   return (
-    <div className='tarifs hide-pc'>
+    <div className='tarifs '>
     <div className='tarifs-content' >
             <div className='flex-container'>
               <div className='desc-card1' onClick={handleClick} >
@@ -18,8 +18,7 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                          
                     </ul>
                   </div>
-                  <div className='desc-card-right'>
-                  </div>
+                  
                 </article>
 
                 <article className='desc-card  desc-card1'>
@@ -29,10 +28,11 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                     </div>
                    
                   </div>
-                  <div className='desc-card-right'>
-                  </div>
+                  
                 </article>
               </ReactCardFlip>
+              <div className='desc-card-right'>
+                  </div>
               </div>
             
               <div className='desc-card2' onClick={handleClick} >
@@ -47,8 +47,7 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                            
                       </ul>
                   </div>
-                  <div className='desc-card-right'>
-                  </div>
+                 
                 </article>
 
                 <article className='desc-card'>
@@ -58,11 +57,11 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                     </div>
                    
                   </div>
-                  <div className='desc-card-right'>
-                  </div>
+                  
                 </article>
               </ReactCardFlip>
-
+              <div className='desc-card-right'>
+              </div>
               </div>
 
               <div className='desc-card3' onClick={handleClick} >
@@ -77,8 +76,7 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                           <li className='t-s'>Effets spéciaux, Graphismes</li>
                     </ul>
                   </div>
-                  <div className='desc-card-right'>
-                  </div>
+                 
                 </article>
 
                 <article className='desc-card'>
@@ -88,10 +86,11 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                     </div>
                    
                   </div>
-                  <div className='desc-card-right'>
-                  </div>
+                  
                 </article>
               </ReactCardFlip>
+              <div className='desc-card-right'>
+                  </div>
               </div>
 
 
@@ -110,8 +109,7 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                           <li></li>
                     </ul>
                   </div>
-                  <div className='desc-card-right op-0'>
-                  </div>
+                 
                 </article>
 
                 <article className='desc-card'>
@@ -120,11 +118,11 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                         <h1>4. Distribution</h1>
                     </div>
                   </div>
-                  <div className='desc-card-right op-0'>
-                  </div>
+                  
                 </article>
               </ReactCardFlip>
-
+              <div className='desc-card-right op-0'>
+              </div>
               </div>
               
             </div>

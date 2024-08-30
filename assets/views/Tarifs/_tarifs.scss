@@ -3,6 +3,10 @@
     padding-bottom: 0px;
     scroll-behavior: smooth;
     margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+   
+    
     .mt{
         margin-top: 60px;
     }
@@ -15,128 +19,139 @@
         }
     }
     &-content{
-        padding:0 32px 40px 0;
-        @media screen and (max-width: 490px){
-            padding:5px;
-        }
 
         .sub-tl{
-            font-size: clamp(1.1em, 2vw, 2em);
             font-weight: bold;
-            margin-left: 50px;
-            @media screen and (max-width: 1216px){
-                margin-bottom: 50px;
-            }
+            margin-top: 50px;
 
             @media screen and (max-width: 490px){
                 margin-left: 5px;
             }
 
             &-m{
-                margin-top: 40px;
-                margin-bottom: 40px;
+                margin-top: 70px;
+                margin-bottom: 50px;
+
+                @media screen and (max-width: 1024px){
+                    text-align: center;
+                }
             }
         }
 
         .flex-container{
+
             display: flex;
             justify-content: center;
+            gap: 60px;
             align-items: center;
-            gap: 20px;
-
             @media screen and (max-width: 1024px){
                 flex-direction: column;
-                gap: 50px;
+                gap: 20px;
+            }
+
+            @media screen and (min-width: 1211px){
+                flex-direction: row;
+                gap: 100px;
+                align-items: center;
             }
         }
-
+        
         .desc-card{
             display: flex;
             justify-content: center;
             align-items: center;
+            
             // margin-top: 40px;
             gap: 10px;
-            
-            @media screen and (max-width: 1024px){
-                flex-direction: column;
+            flex-direction: column;
                 height: 160px;
                 gap: 10px;
                 display: block;
                 justify-content: unset;
                 align-items: unset;
                 cursor: pointer;
-            }
+        }
+
+        .react-card-front{
+                .desc-card-left{
+                    background-color: #ffffff;
+                }
         }
 
         .desc-card-right{
             font-size: 4em;
             position: relative;
-            top: -60px;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             background-color: $white;
             width: 40px;
             height: 40px;
-            transform: rotate(90deg);
-            @media screen and (max-width: 1355px){
-                top: -60px;
-            }
-
-            @media screen and (max-width: 1024px){
-                clip-path: polygon(0 0, 50% 100%, 100% 0);
-                transform: rotate(0deg);
-                top: 7px;
-                left: 50%;
-                transform: translate(-50%, 0);
-            }
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform: rotate(0deg);
+            top: 7px;
+            left: 50%;
+            transform: translate(-50%, 0);
 
             &.d-none{
-                opacity: 0;
+                display: none;
             }
+
+            @media screen and (min-width: 1024px) {
+        
+                transform: rotate(-90deg);
+                top: -90px;
+                left: 105%;
+                transform: translate(-50%, 0);
+                transform: rotate(-90deg);
+            }
+
+            @media screen and (min-width: 1211px) {
+           
+                transform: rotate(-90deg);
+                left: 115%;
+            
+            }
+
+            
+            
         }
 
         .desc-card-left{
+            border: 4px solid #ffffff;
+            border-radius: 35px;
+            width: 200px;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
 
-            @media screen and (max-width: 1024px){
-                border: 4px solid $white;
-                padding: 0;
-                border-radius: 35px ;
-                width: 200px;
-                height: 100%;
-               
-                overflow: hidden;
-             }
+            @media screen and (min-width:1211px) {
+                transform: scale(1.2);
+            }
+
+            
+            color: $orange;
 
              &__mobile{
-                background-color: $white;
                 .desc-card-left__title{
-                    // display: flex;
-                    // justify-content: center;
-                    // align-items: center;
-                    background-color: $white;
-                    // height: 120%;
+                    @media screen and (max-width:1024px) {
+                         height: 100%;
+                    }
                 }
 
                 h1{
-                    color: $black;
-                    background-color: $white;
-                    
+                    color: $white;
                 }
              }
 
-
-             
-
             h1{
-                border: 4px solid $white;
-                padding: 50px 32px;
                 border-radius: 35px ;
                 text-align: center;
-
+                font-size: 1.3em;
                 @media screen and (max-width: 1355px){
-                    padding: 30px 22px;
-                    font-size: clamp(0.5em, 1.3vw, 1.5em);
+                    font-size: clamp(0.5em, 1.5vw, 1.5em);
                     width: 100%;
-                   
                 }
 
 
@@ -152,7 +167,6 @@
             }
 
             h2{
-                margin-top: 20px;
                 text-align: center;
                 font-size: clamp(0.8em, 1.4vw, 1.2em);
                 font-weight: bold;

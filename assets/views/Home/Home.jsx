@@ -34,7 +34,7 @@ const Home = () => {
 
     return projects.length > 0 && (
     <>
-        <SEO
+          <SEO
             title={"Metamorphose"}
             url={"/"}
             description={
@@ -44,7 +44,6 @@ const Home = () => {
             type={"website"}
             keywords={"Projets,videos,images,artistes,musique,projets creatifs"}
           />
-          
         <div id='home'>
             <Swiper style={{color:"white"}}
                 modules={[Navigation, Pagination, Scrollbar, A11y,Keyboard,Mousewheel]}
@@ -67,7 +66,7 @@ const Home = () => {
                         ))
                     ) : (
                         <SwiperSlide>
-                        <Figure project={projects[0]} index={i}  />
+                          <Figure project={projects[0]} index={0}  />
                         </SwiperSlide>
                     )
                     ) : (

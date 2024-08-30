@@ -12,8 +12,6 @@ const Gallery = lazy(() => import('./views/Gallery/Gallery'));
 const About = lazy(() => import('./views/About/About'));
 const Services = lazy(() => import('./views/Services/Services'));
 const Project = lazy(() => import('./views/Project/Project'));
-const Corporate = lazy(() => import('./views/Corporate/Corporate'));
-const Tarifs = lazy(() => import('./views/Tarifs/Tarifs'));
 const NewProject = lazy(() => import('./views/protected/newProject/NewProject'));
 const Projects = lazy(() => import('./views/protected/projects/Projects'));
 const Galleries = lazy(() => import('./views/protected/galleries/Galleries'));
@@ -29,10 +27,10 @@ const ErrorHandler = lazy(()=> import('./views/ErrorHandler/ErrorHandler'));
 const colorMap = {
   "/services": "back__orange",
   "/corporate": "back__orange",
-  "/tarifs": "back__black",
   "/contact": "back__orange",
-  "/a_propos": "back__orange",
+  "/a_propos": "back__black",
   "/galerie": "back__black",
+  "/error/202": "back__orange",
 };
 
 /**
@@ -49,10 +47,14 @@ function App() {
   const helmetContext = {}
   const token = sessionStorage.getItem("token-ad")
   
-  
 
   useEffect(() => {
-    setHeaderColor(colorMap[pathname] || "");
+    if (pathname.includes("/error")) {
+        setHeaderColor("back__orange" || "");
+    }else{
+      setHeaderColor(colorMap[pathname] || "");
+    }
+    
   }, [pathname]);
 
 
@@ -110,14 +112,13 @@ function App() {
 
   return (
     <HelmetProvider context={helmetContext}>
+      
       <div className={`app ${headerColor}`} >
         <Header isShowingPages={isShowingPages} setIsShowingPages={setIsShowingPages} headerColor={headerColor} />
         <main className="main">
           <Routes>
             <Route exact path="/" element={<Suspense fallback={<Spinner/>}><Home /></Suspense>} />
             <Route path="*"   element={<Navigate to="/"/>}/>
-            <Route path="/corporate" element={<Suspense fallback={<Spinner/>}><Corporate /></Suspense>} />
-            <Route path="/tarifs" element={<Suspense fallback={<Spinner/>}><Tarifs /></Suspense>} />
             <Route path="/services" element={<Suspense fallback={<Spinner/>}><Services /></Suspense>} />
             <Route path="/a_propos" element={<Suspense fallback={<Spinner/>}><About /></Suspense>} />
             <Route path="/galerie" element={<Suspense fallback={<Spinner/>}><Gallery /></Suspense>} />

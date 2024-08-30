@@ -1,6 +1,10 @@
 .about{
-    padding-bottom: 50px;
+    padding: 25px 40px;
     position: relative;
+    margin-bottom: 20px;
+    @media screen and (max-width: 1300px) {
+        padding: 8px 30px;
+    }
     .title{
         color: $white;
         font-weight: 600;
@@ -11,21 +15,9 @@
         line-height: 0.5;
         margin-bottom: 50px;
         position: relative;
-        
-        span{
-          @extend .poppins-light;
-          font-size:  clamp(1.2rem, 10vw, 2rem);
-          margin: 0 0 0 10px;
-          padding: 0;
-          font-weight: 600;
-  
-          @media screen and (max-width: 577px){
-            display: block;
-            margin-left: 38%;
-            margin-top: 17px;
-          }
-        }
     }
+
+    
 
 
     .title-contact{
@@ -48,7 +40,7 @@
             border: 4px solid white;
             height:clamp(196px, 30vw, 220px);
             cursor: pointer;
-            color: $orange;
+            color: $black;
             @extend .poppins-bold;
             text-transform: uppercase;
             background-color: white;
@@ -70,6 +62,7 @@
             h1{
                 text-align: center;
                 font-size: 1.4em;
+                color: $black;
             }
 
             img{
@@ -134,7 +127,7 @@
         .article-container{
             display:flex;
             justify-content:space-between;
-            background-color:white;
+            background-color:transparent;
             width:90vw;
             height:clamp(300px, 23vw, 400px);
             margin:auto;
@@ -146,7 +139,7 @@
         .article-container-left{
             display:flex;
             justify-content:space-between;
-            background-color:white;
+            background-color:transparent;
             width:90vw;
             height:clamp(300px, 23vw, 400px);
             margin:auto;
@@ -154,6 +147,17 @@
             border-radius:15px;
             margin-block:20px;
             flex-direction: row-reverse;
+        }
+
+        .article-container, .article-container-left{
+            transition: all 0.3s;
+            border: 3px solid white;
+            &:hover{
+                background-color:$white;
+                h1,ul{
+                    color:$black;
+                }
+            }
         }
 
 
@@ -190,7 +194,7 @@
             gap:25px;
             font-size:clamp(1em, 1.8vw, 2.1em);
             @extend .poppins-bold;
-            color:$orange;
+            color:$white;
         }
 
         h1{
@@ -200,7 +204,7 @@
             line-height:0.8em;
             text-align:right;
             margin-top:20px;
-            color:$orange;
+            color:$white;
         }
         .article-insta{
             text-decoration:none;
@@ -237,15 +241,18 @@
         li{
             width: 80vw ;
             height: 76px;
-            background-color: $white;
+            background-color: transparent;
+            border: 3px solid $white;
             border-radius: 15px;
             max-width: 500px;
+            transition: all 0.3s;
             @media screen and (min-width: 577px) and (max-width: 1024px){
                 width: 50vw;
             }
 
-           
-           
+            &.bg-white{
+                background-color: white;
+            }
 
             a{
                 display: flex;
@@ -345,8 +352,10 @@
 
      .about__desc{
         font-size: clamp(1.1rem, 2vw, 1.4rem);
-        padding: 5px 0px 20px 32px;
-        width: 95vw;
+        padding: 50px 0px 10px 0px;
+        @media screen and (max-width: 1024px){
+            padding: 10px 0 30px 0;
+        }
      }
 
     }

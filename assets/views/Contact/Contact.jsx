@@ -8,8 +8,8 @@ const Contact = () => {
       <div className="contact hide-mobile">
           <p className="contact__desc">
           Si vous souhaitez passer une commande, établir un partenariat, formuler
-          une demande ou simplement obtenir des informations? <br/>
-          Metamorphose est à votre service afin de répondre à votre demande dans les plus brefs délais!
+          une demande ou simplement obtenir des informations ? <br/>
+          Metamorphose est à votre service afin de répondre à votre demande dans les plus brefs délais !
           </p>
           <div className='contact__links hide-pc'>
             <div className='contact__links__container'>

@@ -7,12 +7,12 @@ const ProtectedRoute = ({isAuth,setIsAuth})=>{
     const logout = ()=>{
       delete axiosInstance.defaults.headers.common['Authorization']
       sessionStorage.clear()
-      navigate("/")
+      navigate("/",{replace:true})
       setIsAuth(false)
     }
   
     const back = ()=>{
-      window.history.back()
+      navigate("-1",{replace:true})
     }
   
     if (isAuth) {

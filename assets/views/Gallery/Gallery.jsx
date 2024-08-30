@@ -10,19 +10,19 @@ const galleries=[
     alt:'Galerie Concert Metamorphose'
   },
   {
-    name:'Tournage',
-    src:'assets/static/images/gallery/clip.webp',
-    link:'/galerie/tournage',
-    alt:'Galerie Tournage Metamorphose'  
-  },
-  {
     name:'Studio',
     src:'assets/static/images/gallery/studio.webp',
     link:'/galerie/studio',
     alt:'Galerie Studio Metamorphose'
   },
   {
-    name:'Evenements',
+    name:'Tournage',
+    src:'assets/static/images/gallery/clip.webp',
+    link:'/galerie/tournage',
+    alt:'Galerie Tournage Metamorphose'  
+  },
+  {
+    name:'Événementiel',
     src:'assets/static/images/gallery/events.webp',
     link:'/galerie/evenements',
     alt:'Galerie Evenements Metamorphose'
@@ -37,8 +37,8 @@ const Gallery = () => {
     <div className='gallery'>
       <ul className='gallery__list'>
         {imgLoadedCounter < galleries.length && <Fallback />}
-        {galleries.map((gallery,index)=>
-        <div  key={index}>
+        {galleries.map((gallery)=>
+        <div  key={gallery.name}>
           <GalleryItem
             name={gallery.name}
             src={gallery.src} 

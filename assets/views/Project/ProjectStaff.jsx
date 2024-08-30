@@ -28,16 +28,21 @@ if (loading) return <Spinner inline={true} />;
            <img src={"/assets/uploads/images/projects/" + projectData?.images[0] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
            <img src={"/assets/uploads/images/projects/" + projectData?.images[1] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
        </div>
+       <div className='production__imgs'>
+          <img src={"/assets/uploads/images/projects/" + projectData?.images[2] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+          <img src={"/assets/uploads/images/projects/" + projectData?.images[3] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+       </div>
+       <div className='production__imgs'>
+        <img src={"/assets/uploads/images/projects/" + projectData?.images[4] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+        <img src={"/assets/uploads/images/projects/" + projectData?.images[5] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+      </div>
+      <div className='staff-list-flex'>
+        
       <StaffList title={"Production"} items={projectData.staff?.production } className={"production"} />
       <StaffList title={"Artistes"} items={projectData.staff?.artists} className={"artists"} />
-       <div className='production__imgs'>
-       <img src={"/assets/uploads/images/projects/" + projectData?.images[2] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-       <img src={"/assets/uploads/images/projects/" + projectData?.images[3] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-       </div>
       <StaffList title={"Montage"} items={projectData.staff?.montage} className={"montage"} />
       <StaffList title={"Cadrage"} items={projectData.staff?.cadrage} className={"cadrage"} />
-      <StaffList title={"Droniste"} items={projectData.staff?.droniste} className={"droniste"} />
-
+      <StaffList title={"Pilote de drone"} items={projectData.staff?.droniste} className={"droniste"} />
       {projectData.staff?.photographePlateau && 
         <>
           <h2>Photographe de plateau</h2>
@@ -48,12 +53,9 @@ if (loading) return <Spinner inline={true} />;
       }
 
       <StaffList title="Photographe de plateau" items={projectData.staff?.photographePlateau} className="photoplateau" />
-      <StaffList title="Décorateurs" items={projectData.staff?.decorateurs} className="deco" />
+      <StaffList title="Directeur de la photographie" items={projectData.staff?.decorateurs} className="deco" />
 
-      <div className='production__imgs'>
-        <img src={"/assets/uploads/images/projects/" + projectData?.images[4] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-        <img src={"/assets/uploads/images/projects/" + projectData?.images[5] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-      </div>
+    
 
       {projectData.staff?.moreStaffFields && projectData.staff.moreStaffFields.length > 0 &&
         JSON.parse(projectData.staff?.moreStaffFields).map((f, i) => (
@@ -65,6 +67,8 @@ if (loading) return <Spinner inline={true} />;
           />
         ))
       }
+      </div>
+      
       </React.Fragment>
   )
 }

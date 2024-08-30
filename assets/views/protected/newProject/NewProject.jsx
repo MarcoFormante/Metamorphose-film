@@ -43,7 +43,7 @@ const NewProject = () => {
         500,
         1080,
         "WEBP",
-        85,
+        100,
         0,
         (uri) => {
           resolve(uri);
@@ -232,7 +232,7 @@ const handleMoreStaffFields2 = (value,index) => {
               abrName={abrName} 
               madeBy={madeBy} 
               youtubeLink={youtubeLink} 
-              collab={collab} 
+              collab={collab.replace("&amp;","&")} 
               bgVideo={bgVideo}
               setProjectName={setProjectName}
               setAbrName={setAbrName}

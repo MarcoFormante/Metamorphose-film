@@ -6,6 +6,9 @@
 
     .last-next-btns-container{
         padding: 10px 50px;
+        position: relative;
+        top: 10px;
+
         @media screen and (max-width:1024px) {
             padding: 10px 10px;
         }
@@ -18,23 +21,70 @@
             width: 100vw;
         }
 
-        a{
-            color: $white;
-            text-decoration: none;
-            border: 1px solid $white;
-            border-radius: 50%;
-            font-size: 20px;
-            width: 30px;
-            height: 30px;
-            display: block;
-        }
+       
         .next{
             float: right;
-          
+        
+            & > a::after{
+                content: ">";
+            }
         }
         .last{
             float: left;
+            & > a::after{
+                content: "<";
+            }
+            }
         }
+
+        .next,.last{
+            @media screen and (min-width:1024px) {
+                width: 100px;
+                height: 100px;
+                display: grid;
+                place-items: center;
+                opacity: 0;
+                transition: all 0.5s ease-in-out;
+                opacity: 0;
+
+                &:hover{
+                    opacity: 1;
+                }
+
+                a{
+                    width: 180%;
+                    height: inherit;
+                    display: grid;
+                    place-items: center;
+                }
+
+
+                a::after{
+                        color: $white;
+                        border: 1px solid $white;
+                        border-radius: 50%;
+                        font-size: 20px;
+                        width: 30px;
+                        height: 30px;
+                        display: block;
+                        text-decoration: none;
+                }
+            }
+            a{
+                text-decoration: none;
+            }
+            a::after{
+                color: $white;
+                border: 1px solid $white;
+                border-radius: 50%;
+                font-size: 20px;
+                width: 30px;
+                height: 30px;
+                display: block;
+                text-decoration: none;
+        }
+           
+           
     }
 
     &::after{
@@ -46,9 +96,8 @@
         height: 100%;
         background-color: rgb(0, 0, 0,0.6);
         z-index: -1;
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(20px);
-       filter: blur(20px);
     }
 
     
@@ -166,6 +215,38 @@
     }
     &__project-assets__hidden{
        display: none;
+    }
+
+    .staff-list-flex{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 20px auto;
+        width: 80vw;
+        &-item{
+            flex-basis:400px;
+            margin-bottom: 20px;
+
+            @media screen and (max-width: 1517px) {
+                flex-basis: calc(30% - 20px);
+            }
+
+            ul{
+                list-style: none;
+            }
+
+            @media screen and (max-width: 1039px) {
+                flex-direction: column;
+                gap: 10px;
+                flex-basis: unset;
+                margin-bottom: 0px;    
+            }
+        }
+        @media screen and (max-width: 1039px) {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
     }
 
 }

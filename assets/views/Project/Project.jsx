@@ -118,54 +118,96 @@ const Project = () => {
 
 
 
-  return project && (
-    
-    <article className={`production ${fade ? "production-fadein" :""}`}>
-        <div className='last-next-btns-container'>
-            {lastProject && <span className='last'>
-                <Link onClick={()=>setProjectIndex(prev => prev > 0 ? prev - 1 : 0)} to={"/projet/" + lastProject.name} state={{project:lastProject,index:projectIndex - 1}}>{"<"}</Link>
-            </span>}
+  return (
+    project && (
+      <article className={`production ${fade ? "production-fadein" : ""}`}>
+        <div className="last-next-btns-container">
+          {lastProject && (
+            <span className="last">
+              <Link
+                onClick={() =>
+                  setProjectIndex((prev) => (prev > 0 ? prev - 1 : 0))
+                }
+                to={"/projet/" + lastProject.name}
+                state={{ project: lastProject, index: projectIndex - 1 }}
+              >
+                {""}
+              </Link>
+            </span>
+          )}
 
-            {nextProject && <span className='next'>
-                <Link onClick={()=>setProjectIndex(prev => prev + 1 )} to={"/projet/" + nextProject.name} state={{project:nextProject,index:projectIndex + 1}}>{">"}</Link>
-            </span>}
+          {nextProject && (
+            <span className="next">
+              <Link
+                onClick={() => setProjectIndex((prev) => prev + 1)}
+                to={"/projet/" + nextProject.name}
+                state={{ project: nextProject, index: projectIndex + 1 }}
+              >
+                {""}
+              </Link>
+            </span>
+          )}
         </div>
-       <div className={"video__big"} style={{width:"100vw",height:"100vh"}} >
-        
-    <ReactPlayer
-        url={"/assets/uploads/videos/" + project?.background_video}
-        playing
-         loop
-         muted
-         playsinline
-         width="100%"
-         height="100vh"
-    />
+        <div
+          className={"video__big"}
+          style={{ width: "100vw", height: "100vh" }}
+        >
+          <ReactPlayer
+            url={"/assets/uploads/videos/" + project?.background_video}
+            playing
+            loop
+            muted
+            playsinline
+            width="100%"
+            height="100vh"
+          />
         </div>
-            <h1 className='production__title'>{project?.name}</h1>
-            <h2>Realisé par</h2>
-            {project?.made_by && 
-                <ul>
-                    {project?.made_by?.split(',').map((r, i) => <li key={i}>{r}</li>)}
-                </ul>
-            }
-            <div>
-                <ReactPlayer className={"react-player"}  width={1000} height={500} controls  url={project?.youtube_video} preload="none"  style={{margin:"10px auto",height:500,objectFit:"cover"}} /> 
-                <div className={`production__show-assets ${!showAssets ? "production__show-assets__off" : "production__show-assets__on" }`} onClick={()=>setShowAssets(!showAssets)}>
-                <span></span>
-                <span></span>
-            </div>
+        <h1 className="production__title">{project?.name}</h1>
+        <h2>Realisé par</h2>
+        {project?.made_by && (
+          <ul>
+            {project?.made_by?.split(",").map((r, i) => (
+              <li key={i}>{r}</li>
+            ))}
+          </ul>
+        )}
+        <div>
+          <ReactPlayer
+            className={"react-player"}
+            width={1000}
+            height={500}
+            controls
+            url={project?.youtube_video}
+            preload="none"
+            style={{ margin: "10px auto", height: 500, objectFit: "cover" }}
+          />
+          <div
+            className={`production__show-assets ${
+              !showAssets
+                ? "production__show-assets__off"
+                : "production__show-assets__on"
+            }`}
+            onClick={() => setShowAssets(!showAssets)}
+          >
+            <span></span>
+            <span></span>
+          </div>
         </div>
-        <div className={`production__project-assets ${!showAssets && "production__project-assets__hidden"}`}> 
-        {loading  && <Fallback inline={true}/>}
-            { showAssets && 
-                <>
-                    <ProjectStaff project={project}/>
-                </>
-            }
+        <div
+          className={`production__project-assets ${
+            !showAssets && "production__project-assets__hidden"
+          }`}
+        >
+          {loading && <Fallback inline={true} />}
+          {showAssets && (
+            <>
+              <ProjectStaff project={project} />
+            </>
+          )}
         </div>
-    </article>
-  )
+      </article>
+    )
+  );
 }
 
 

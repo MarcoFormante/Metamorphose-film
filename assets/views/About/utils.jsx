@@ -54,41 +54,16 @@ const persons = [
 
 const aboutDescFirst = <>
 Bienvenue dans l'univers Metamorphose, un endroit débordant de créativité, où notre passion pour l'art prend vie.
-Tout a commencé avec trois esprits créatifs et passionnés, qui ont uni leurs forces pour
+<br/>
+Tout a commencé avec 3 esprits créatifs et passionnés, qui ont uni leurs forces pour
 donner naissance à une aventure unique.
-Nous sommes Romain, Vincent et Thibaud, d'anciens étudiants en cinéma qui ont décidé de transformer leur amour pour la création en quelque chose de concret: une agence de production audiovisuelle.
+Nous sommes Romain, Vincent et Thibaud, d'anciens étudiants en cinéma qui ont décidé de transformer leur amour pour la création en quelque chose de concret : une agence de production audiovisuelle.
 </>
 
 
-const qualities = 
-    [
-        {
-            title: "Polyvalence",
-            type: 0,
-            text: `La polyvalence est bien plus
-            qu'une compétence, c'est
-            notre état d'esprit.
-            Nous sommes des
-            créateurs intrépides,
-            embrassant la diversité des
-            défis avec une passion dévorante.`
-        },
-        {
-            title: "Exigence",
-            type: 1,
-            text: `Chaque détail compte, de la planification à l'exécution, nous nous efforçons de dépasser vos attentes.`
-        },
-        {
-            title: "Connaissance",
-            type: 0,
-            text: `Notre approche repose sur une alliance harmonieuse entre la connaissance technique et
-                    l'expertise artistique, la combinaison idéale pour développer votre projet.`
-        },
-        
-    ]
-   
 
 
-export {qualities,persons, aboutDescFirst}
+
+export {persons, aboutDescFirst}
 
 
