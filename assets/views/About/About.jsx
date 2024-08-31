@@ -75,7 +75,6 @@ const About = () => {
             <p className='about__desc'> {aboutDescFirst} </p>
         </section>
         
-        
           <section> 
           <div className='hide-mobile'>
             {persons.map((person,index) =>
@@ -89,7 +88,7 @@ const About = () => {
                     </div>
                   
                     <ul>
-                        {person.skills.map((skill, index) => 
+                        {person.skills.map((skill) => 
                         <li key={"skills__" + skill}>{skill}</li>
                         )}
                     </ul>

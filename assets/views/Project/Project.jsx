@@ -5,6 +5,7 @@ import ProjectStaff from './ProjectStaff';
 import Fallback from '../../components/UI/Spinner/Spinner';
 import { purifyProjects } from '../../security/Dompurify/purify';
 import { getProjectByName } from '../../api/projectsApi';
+import { isMobile } from 'react-device-detect';
 
 
 const Project = () => {
@@ -121,7 +122,7 @@ const Project = () => {
   return (
     project && (
       <article className={`production ${fade ? "production-fadein" : ""}`}>
-        <div className="last-next-btns-container">
+        <div className={`last-next-btns-container ${isMobile ? "" : "desktop"}`}>
           {lastProject && (
             <span className="last">
               <Link
@@ -177,9 +178,19 @@ const Project = () => {
             width={1000}
             height={500}
             controls
-            url={project?.youtube_video}
+            url={project?.youtube_video.replace("youtube.com", "youtube-nocookie.com")}
+            
             preload="none"
             style={{ margin: "10px auto", height: 500, objectFit: "cover" }}
+            light={project?.thumbnail}
+            config={{
+              
+              youtube: {
+                embedOptions:{
+                  host: "https://www.youtube-nocookie.com"
+                }
+              },
+            }}
           />
           <div
             className={`production__show-assets ${

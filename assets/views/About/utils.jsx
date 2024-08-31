@@ -55,9 +55,12 @@ const persons = [
 const aboutDescFirst = <>
 Bienvenue dans l'univers Metamorphose, un endroit débordant de créativité, où notre passion pour l'art prend vie.
 <br/>
+<span className='hide-mobile'>
 Tout a commencé avec 3 esprits créatifs et passionnés, qui ont uni leurs forces pour
 donner naissance à une aventure unique.
-Nous sommes Romain, Vincent et Thibaud, d'anciens étudiants en cinéma qui ont décidé de transformer leur amour pour la création en quelque chose de concret : une agence de production audiovisuelle.
+</span>
+
+
 </>
 
 

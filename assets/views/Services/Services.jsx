@@ -40,7 +40,7 @@ import Corporate from '../Corporate/Corporate';
        <section>
           <div className='tarifs mt'>
             <div className='tarifs-content' >
-                  <h2 className='section-title sub-tl sub-tl-m'>Comment se déroule la réalisation d'un projet ?</h2>
+                  <h2 className='section-title mt mb'>Comment se déroule la réalisation d'un projet ?</h2>
               </div>
               <TarifsMobileCards 
               handleClick={handleClick} 
@@ -62,7 +62,7 @@ import Corporate from '../Corporate/Corporate';
       
          
 
-        <section className='services-footer relative'>
+        <section className='services-footer'>
             <p className='p-footer hide-mobile'>Laissez-nous être le partenaire de confiance pour concrétiser vos idées visuelles. <br/>
             Contactez-nous dès aujourd'hui pour discuter de la manière dont nous pouvons donner vie à votre projet.</p>
 

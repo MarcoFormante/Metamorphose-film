@@ -159,12 +159,18 @@
             text-align: center;
             display: block;
             margin:20px 0 20px 0;
-            font-style: italic;
+            cursor: pointer;
             font-weight: 300;
             text-decoration: none;
+            position: relative;
+            z-index: 4;
             @media screen and (max-width: 386px) {
                font-size: calc(16px - 1vw);
-            }   
+            }  
+
+            &:hover{
+                text-decoration: underline;
+            }
         }
 
         .services-card-container{
