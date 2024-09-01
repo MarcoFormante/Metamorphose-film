@@ -464,7 +464,7 @@ useEffect(()=>{
           </div>
 
           <div className='inpt-container'>
-            <label htmlFor='p-staff-droniste'>Droniste</label>
+            <label htmlFor='p-staff-droniste'>Pilote de drone</label>
             <input type='text' id='p-staff-droniste' name='p-staff-droniste' value={droniste} onChange={(e)=>{
               setDroniste(e.target.value)
               setUpdatedValues({...updatedValues,droniste:e.target.value !== droniste})
@@ -480,7 +480,7 @@ useEffect(()=>{
           </div>
 
           <div className='inpt-container'>
-            <label htmlFor='p-staff-decorateurs'>Decorateurs</label>
+            <label htmlFor='p-staff-decorateurs'>Directeur de la photographie</label>
             <input type='text' id='p-staff-decorateurs' name='p-staff-decorateurs' value={decorateurs} onChange={(e)=>{
               setDecorateurs(e.target.value)
               setUpdatedValues({...updatedValues,decorateurs:e.target.value !== decorateurs})
