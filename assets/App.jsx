@@ -22,6 +22,9 @@ const AdminGallery = lazy(() => import('./views/protected/gallery/Gallery'));
 const AddImages = lazy(() => import('./views/protected/gallery/addImages/AddImages'));
 const ProjectUpdate = lazy(() => import('./views/protected/projects/projectUpdate/ProjectUpdate'));
 const ErrorHandler = lazy(()=> import('./views/ErrorHandler/ErrorHandler'));
+const  PrivacyPolicy = lazy(()=> import('./views/PrivacyPolicy/PrivacyPolicy')); 
+import {Cookies} from 'react-cookie-consent';
+
 
 
 const colorMap = {
@@ -80,10 +83,14 @@ function App() {
     const currentTime = new Date().getTime();
     const diff = currentTime - lastTime;
     const twoHours = 1000 * 60 * 60 * 2;
+    
     if (diff > twoHours) {
       sessionStorage.clear();
-      sessionStorage.setItem("reload", new Date().getTime());
-      window.location.reload();
+      if (Cookies.get("cookieConsent") === "false") {
+          Cookies.remove("cookieConsent");
+      }
+        sessionStorage.setItem("reload", new Date().getTime());
+        window.location.reload();
     }
   };
   
@@ -126,6 +133,7 @@ function App() {
             <Route path="projet/:name" element={<Suspense fallback={<Spinner/>}><Project /></Suspense>} />
             <Route path='/login' element={<Suspense><Login isAuth={isAuth} setIsAuth={setIsAuth} /> </Suspense>}/>
             <Route path='/error/:status' element={<Suspense><ErrorHandler/></Suspense>}/>
+            <Route path='/privacy-policy' element={<Suspense><PrivacyPolicy/></Suspense>}/>
           
             <Route element={<ProtectedRoute isAuth={isAuth} setIsAuth={setIsAuth}/>}>
                   <Route path='/admin/home' element={<Suspense><AdminHome/></Suspense>}/>

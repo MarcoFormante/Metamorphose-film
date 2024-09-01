@@ -23,11 +23,11 @@ use Psr\Log\LoggerInterface;
 
 class TokenAuthenticator extends AbstractAuthenticator
 {
-   private CsrfTokenManagerInterface $csrfTokenManager;
+//    private CsrfTokenManagerInterface $csrfTokenManager;
 
     public function __construct(
         private UserRepository $userRepository,
-        CsrfTokenManagerInterface $csrfTokenManager ,
+        private CsrfTokenManagerInterface $csrfTokenManager ,
         private LoggerInterface $logger
     ) {
         $this->csrfTokenManager = $csrfTokenManager;

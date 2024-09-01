@@ -19,7 +19,7 @@ class MyCsrfTokenListener
     public function onKernelRequest(RequestEvent $event):void
     {
         $request = $event->getRequest();
-        if (!in_array($request->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'], true)) {
+        if (!in_array($request->getMethod(), [ 'PUT', 'DELETE', 'PATCH'], true)) {
             return;
         }
 
