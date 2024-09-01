@@ -15,8 +15,8 @@ const Home = () => {
           const fetchProjects = async () => {
             try {
               const data = await getProjects();
-              if (!data) {
-                throw new Error("Error: No projects found");
+              if (!data || data.length < 1) {
+                setError("Error fetching projects");
               }
               const purifiedProjects = purifyProjects(data);
               setProjects(purifiedProjects);
@@ -32,7 +32,7 @@ const Home = () => {
 
     if (error) return <h1 style={{color:"white",textAlign:"center"}}>Erreur : Aucun projet</h1>;
 
-    return projects.length > 0 && (
+    return  (
     <>
           <SEO
             title={"Metamorphose"}
@@ -57,7 +57,7 @@ const Home = () => {
                 direction='horizontal'
                 mousewheel={true}
             >
-                {projects.length > 0 ? (
+                {projects.length > 0 && (
                     projects.length > 1 ? (
                         projects.map((project,i) => (
                         <SwiperSlide key={project.id}>
@@ -69,11 +69,7 @@ const Home = () => {
                           <Figure project={projects[0]} index={0}  />
                         </SwiperSlide>
                     )
-                    ) : (
-                    <SwiperSlide>
-                        <p>No projects available</p>
-                    </SwiperSlide>
-                    )}
+                    ) }
             </Swiper>
         </div>
     </>

@@ -12,14 +12,14 @@ const ProtectedRoute = ({isAuth,setIsAuth})=>{
     }
   
     const back = ()=>{
-      navigate("-1",{replace:true})
+      navigate("/admin/home",{replace:true})
     }
   
     if (isAuth) {
         return (
           <div>
-            <span className='logout-btn' onClick={logout}>Logout</span>
-            <span className='back-btn' onClick={back}>Back</span>
+              <span className='logout-btn' onClick={logout}>Logout</span>
+              <span className='back-btn' onClick={back}>Back</span>
               <Outlet/>
           </div>
         )

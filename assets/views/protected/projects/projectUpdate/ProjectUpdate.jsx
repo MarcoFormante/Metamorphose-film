@@ -267,7 +267,7 @@ const deleteProject = ()=>{
   .then(res =>{
     if (res.status === 200) {
         alert("Project Deleted!")
-        navigate("/admin/projects/")
+        navigate("/admin/projects/",{replace:true})
     }else{
       alert("Error during deleting the project. try again")
       setLoading(false)
