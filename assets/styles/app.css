@@ -1161,6 +1161,16 @@ body:has(.fallback) {
 .gallery__images {
   padding: 0 24px 24px 24px;
 }
+.gallery__images .g-noImageText {
+  text-align: center;
+  width: 400px;
+  margin: auto;
+}
+@media screen and (max-width: 768px) {
+  .gallery__images .g-noImageText {
+    width: 90vw;
+  }
+}
 .gallery__images .spinner {
   animation: spin 1s linear infinite;
   display: flex;

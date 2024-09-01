@@ -129,7 +129,7 @@ const GalleryImages = () => {
           ))}
 
           {images.length < 1 && (
-            <p className="c-white t-center">
+            <p className="c-white g-noImageText">
               Il n'y a pas d'images dans cette galerie
             </p>
           )}

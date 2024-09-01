@@ -1,8 +1,8 @@
 .gallery {
   margin-bottom: 80px;
-@media screen and (min-width:1308px) {
-  margin-top: 100px;
-}
+  @media screen and (min-width:1308px) {
+    margin-top: 100px;
+  }
 
   a {
     text-decoration: none;
@@ -30,6 +30,8 @@
       gap: 40px;
     }
   }
+
+  
 
   &__item {
     transition: all 0.2s ease-in-out;
@@ -66,6 +68,17 @@
 .gallery__images{
   padding: 0 24px 24px 24px;
   
+
+  .g-noImageText{
+    text-align: center;
+    width: 400px;
+    margin: auto;
+
+    @media screen and (max-width: 768px){
+      width: 90vw;
+    }
+  }
+
 
   .spinner{
     animation: spin 1s linear infinite;
