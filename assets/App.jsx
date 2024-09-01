@@ -23,7 +23,6 @@ const AddImages = lazy(() => import('./views/protected/gallery/addImages/AddImag
 const ProjectUpdate = lazy(() => import('./views/protected/projects/projectUpdate/ProjectUpdate'));
 const ErrorHandler = lazy(()=> import('./views/ErrorHandler/ErrorHandler'));
 const  PrivacyPolicy = lazy(()=> import('./views/PrivacyPolicy/PrivacyPolicy')); 
-import {Cookies} from 'react-cookie-consent';
 
 
 
@@ -86,9 +85,6 @@ function App() {
     
     if (diff > twoHours) {
       sessionStorage.clear();
-      if (Cookies.get("cookieConsent") === "false") {
-          Cookies.remove("cookieConsent");
-      }
         sessionStorage.setItem("reload", new Date().getTime());
         window.location.reload();
     }
