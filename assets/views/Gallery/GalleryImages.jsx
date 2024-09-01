@@ -52,12 +52,11 @@ const GalleryImages = () => {
     // check if the gallery name is valid
     useEffect(()=>{
       images.length < 1 ? setIsLoading(true) : setIsFetchingNewImages(true)
-      const galleries=["concert","tournage","studio","evenements"]
+      const galleries=["concert","tournage","studio","evenementiel"]
       if(!galleries.includes(location?.state?.toLowerCase())){
           navigate('/galerie')
       }
     },[])
-
 
     // fetch images and if imageOffset is greater than 0 fetch new images and show loading spinner
     useEffect(()=> {

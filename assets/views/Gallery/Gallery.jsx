@@ -24,7 +24,7 @@ const galleries=[
   {
     name:'Événementiel',
     src:'assets/static/images/gallery/events.webp',
-    link:'/galerie/evenements',
+    link:'/galerie/evenementiel',
     alt:'Galerie Evenements Metamorphose'
   },
 ]

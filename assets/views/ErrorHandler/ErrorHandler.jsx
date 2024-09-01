@@ -10,18 +10,19 @@ const errorMessages = [
     { status: 401, title: "401 Unauthorized", message: "Sorry, you are not authorized to access this page. Please log in and try again." },
     { status: 503, title: "503 Service Unavailable", message: "Sorry, the server is currently unavailable. Please try again later." },
     { status: 403, title: "403 Forbidden", message: "Sorry, you do not have permission to access this page." },
-    {status :202 , title: "", message: "Des futurs projets arrivent très vite !"}
+    { status :202 , title: "", message: "Des futurs projets arrivent très vite !"}
   ];
 
 const ErrorHandler = () => {
     const { status } = useParams()
     const navigate = useNavigate()
     const error = errorMessages.find(error => error.status === parseInt(status)) 
+ 
       return (
         <div className='error-handler-page'>
          <BackButton
             props={{ width: 24, height: 24 }}
-            callback={() => navigate("/services", { replace: true })}
+            callback={() => navigate(-1, { replace: true })}
             label={"Retour"}
           />
       

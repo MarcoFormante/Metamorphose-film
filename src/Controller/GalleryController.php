@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\GalleryImages;
 use App\Security\Sanitizer;
 use Doctrine\ORM\EntityManagerInterface;
+use Error;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,7 +59,7 @@ class GalleryController extends AbstractController
             $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $this->s->sanitize($name,"string")], ['order_index' => 'ASC'], 10, $offset * 10);
 
             if (!$gallery) {
-                throw new NotFoundHttpException('The gallery was not found.');
+                return $this->json(['error' => 'An error occurred getting Gallery' . $name], 204);
             }
            
             $images = [];
@@ -72,7 +73,7 @@ class GalleryController extends AbstractController
             }
         } catch (\Throwable $th) {
             $this->logger->error($th->getMessage());
-            return $this->json(['error' => 'An error occurred getting Gallery'], 500);
+            return $this->json(['error' => 'An error occurred getting Gallery' . $name], $th->getCode());
         }
        
         return $this->json(['images' => $images,"total" => $total],200);
