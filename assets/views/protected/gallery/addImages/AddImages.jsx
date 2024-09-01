@@ -12,7 +12,7 @@ const galleries=[
     "Concert",
     "Tournage",
     "Studio",
-    "Evenements"
+    "Evenementiel"
 ]
 
 

@@ -162,7 +162,7 @@ class GalleryController extends AbstractController
                 "Concert",
                 "Tournage",
                 "Studio",
-                "Evenements"
+                "Evenementiel"
             ];
             $galleryName = $this->s->sanitize($request->get('galleryName'),"string");
             if (!$galleryName) {

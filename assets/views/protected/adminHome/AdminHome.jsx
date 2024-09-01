@@ -11,9 +11,8 @@ const AdminHome = () => {
  
   return (
     <div className='admin-home'>
-       
         <div className='admin-pages'>
-        {pages.map((item,index)=>
+        {pages.map((item)=>
               <Link key={item.id} to={item.path}>{item.name}</Link>
             )}
         </div>

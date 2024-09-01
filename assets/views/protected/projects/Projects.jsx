@@ -40,7 +40,7 @@ const Projects = () => {
     window.location.reload()
     return
   }
-  
+  const scrollY = window.scrollY
   setLoading(true)
   const formdata = new FormData()
   formdata.append("currId",firstPos.data)
@@ -59,6 +59,9 @@ const Projects = () => {
       projects[newPos] = first
       setProjects([...projects])
       setLoading(false)
+      setTimeout(()=>{
+        window.scrollTo(0, scrollY);
+      },500)
     }
   }).catch(err => {
     console.log(err)

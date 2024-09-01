@@ -7,7 +7,7 @@ import { z } from "zod";
 import { purifyImagesAdminPage } from "../../../security/Dompurify/purify";
 import ImageViewer from "../../../components/UI/imageViewer/ImageViewer";
 
-const galleries = ["Concert", "Tournage", "Studio", "Evenements"];
+const galleries = ["Concert", "Tournage", "Studio", "Evenementiel"];
 
 const Gallery = () => {
   const param = useParams();
@@ -81,6 +81,7 @@ const Gallery = () => {
   const deleteImg = (id) => {
     setIsLoading(true);
     const validID = z.string().safeParse(id);
+    const scrollY = window.scrollY;
     axiosInstance
       .delete(`admin/gallery/image/${validID.data}`)
       .then((res) => {
@@ -88,6 +89,9 @@ const Gallery = () => {
           const newImages = images.filter((img) => img.id !== validID.data);
           setImages([...newImages]);
           alert("Image deleted successfully");
+          setTimeout(()=>{
+            window.scrollTo(0, scrollY);
+          },500)
         } else {
           alert("An error occured during deletion");
         }
@@ -111,6 +115,7 @@ const Gallery = () => {
     const secondImageID = images[newPos].id;
     const validaFirstID = z.string().safeParse(firstImageID);
     const validaSecondID = z.string().safeParse(secondImageID);
+    const scrollY = window.scrollY;
     const formdata = new FormData();
     formdata.append("currId", validaFirstID.data);
     formdata.append("newId", validaSecondID.data);
@@ -129,6 +134,9 @@ const Gallery = () => {
           images[newPos] = first;
           setImages([...images]);
           setIsLoading(false);
+          setTimeout(()=>{
+            window.scrollTo(0, scrollY);
+          },500)
         }
       })
       .catch((err) => {

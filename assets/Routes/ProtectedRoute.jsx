@@ -12,7 +12,8 @@ const ProtectedRoute = ({isAuth,setIsAuth})=>{
     }
   
     const back = ()=>{
-      navigate("/admin/home",{replace:true})
+      const pathname = window.location.pathname === "/admin/home" ? null : -1
+      navigate(pathname,{replace:true})
     }
   
     if (isAuth) {

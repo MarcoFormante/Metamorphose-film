@@ -11,7 +11,6 @@ function Header(){
   const pathname = location.pathname
   useEventListener("resize",window,()=>setWindowWidth(window.innerWidth),[],false)
 
-  console.log(pathname);
   
   useEffect(()=>{
     if (menuActive || windowWidth > 1024) {
