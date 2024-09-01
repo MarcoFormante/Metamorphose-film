@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const errors = [401, 403, 404, 429, 500, 503];
 
+
 export const axiosInstance = axios.create({
     baseURL: '/api/',
     timeout: 10000,
@@ -11,9 +12,8 @@ export const axiosInstance = axios.create({
   axiosInstance.interceptors.response.use(response => {
     return response;
  }, error => {
-
-  
    if (errors.includes(error.response.status) && !window.location.pathname.includes("admin")) {
+      window.history.state = {navigateTo:window.location.pathname};
       window.location.href = '/error/' + error.response.status;
    }
    return error;
