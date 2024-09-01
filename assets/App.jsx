@@ -49,7 +49,7 @@ function App() {
   const { pathname } = useLocation();
   const helmetContext = {}
   const token = sessionStorage.getItem("token-ad")
-  
+  const c = document.cookie
 
   useEffect(() => {
     if (pathname.includes("/error")) {
@@ -115,6 +115,7 @@ function App() {
         axiosInstance.defaults.headers.post['X-CSRF-Token'] = sessionStorage.getItem("csrfToken")
         axiosInstance.defaults.headers.delete['X-CSRF-Token'] = sessionStorage.getItem("csrfToken")
 }},[])
+
 
 
   return (
