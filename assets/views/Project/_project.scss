@@ -18,8 +18,6 @@
     .last-next-btns-container{
         padding: 10px 50px;
         position: relative;
-        // top: 10px;
-
 
         @media screen and (max-width:1024px) {
             padding: 10px 10px;
@@ -31,6 +29,7 @@
             top: 50%;
             left: 0;
             width: 100vw;
+            z-index: 0;
         }
 
        
@@ -67,6 +66,8 @@
                     height: inherit;
                     display: grid;
                     place-items: center;
+                    position: relative;
+                    z-index: 2;
                 }
 
 
@@ -299,3 +300,57 @@
 }
 
 
+@media screen and (max-width: 1024px) {
+    .CookieConsent{
+        flex-direction: column;
+        flex: none;
+    }
+}
+
+
+
+@media screen and (min-width: 1024px) {
+    .CookieConsent{
+        flex-direction: row;
+        flex: 1 1 0%;
+    }
+}
+
+
+.projet-video{
+    position: relative;
+    z-index: 1;
+    width: fit-content;
+    margin: auto;
+    .yt-svg{
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        text-align: center;
+        width: fit-content;
+        z-index: 20;
+
+        svg{
+            fill: $orange;
+            transition: fill 0.3s ease-in-out;
+            position: relative;
+            width: 120px;
+            cursor: pointer;
+        }
+    }
+
+    .yt-svg--hide{
+        display: none;
+    }
+
+    .spinner{
+        svg{
+            position: relative;
+            top: 50px;
+            animation: spin 1s linear infinite;
+        }
+        
+    }
+    
+}

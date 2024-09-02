@@ -22,6 +22,8 @@ const AdminGallery = lazy(() => import('./views/protected/gallery/Gallery'));
 const AddImages = lazy(() => import('./views/protected/gallery/addImages/AddImages'));
 const ProjectUpdate = lazy(() => import('./views/protected/projects/projectUpdate/ProjectUpdate'));
 const ErrorHandler = lazy(()=> import('./views/ErrorHandler/ErrorHandler'));
+const  PrivacyPolicy = lazy(()=> import('./views/PrivacyPolicy/PrivacyPolicy')); 
+
 
 
 const colorMap = {
@@ -46,7 +48,7 @@ function App() {
   const { pathname } = useLocation();
   const helmetContext = {}
   const token = sessionStorage.getItem("token-ad")
-  
+  const c = document.cookie
 
   useEffect(() => {
     if (pathname.includes("/error")) {
@@ -80,10 +82,11 @@ function App() {
     const currentTime = new Date().getTime();
     const diff = currentTime - lastTime;
     const twoHours = 1000 * 60 * 60 * 2;
+    
     if (diff > twoHours) {
       sessionStorage.clear();
-      sessionStorage.setItem("reload", new Date().getTime());
-      window.location.reload();
+        sessionStorage.setItem("reload", new Date().getTime());
+        window.location.reload();
     }
   };
   
@@ -110,6 +113,7 @@ function App() {
 }},[])
 
 
+
   return (
     <HelmetProvider context={helmetContext}>
       
@@ -126,6 +130,7 @@ function App() {
             <Route path="projet/:name" element={<Suspense fallback={<Spinner/>}><Project /></Suspense>} />
             <Route path='/login' element={<Suspense><Login isAuth={isAuth} setIsAuth={setIsAuth} /> </Suspense>}/>
             <Route path='/error/:status' element={<Suspense><ErrorHandler/></Suspense>}/>
+            <Route path='/privacy-policy' element={<Suspense><PrivacyPolicy/></Suspense>}/>
           
             <Route element={<ProtectedRoute isAuth={isAuth} setIsAuth={setIsAuth}/>}>
                   <Route path='/admin/home' element={<Suspense><AdminHome/></Suspense>}/>

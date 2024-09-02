@@ -12,3 +12,12 @@
 @import "./protected/gallery/adminGallery";
 @import "./protected/newProject/newProject";
 @import "./protected/projects/projects";
+@import "./PrivacyPolicy/privacy-policy";
+
+.iub__us-widget{
+    display: none;
+    position: fixed;
+    opacity: 0;
+    z-index: -10;
+    height: 0;
+}

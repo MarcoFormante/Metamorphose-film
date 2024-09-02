@@ -10,7 +10,8 @@ GENERAL: {cm:2024-08-28}
 (9) cambiare logo in arancione {cm:2024-08-29}
 (10) Mot Droniste —> Pilote de drone {cm:2024-08-29}
 (11) Mot Décorateur —> Directeur de la photographie {cm:2024-08-29}
-(12) aggiungere metatags {cm:2024-08-29}
+(12) aggiungere metatags {cm:2024-08-31}
+(13) migliorare l accessibilità e le balises
 
 SERVICES:
 (1) supprimer les textes descriptifs des pages (PRODUCTION VIDÉO, MONTAGE, PHOTO, DRONE)} {cm:2024-08-28}

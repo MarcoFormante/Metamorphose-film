@@ -1,0 +1,63 @@
+.policy-body{
+    color: $white;
+    padding: 5px;
+    width: 100%;
+
+    @media screen and (max-width: 1024px){
+        width: 100%;
+    }
+
+    a{
+        color: $orange;
+    }
+}
+
+#privacy-policy{
+
+    .sub-title{
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 20px 5px;
+        @media screen and (max-width: 1024px){
+            font-size: clamp(0.5rem, 5vw, 1.2rem);
+            font-weight: 500;
+            margin: 5px 5px 15px 5px;
+        }
+    }
+
+    .title{
+        @media screen and (max-width: 1024px){
+            font-size: clamp(1.5rem, 10vw, 5rem);
+            font-weight: bold;
+            margin: 10px 5px 0px 5px;
+        }
+    }
+
+    .lang-container{
+        margin-bottom: 20px;
+    }
+
+    button{
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        margin: 20px 5px;
+        appearance: none;
+        background-color: gray;
+
+        &.lang-on{
+            background-color: $orange;
+            color: $white;
+            text-decoration: underline;
+        }
+
+       
+
+        @media screen and (max-width: 1024px){
+            margin: 10px 5px;
+        }
+    }
+}
