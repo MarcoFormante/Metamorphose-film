@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ImageViewer from '../../components/UI/imageViewer/ImageViewer'
-import { axiosInstance } from '../../api/axiosInstance'
 import Fallback from '../../components/UI/Spinner/Spinner'
 import { purifyImages } from '../../security/Dompurify/purify'
 import MoreItems from '../../components/common/ShowMoreButton/ShowMoreButton'
@@ -13,7 +12,6 @@ const GalleryImages = () => {
     const [images,setImages] = useState([])
     const [imgSrc,setImgSrc] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
-    const [newImageLength, setNewImageLength] = useState(0)
     const [imageOffset, setImageOffset] = useState(0)
     const [totalImages, setTotalImages] = useState(null)
     const [canSearchNewImages, setCanSearchNewImages] = useState(false)
@@ -40,12 +38,12 @@ const GalleryImages = () => {
 
     // check if there are more images to fetch
     useEffect(()=>{
-      if (totalImages > newImageLength) {
+      if (totalImages > images.length) {
           setCanSearchNewImages(true)
       }else{
           setCanSearchNewImages(false)
       }
-    },[totalImages,newImageLength])
+    },[images])
 
 
 
@@ -58,6 +56,7 @@ const GalleryImages = () => {
       }
     },[])
 
+
     // fetch images and if imageOffset is greater than 0 fetch new images and show loading spinner
     useEffect(()=> {
       const fetchImages = async()=>{
@@ -69,8 +68,7 @@ const GalleryImages = () => {
           const {imgs,total} = await getGalleryImages(galleryName, imageOffset)
           const purifiedImgs = purifyImages(imgs)
           setImages([...images,...purifiedImgs])
-          total > 0 &&  setTotalImages(total)
-          setNewImageLength(purifiedImgs.length) 
+          total > 0 && setTotalImages(total) 
           setIsFetchingNewImages(false)
         } catch (error) {
           console.log(error);
@@ -82,6 +80,7 @@ const GalleryImages = () => {
     fetchImages()
     },[imageOffset])
 
+    
 
     // handle images offset when user clicks on show more button
     const handleImagesOffset = ()=>{
@@ -90,6 +89,8 @@ const GalleryImages = () => {
           setCanSearchNewImages(false)
       }
     }
+
+
 
   return  images && 
   (

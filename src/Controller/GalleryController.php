@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\GalleryImages;
 use App\Security\Sanitizer;
 use Doctrine\ORM\EntityManagerInterface;
-use Error;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,7 +41,7 @@ class GalleryController extends AbstractController
                 throw new TooManyRequestsHttpException();
             }
             $offset = $this->s->sanitize($request->query->get('offset'),"int");
-            $total = 0;
+            $totalImages = false;
             if ((int)$offset < 1) {
                 $imagesCount = $em->createQueryBuilder()
                 ->select('COUNT(g)')
@@ -52,7 +51,7 @@ class GalleryController extends AbstractController
                 ->getQuery()
                 ->getResult();
                 if(is_integer($imagesCount[0][1])){
-                    $total = $imagesCount[0][1];
+                    $totalImages = $imagesCount[0][1];
                 }
             }
             
@@ -76,7 +75,7 @@ class GalleryController extends AbstractController
             return $this->json(['error' => 'An error occurred getting Gallery' . $name], $th->getCode());
         }
        
-        return $this->json(['images' => $images,"total" => $total],200);
+        return $this->json(['images' => $images,"total" => $totalImages],200);
     }
 
 
