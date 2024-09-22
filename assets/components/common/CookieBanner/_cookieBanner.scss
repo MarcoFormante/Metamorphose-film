@@ -7,6 +7,7 @@
     justify-content: flex-end;
     flex-direction: column;
     background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
     
     &__container{
         background-color: $orange;
@@ -24,6 +25,13 @@
     &__text{
         color: $white;
         font-size: 0.9rem;
+
+        span{
+            color: $white;
+            text-decoration: underline;
+            font-weight: 500;
+            cursor: pointer;
+        }
     }
 
     &__button{

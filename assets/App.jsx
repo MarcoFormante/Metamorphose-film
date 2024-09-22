@@ -2,33 +2,16 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import './styles/app.css';
-import Header from './components/layout/Header/Header';
+const Header = lazy(() => import('./components/layout/Header/Header'));
 import { axiosInstance } from './api/axiosInstance';
 import useEventListener from './hooks/useEventListener';
-import ProtectedRoute from './Routes/ProtectedRoute';
 import Spinner from './components/UI/Spinner/Spinner';
 import { useContext } from 'react';
 import { CookieContext } from './contexts/CookieProvider';
-
-const Home = lazy(() => import('./views/Home/Home'));
-const Gallery = lazy(() => import('./views/Gallery/Gallery'));
-const About = lazy(() => import('./views/About/About'));
-const Services = lazy(() => import('./views/Services/Services'));
-const Project = lazy(() => import('./views/Project/Project'));
-const NewProject = lazy(() => import('./views/protected/newProject/NewProject'));
-const Projects = lazy(() => import('./views/protected/projects/Projects'));
-const Galleries = lazy(() => import('./views/protected/galleries/Galleries'));
-const Login = lazy(() => import('./views/Login/Login'));
-const AdminHome = lazy(() => import('./views/protected/adminHome/AdminHome'));
-const GalleryImages = lazy(() => import('./views/Gallery/GalleryImages'));
-const AdminGallery = lazy(() => import('./views/protected/gallery/Gallery'));
-const AddImages = lazy(() => import('./views/protected/gallery/addImages/AddImages'));
-const ProjectUpdate = lazy(() => import('./views/protected/projects/projectUpdate/ProjectUpdate'));
-const ErrorHandler = lazy(()=> import('./views/ErrorHandler/ErrorHandler'));
-const PrivacyPolicy = lazy(()=> import('./views/PrivacyPolicy/PrivacyPolicy')); 
+import PrivacyPolicy from './views/PrivacyPolicy/PrivacyPolicy';
+const PublicRoutes = lazy(() => import('./Routes/PublicRoutes'));
+const PrivateRoutes = lazy(() => import('./Routes/PrivateRoutes'));
 const CookieBanner = lazy(()=> import('./components/common/CookieBanner/CookieBanner'));
-
-
 
 const colorMap = {
   "/services": "back__orange",
@@ -49,11 +32,12 @@ function App() {
   const [isShowingPages, setIsShowingPages] = useState(false);
   const [isAuth, setIsAuth] = useState(sessionStorage.getItem("token-ad"));
   const [headerColor, setHeaderColor] = useState("");
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const { pathname } = useLocation();
   const helmetContext = {}
   const token = sessionStorage.getItem("token-ad")
-  const {cookie,setCookie} = useContext(CookieContext)
   
+  const {cookie,setCookie} = useContext(CookieContext)
   
 
   useEffect(() => {
@@ -118,41 +102,20 @@ function App() {
 }},[])
 
 
-function handleCookie(){
-setCookie(true)
-}
-
 
 
   return (
     <HelmetProvider context={helmetContext}>
-       {!cookie && <CookieBanner/>}
+    { showPrivacyPolicy &&  <PrivacyPolicy setShowPrivacyPolicy={()=>setShowPrivacyPolicy(false)}/>}
+     
+       {!cookie && <CookieBanner openPrivacyPolicy={ () => setShowPrivacyPolicy(true)}/>}
       <div className={`app ${headerColor}`} >
         <Header isShowingPages={isShowingPages} setIsShowingPages={setIsShowingPages} headerColor={headerColor} />
         <main className="main">
           <Suspense fallback={<Spinner/>} >
           <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="*" element={<Navigate to="/"/>}/>
-            <Route path="/services" element={<Services />} />
-            <Route path="/a_propos" element={<About />} />
-            <Route path="/galerie" element={<Gallery />} />
-            <Route path="/galerie/:name" element={<GalleryImages />} />
-            <Route path="projet/:name" element={<Project cookie={cookie} />} />
-            <Route path='/login' element={<Login isAuth={isAuth} setIsAuth={setIsAuth} /> }/>
-            <Route path='/error/:status' element={<ErrorHandler/>}/>
-            <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
-          
-            <Route element={<ProtectedRoute isAuth={isAuth} setIsAuth={setIsAuth}/>}>
-                  <Route path='/admin/home' element={<AdminHome/>}/>
-                  <Route path='/admin/newproject' element={<NewProject/>}/>
-                  <Route path='/admin/projects/' element={<Projects/>}/>
-                  <Route path='/admin/galleries' element={<Galleries/>}/>
-                  <Route path='/admin/gallery/:name' element={<AdminGallery/>}/>
-                  <Route path='/admin/gallery/add' element={<AddImages/>}/>
-                  <Route path='/admin/projects/update' element={<ProjectUpdate/>} />
-                  <Route path="admin/*"   element={<Navigate to="/admin/home"/>}/>
-            </Route>
+            <Route path='/*' element={<PublicRoutes cookie={cookie} isAuth={isAuth} setIsAuth={setIsAuth}/>}/>
+            <Route path='/admin/*' element={<PrivateRoutes isAuth={isAuth} setIsAuth={setIsAuth}/>}/>
             </Routes>
           </Suspense>
         </main>

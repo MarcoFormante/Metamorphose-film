@@ -13,7 +13,9 @@
 }
 
 #privacy-policy{
-
+    position: absolute;
+    z-index: 5000;
+    background-color: $black;
     .sub-title{
         font-size: 1.5rem;
         font-weight: bold;
@@ -35,6 +37,8 @@
 
     .lang-container{
         margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
     }
 
     button{
@@ -52,6 +56,13 @@
             background-color: $orange;
             color: $white;
             text-decoration: underline;
+        }
+
+        &.backButton{
+            font-size: 1rem;
+            background-color: unset;
+            padding: unset;
+            font-weight: 300;
         }
 
        

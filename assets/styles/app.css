@@ -305,6 +305,7 @@ button.backButton span {
   justify-content: flex-end;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
 }
 .cookie-banner__container {
   background-color: #FF1100;
@@ -320,6 +321,12 @@ button.backButton span {
 .cookie-banner__text {
   color: #ffffff;
   font-size: 0.9rem;
+}
+.cookie-banner__text span {
+  color: #ffffff;
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: pointer;
 }
 .cookie-banner__button {
   background-color: #ffffff;
@@ -2608,6 +2615,11 @@ body:has(.fallback) {
   color: #FF1100;
 }
 
+#privacy-policy {
+  position: absolute;
+  z-index: 5000;
+  background-color: #000000;
+}
 #privacy-policy .sub-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -2629,6 +2641,8 @@ body:has(.fallback) {
 }
 #privacy-policy .lang-container {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 #privacy-policy button {
   padding: 10px 20px;
@@ -2647,6 +2661,12 @@ body:has(.fallback) {
   background-color: #FF1100;
   color: #ffffff;
   text-decoration: underline;
+}
+#privacy-policy button.backButton {
+  font-size: 1rem;
+  background-color: unset;
+  padding: unset;
+  font-weight: 300;
 }
 @media screen and (max-width: 1024px) {
   #privacy-policy button {
