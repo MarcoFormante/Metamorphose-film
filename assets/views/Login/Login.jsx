@@ -9,11 +9,12 @@ const Login = ({setIsAuth}) => {
     const [username,setUsername] = useState("")
     const [password,setPassword] = useState("")
     const [loading,setLoading] = useState(false)
-    const [csrf,setCsrf] = useState(sessionStorage.getItem("csrfToken") || null)
+    const [csrf,setCsrf] = useState(null)
     const navigate = useNavigate()
 
 
     useEffect(()=>{
+        if (!csrf) {
             axiosInstance.get("csrfToken")
             .then(res =>{
                 if (res.status === 200) {
@@ -26,8 +27,10 @@ const Login = ({setIsAuth}) => {
             }).catch(err => {
                 console.error("error csrfToken not Valid");
             })
+        }
+           
         
-    },[])
+    },[csrf])
 
 
     const checkLogin = async(e)=>{
@@ -43,9 +46,9 @@ const Login = ({setIsAuth}) => {
             if (res?.data?.token) {
                 const token = res.data.token
                 axiosInstance.defaults.headers.common = {
-                    'Authorization': 'Bearer ' + token,
+                    'Authorization': 'Bearer ' + res?.data?.token,
                 };
-                sessionStorage.setItem("token-ad",token)
+                sessionStorage.setItem("token-ad",res?.data?.token)
                 
                 setIsAuth(true)
               

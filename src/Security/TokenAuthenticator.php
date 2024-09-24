@@ -35,11 +35,6 @@ class TokenAuthenticator extends AbstractAuthenticator
     }
    
 
-    /**
-     * Called on every request to decide if this authenticator should be
-     * used for the request. Returning `false` will cause this authenticator
-     * to be skipped.
-     */
     public function supports(Request $request): ?bool
     {
     
@@ -50,6 +45,7 @@ class TokenAuthenticator extends AbstractAuthenticator
     {
        
         
+        
         $apiToken = $request->headers->get('Authorization');
         if (null === $apiToken) {
             // Code 401 "Unauthorized"
@@ -57,7 +53,7 @@ class TokenAuthenticator extends AbstractAuthenticator
         }
        
         $apiToken = str_replace('Bearer ', '', $apiToken);
-      
+     
         $key = $_ENV['JWT_KEY'];
         $decodedToken = JWT::decode($apiToken, new Key($key, 'HS256'));
         if (!$decodedToken) {
@@ -80,18 +76,15 @@ class TokenAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // on success, let the request continue
+       
         return null;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         $data = [
-            // you may want to customize or obfuscate the message first
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-                
-            // or to translate this message
-            // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
+           
         ];
         $this->logger->error($exception->getMessage(),$data);
 
