@@ -5,15 +5,13 @@ import Fallback from '../../components/UI/Spinner/Spinner'
 
 
 
-const Login = ({isAuth,setIsAuth}) => {
+const Login = ({setIsAuth}) => {
     const [username,setUsername] = useState("")
     const [password,setPassword] = useState("")
     const [loading,setLoading] = useState(false)
     const [csrf,setCsrf] = useState(sessionStorage.getItem("csrfToken") || null)
     const navigate = useNavigate()
 
-   
-     
 
     useEffect(()=>{
             axiosInstance.get("csrfToken")

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import {persons,aboutDescFirst } from './utils'
 import ReactCardFlip from 'react-card-flip';
 import Contact from '../Contact/Contact'

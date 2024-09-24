@@ -60,26 +60,6 @@ function App() {
   },[token])
 
 
-  // useEffect(()=>{
-  //   if (!sessionStorage.getItem("reload")) {
-  //     sessionStorage.setItem("reload", new Date().getTime());
-  //   }
-  // },[])
-
-
-  // const handleFocus = () => {
-  //   const lastTime = parseInt(sessionStorage.getItem("reload"), 10);
-  //   const currentTime = new Date().getTime();
-  //   const diff = currentTime - lastTime;
-  //   const twoHours = 1000 * 60 * 60 * 2;
-    
-  //   if (diff > twoHours) {
-  //     sessionStorage.clear();
-  //       sessionStorage.setItem("reload", new Date().getTime());
-  //       window.location.reload();
-  //   }
-  // };
-  
 
   const eventStorageHandler = ()=>{
     if (sessionStorage.getItem("token-ad")) {

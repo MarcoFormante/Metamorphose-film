@@ -3,8 +3,6 @@ import ReactPlayer from 'react-player';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
 import ProjectStaff from './ProjectStaff';
 import Fallback from '../../components/UI/Spinner/Spinner';
-import { purifyProjects } from '../../security/Dompurify/purify';
-import { getProjectByName } from '../../api/projectsApi';
 import { isMobile } from 'react-device-detect';
 
 
@@ -22,6 +20,12 @@ const Project = ({cookie}) => {
     const navigate = useNavigate()
     const param = useParams()
     const allProjects = location.state?.allProjects
+
+    useEffect(()=>{
+      if (param.name && !location.state?.project) {
+          navigate("/")
+      }
+  },[])
   
 
     useEffect(()=>{
@@ -38,14 +42,7 @@ const Project = ({cookie}) => {
         }
     },[showAssets])
 
-
    
-    useEffect(()=>{
-        if (param.name && !location.state?.project) {
-            navigate("/")
-        }
-    },[])
-
 
     useEffect(()=>{
         const timeout = setTimeout(()=>{

@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 const GalleryItem = ({name,src,link,alt,setImgLoadedCounter}) => {
 
 const stateName = name === 'Événementiel' ? 'evenementiel' : name
-   
-
 
     return (
       <li className='gallery__item'>
