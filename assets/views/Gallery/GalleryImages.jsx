@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate,useParams} from 'react-router-dom'
 import ImageViewer from '../../components/UI/imageViewer/ImageViewer'
 import Fallback from '../../components/UI/Spinner/Spinner'
 import { purifyImages } from '../../security/Dompurify/purify'
 import MoreItems from '../../components/common/ShowMoreButton/ShowMoreButton'
 import BackButton from '../../components/common/BackButton/BackButton'
 import { getGalleryImages } from '../../api/imagesApi'
+import SEO from '../../components/Seo/SEO'
 
 const GalleryImages = () => {
     const [isShowingImage,setIsShowingImage] = useState(false)
@@ -18,6 +19,7 @@ const GalleryImages = () => {
     const [isFetchingNewImages, setIsFetchingNewImages] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
+    const params = useParams()
 
    
     const showImage = useCallback((e,index)=>{
@@ -51,7 +53,7 @@ const GalleryImages = () => {
     useEffect(()=>{
       images.length < 1 ? setIsLoading(true) : setIsFetchingNewImages(true)
       const galleries=["concert","tournage","studio","evenementiel"]
-      if(!galleries.includes(location?.state?.toLowerCase())){
+      if(!galleries.includes(location?.state?.toLowerCase()) && !galleries.includes(params?.name?.toLowerCase())){
           navigate('/galerie')
       }
     },[])
@@ -64,7 +66,7 @@ const GalleryImages = () => {
             setIsFetchingNewImages(true)
           }
         try {
-          const galleryName = location.state
+          const galleryName = location.state || params.name
           const {imgs,total} = await getGalleryImages(galleryName, imageOffset)
           const purifiedImgs = purifyImages(imgs)
           setImages([...images,...purifiedImgs])
@@ -95,6 +97,7 @@ const GalleryImages = () => {
   return  images && 
   (
     <>
+      <SEO title={"Galerie " + (location.state || params.name) + " - Metamorphose"} url={"/galerie/" + (location.state || params.name)} />
       <div className="gallery__images">
         {isLoading && <Fallback />}
           <BackButton

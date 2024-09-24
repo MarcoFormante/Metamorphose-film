@@ -2,28 +2,34 @@ import React, { useState } from 'react'
 import GalleryItem from './GalleryItem'
 import Fallback from '../../components/UI/Spinner/Spinner'
 import { galleries } from './utils'
+import SEO from '../../components/Seo/SEO'
 
 
 const Gallery = () => {
   const [imgLoadedCounter, setImgLoadedCounter] = useState(0)
 
   return (
-    <div className='gallery'>
-      <ul className='gallery__list'>
-        {imgLoadedCounter < galleries.length && <Fallback />}
-        {galleries.map((gallery)=>
-        <div  key={gallery.name}>
-          <GalleryItem
-            name={gallery.name}
-            src={gallery.src} 
-            link={gallery.link}
-            alt={gallery.alt}
-            setImgLoadedCounter={setImgLoadedCounter}
-            />
-          </div>
-        )}
-      </ul>
-    </div>
+
+    <>
+     <SEO title={"Galerie - Metamorphose"} url={"/galerie"} />
+   
+      <div className='gallery'>
+        <ul className='gallery__list'>
+          {imgLoadedCounter < galleries.length && <Fallback />}
+          {galleries.map((gallery)=>
+          <div  key={gallery.name}>
+            <GalleryItem
+              name={gallery.name}
+              src={gallery.src} 
+              link={gallery.link}
+              alt={gallery.alt}
+              setImgLoadedCounter={setImgLoadedCounter}
+              />
+            </div>
+          )}
+        </ul>
+      </div>
+    </>
   )
 }
 

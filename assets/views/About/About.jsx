@@ -66,6 +66,9 @@ const About = () => {
       }
    
   return (
+    <>
+        <SEO title={"À propos - Metamorphose"} url={"/a_propos"} />
+   
       <div className='about '>
         <section className='about-valeurs'>
           <PageTitle tag='h1' title={"À Propos"}/>
@@ -133,6 +136,7 @@ const About = () => {
             </ul>
         </div>
     </div>
+    </>
     )
 }
 

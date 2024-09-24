@@ -35,14 +35,8 @@ const Home = () => {
     return  (
     <>
           <SEO
-            title={"Metamorphose"}
+            title={"Accueil - Metamorphose"}
             url={"/"}
-            description={
-              "Ici vous pouvez admirer tout les projets de Metamorphose"
-            }
-            name={"Metamorphose"}
-            type={"website"}
-            keywords={"Projets,videos,images,artistes,musique,projets creatifs"}
           />
         <div id='home'>
             <Swiper style={{color:"white"}}

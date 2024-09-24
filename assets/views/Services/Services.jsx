@@ -2,6 +2,7 @@ import React, {useState } from 'react'
 import ServicesCards from './ServicesCards';
 import TarifsMobileCards from '../Tarifs/TarifsMobileCards';
 import Corporate from '../Corporate/Corporate';
+import SEO from '../../components/Seo/SEO';
 
  const Services = () => {
   const [isFlipped_Card1, setIsFlippedCard_1] = useState(true);
@@ -28,16 +29,19 @@ import Corporate from '../Corporate/Corporate';
 
   
   return (
-    <div className='services__body ' id='services-page'>
-      <h1 className='title relative'>Services</h1>
-      <p className='p-desc hide-mobile relative'>Chez metamorphose, nous proposons une expérience complète, une immersion dans l'art de capturer des moments
-       exclusifs et de raconter des histoires uniques. <br/>
-        Découvrez nos services, où chaque étape est une pièce maîtresse dans la création de notre projet commun.</p>
-
+    <>
+      <SEO title={"Services - Metamorphose"} url={"/services"} />
+   
+      <div className='services__body ' id='services-page'>
+        <h1 className='title relative'>Services</h1>
+        <p className='p-desc hide-mobile relative'>Chez metamorphose, nous proposons une expérience complète, une immersion dans l'art de capturer des moments
+          exclusifs et de raconter des histoires uniques. <br/>
+          Découvrez nos services, où chaque étape est une pièce maîtresse dans la création de notre projet commun.
+        </p>
         <section>
           <ServicesCards />
         </section>
-       <section>
+        <section>
           <div className='tarifs mt'>
             <div className='tarifs-content' >
                   <h2 className='section-title mt mb'>Comment se déroule la réalisation d'un projet ?</h2>
@@ -52,25 +56,22 @@ import Corporate from '../Corporate/Corporate';
           </div>
        </section>
         
-    <section className='mb'>
-        <div>
-              <h3 className='section-title sub-tl sub-tl-m'>Nos types de projets :</h3>
-        </div>
+        <section className='mb'>
+            <div>
+                  <h3 className='section-title sub-tl sub-tl-m'>Nos types de projets :</h3>
+            </div>
 
-        <Corporate/>
-    </section>
-      
-         
-
+            <Corporate/>
+        </section>
+          
         <section className='services-footer'>
             <p className='p-footer hide-mobile'>Laissez-nous être le partenaire de confiance pour concrétiser vos idées visuelles. <br/>
             Contactez-nous dès aujourd'hui pour discuter de la manière dont nous pouvons donner vie à votre projet.</p>
 
             <a className='mail'  href="mailto:metamorphoseproductions@gmail.com">metamorphoseproductions@gmail.com</a>
         </section>
-       
-       
-    </div>
+      </div>
+    </>
   )
 }
 

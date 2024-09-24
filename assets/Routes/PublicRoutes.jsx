@@ -9,7 +9,6 @@ const GalleryImages = lazy(() => import('../views/Gallery/GalleryImages'));
 const Project = lazy(() => import('../views/Project/Project'));
 const Login = lazy(() => import('../views/Login/Login'));
 const ErrorHandler = lazy(() => import('../views/ErrorHandler/ErrorHandler'));
-const PrivacyPolicy = lazy(() => import('../views/PrivacyPolicy/PrivacyPolicy'));
 
 const PublicRoutes = ({cookie,isAuth,setIsAuth}) => {
     
