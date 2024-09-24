@@ -5,8 +5,6 @@ import Contact from '../Contact/Contact'
 import PageTitle from '../../components/common/PageTitle/PageTitle';
 
 
- 
-
 const About = () => {
     const [isFlipped_Card1, setIsFlippedCard_1] = useState(false);
     const [isFlipped_Card2, setIsFlippedCard_2] = useState(false);
