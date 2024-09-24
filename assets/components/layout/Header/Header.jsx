@@ -27,6 +27,7 @@ function Header(){
           src={logo_wh}
           width={250}
           alt="Metamorphose"
+          height={42}
         />
       </Link>
 

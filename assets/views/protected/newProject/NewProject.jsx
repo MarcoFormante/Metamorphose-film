@@ -164,9 +164,8 @@ const handleSubmit = async(e) => {
     }
     
 
-    axiosInstance.post('admin/project/new',
-    formdata
-    ).then(res => {
+    axiosInstance.post('admin/project/new',formdata)
+    .then(res => {
       if (res.status === 200) {
         alert('Project created successfully')
         setProduction('')
@@ -225,6 +224,7 @@ const handleMoreStaffFields2 = (value,index) => {
       <h1 className='c-white ad-page-title'>{title}</h1>
      <form onSubmit={handleSubmit}>
 
+        {/* Base Section */}
         { 
           pageCounter === 0 &&  
             <NewProjectBasePage 
@@ -244,13 +244,13 @@ const handleMoreStaffFields2 = (value,index) => {
         }
         
 
-        {/* Images Page */}
-       { 
-        pageCounter === 1 &&
-         <NewProjectImagesPage handleImages={handleImages}/>
+        {/* Images Section */}
+        { 
+          pageCounter === 1 &&
+          <NewProjectImagesPage handleImages={handleImages}/>
         }
         
-
+{     /* // Staff Section */}
         { 
           pageCounter === 2 &&
             <NewProjectStaffPage 
@@ -280,6 +280,7 @@ const handleMoreStaffFields2 = (value,index) => {
         }
       </form>
 
+        {/* // Images preview */}
       { pageCounter === 1 &&<div className='p-images-container'>
             {images.length > 0 && images.map((img,index)=>
               <img key={index} src={URL.createObjectURL(img)} alt=''/>
@@ -287,14 +288,13 @@ const handleMoreStaffFields2 = (value,index) => {
           </div>
       }
 
-
+      {/* // Next and Back buttons */}
       { canNext && pageCounter <= 2  && <div className='next'>
           <button onClick={()=> setPageCounter(pageCounter + 1)}>Next</button>
       </div>}
       { pageCounter > 0 && pageCounter <= 2  && <div className='back'>
           <button onClick={()=> setPageCounter(pageCounter - 1)}>Back</button>
       </div>}
-     
     </div>
   )
 }

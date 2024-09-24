@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { axiosInstance } from '../../../api/axiosInstance';
 import {  Link } from 'react-router-dom'
 import { Draggable } from "react-drag-reorder";
@@ -28,7 +28,7 @@ const Projects = () => {
 
 
 //REORDER PROJECTS
-  const PosChange = (currPos,newPos) => {
+  const PosChange = useCallback((currPos,newPos)=> {
     if (currPos === newPos) {
       return
     }
@@ -70,7 +70,7 @@ const Projects = () => {
     window.location.reload()
   });
   
-}
+},[projects]) 
 
   return (
     <div className='ad-projects'>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { axiosInstance } from "../../../api/axiosInstance";
 import Fallback from "../../../components/UI/Spinner/Spinner";
@@ -106,7 +106,7 @@ const Gallery = () => {
 
 
 
-  const PosChange = (currPos, newPos) => {
+  const PosChange = useCallback((currPos, newPos)=> {
     if (currPos === newPos) {
       return;
     }
@@ -146,7 +146,8 @@ const Gallery = () => {
         setImages([...images]);
         window.location.reload();
       });
-  };
+  },[images]) 
+  
 
   return (
     <div className="admin-gallery">

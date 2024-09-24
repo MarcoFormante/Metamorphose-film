@@ -25,16 +25,16 @@ if (loading) return <Spinner inline={true} />;
   return projectData &&(
     <React.Fragment>
        <div className='production__imgs'>
-           <img src={"/assets/uploads/images/projects/" + projectData?.images[0] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-           <img src={"/assets/uploads/images/projects/" + projectData?.images[1] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+           <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[0] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+           <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[1] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
        </div>
        <div className='production__imgs'>
-          <img src={"/assets/uploads/images/projects/" + projectData?.images[2] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-          <img src={"/assets/uploads/images/projects/" + projectData?.images[3] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+          <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[2] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+          <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[3] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
        </div>
        <div className='production__imgs'>
-        <img src={"/assets/uploads/images/projects/" + projectData?.images[4] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-        <img src={"/assets/uploads/images/projects/" + projectData?.images[5] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+        <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[4] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+        <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[5] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
       </div>
       <div className='staff-list-flex'>
         

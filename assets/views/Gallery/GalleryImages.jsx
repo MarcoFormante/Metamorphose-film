@@ -123,8 +123,10 @@ const GalleryImages = () => {
               <img
                 onClick={(e) => showImage(e, index)}
                 src={"/assets/uploads/images/galleries/" + image.src}
-                alt=""
+                alt={"Image of " + location.state + " gallery"}
                 id={index === images.length - 1 ? "last" : ""}
+                loading='lazy'
+                width={360}
               />
             </figure>
           ))}
