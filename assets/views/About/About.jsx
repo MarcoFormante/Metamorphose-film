@@ -3,6 +3,7 @@ import {persons,aboutDescFirst } from './utils'
 import ReactCardFlip from 'react-card-flip';
 import Contact from '../Contact/Contact'
 import PageTitle from '../../components/common/PageTitle/PageTitle';
+import SEO from '../../components/Seo/SEO';
 
 
 const About = () => {
