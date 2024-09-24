@@ -39,30 +39,12 @@ const Project = ({cookie}) => {
     },[showAssets])
 
 
-    const fetchProject = async () => {
-        try {
-            const projectByName = await getProjectByName(param.name)
-            const purifiedProject =  purifyProjects(projectByName)
-            setProject(purifiedProject[0])
-            setLoading(false)
-        } catch (error) {
-            console.log(error);
-            navigate("/")
-        }finally{
-            setLoading(false)
-        }
-    }
-
+   
     useEffect(()=>{
-        if (param.name && !location.state?.project?.name) {
-            setLoading(true)
-            setProject({})
-            setShowAssets(false)
-            fetchProject()
-        }else if(location.state?.project?.name && !allProjects){
+        if (param.name && !location.state?.project) {
             navigate("/")
         }
-    },[param])
+    },[])
 
 
     useEffect(()=>{
