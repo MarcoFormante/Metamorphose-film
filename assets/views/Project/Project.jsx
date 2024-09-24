@@ -16,32 +16,13 @@ const Project = ({cookie}) => {
     const [loading,setLoading] = useState(false)
     const [nextProject,SetNextProject] = useState(null)
     const [lastProject,setLastProject] = useState(null)
-    const [project,setProject] = useState(location.state?.project || null)
+    const [project,setProject] = useState(location.state?.project)
     const [projectIndex,setProjectIndex] = useState(location.state?.index)
-    const [allProjects,setAllProjects] = useState(null)
     const [fade,setFade] = useState(false)
     const navigate = useNavigate()
     const param = useParams()
-
-    useEffect(()=>{
-        try {
-            if (sessionStorage.getItem("projects")) {
-                const JsonProjects = JSON.parse(sessionStorage.getItem("projects"))
-                const purifiedProjects = purifyProjects(JsonProjects)
-                if (!purifiedProjects) {
-                    throw new Error("Error parsing projects")
-                }
-                setAllProjects(purifiedProjects)
-            }
-        } catch (error) {
-            console.log(error);
-            navigate("/")
-        }
-    },[])
-
-    
-   
-
+    const allProjects = location.state?.allProjects
+  
 
     useEffect(()=>{
         if (showAssets) {
@@ -78,7 +59,7 @@ const Project = ({cookie}) => {
             setProject({})
             setShowAssets(false)
             fetchProject()
-        }else if(location.state?.project?.name && !sessionStorage.getItem("projects")){
+        }else if(location.state?.project?.name && !allProjects){
             navigate("/")
         }
     },[param])
@@ -134,7 +115,7 @@ const Project = ({cookie}) => {
                   setProjectIndex((prev) => (prev > 0 ? prev - 1 : 0))
                 }
                 to={"/projet/" + lastProject.name}
-                state={{ project: lastProject, index: projectIndex - 1 }}
+                state={{ project: lastProject, index: projectIndex - 1 ,allProjects}}
               >
                 {""}
               </Link>
@@ -146,7 +127,7 @@ const Project = ({cookie}) => {
               <Link
                 onClick={() => setProjectIndex((prev) => prev + 1)}
                 to={"/projet/" + nextProject.name}
-                state={{ project: nextProject, index: projectIndex + 1 }}
+                state={{ project: nextProject, index: projectIndex + 1 ,allProjects}}
               >
                 {""}
               </Link>
@@ -198,7 +179,6 @@ const Project = ({cookie}) => {
               },
             }}
           >
-        
           </ReactPlayer>
           </div>
           <div

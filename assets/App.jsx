@@ -2,13 +2,14 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import './styles/app.css';
-const Header = lazy(() => import('./components/layout/Header/Header'));
 import { axiosInstance } from './api/axiosInstance';
 import useEventListener from './hooks/useEventListener';
 import Spinner from './components/UI/Spinner/Spinner';
 import { useContext } from 'react';
 import { CookieContext } from './contexts/CookieProvider';
 import PrivacyPolicy from './views/PrivacyPolicy/PrivacyPolicy';
+
+const Header = lazy(() => import('./components/layout/Header/Header'));
 const PublicRoutes = lazy(() => import('./Routes/PublicRoutes'));
 const PrivateRoutes = lazy(() => import('./Routes/PrivateRoutes'));
 const CookieBanner = lazy(()=> import('./components/common/CookieBanner/CookieBanner'));
@@ -37,7 +38,7 @@ function App() {
   const helmetContext = {}
   const token = sessionStorage.getItem("token-ad")
   
-  const {cookie,setCookie} = useContext(CookieContext)
+  const {cookie} = useContext(CookieContext)
   
 
   useEffect(() => {
@@ -59,25 +60,25 @@ function App() {
   },[token])
 
 
-  useEffect(()=>{
-    if (!sessionStorage.getItem("reload")) {
-      sessionStorage.setItem("reload", new Date().getTime());
-    }
-  },[])
+  // useEffect(()=>{
+  //   if (!sessionStorage.getItem("reload")) {
+  //     sessionStorage.setItem("reload", new Date().getTime());
+  //   }
+  // },[])
 
 
-  const handleFocus = () => {
-    const lastTime = parseInt(sessionStorage.getItem("reload"), 10);
-    const currentTime = new Date().getTime();
-    const diff = currentTime - lastTime;
-    const twoHours = 1000 * 60 * 60 * 2;
+  // const handleFocus = () => {
+  //   const lastTime = parseInt(sessionStorage.getItem("reload"), 10);
+  //   const currentTime = new Date().getTime();
+  //   const diff = currentTime - lastTime;
+  //   const twoHours = 1000 * 60 * 60 * 2;
     
-    if (diff > twoHours) {
-      sessionStorage.clear();
-        sessionStorage.setItem("reload", new Date().getTime());
-        window.location.reload();
-    }
-  };
+  //   if (diff > twoHours) {
+  //     sessionStorage.clear();
+  //       sessionStorage.setItem("reload", new Date().getTime());
+  //       window.location.reload();
+  //   }
+  // };
   
 
   const eventStorageHandler = ()=>{
@@ -91,7 +92,7 @@ function App() {
     }
   }
 
-  useEventListener("focus", window, handleFocus);
+  // useEventListener("focus", window, handleFocus);
   useEventListener("storage", window, eventStorageHandler);
 
   useEffect(()=>{

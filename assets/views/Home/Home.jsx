@@ -20,7 +20,7 @@ const Home = () => {
               }
               const purifiedProjects = purifyProjects(data);
               setProjects(purifiedProjects);
-              sessionStorage.setItem("projects", JSON.stringify(purifiedProjects));
+             
             } catch (error) {
               console.error(error.message);
               setError(error.message);
@@ -61,7 +61,7 @@ const Home = () => {
                     projects.length > 1 ? (
                         projects.map((project,i) => (
                         <SwiperSlide key={project.id}>
-                            <Figure project={project} index={i} />
+                            <Figure project={project} allProjects={projects} index={i} />
                         </SwiperSlide>
                         ))
                     ) : (
