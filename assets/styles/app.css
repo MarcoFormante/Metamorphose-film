@@ -2620,6 +2620,9 @@ body:has(.fallback) {
   z-index: 5000;
   background-color: #000000;
 }
+#privacy-policy h1, #privacy-policy h2, #privacy-policy h3, #privacy-policy h4, #privacy-policy h5, #privacy-policy h6 {
+  margin: 10px 0;
+}
 #privacy-policy .sub-title {
   font-size: 1.5rem;
   font-weight: bold;
