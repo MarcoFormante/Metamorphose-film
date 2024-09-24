@@ -337,6 +337,7 @@ button.backButton span {
   margin-top: 10px;
   cursor: pointer;
   font-weight: 800;
+  font-family: Poppins, sans-serif;
 }
 
 @keyframes fadeUp {
