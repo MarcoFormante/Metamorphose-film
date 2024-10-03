@@ -33,14 +33,16 @@
 
        
         .next{
-            float: right;
+            position: absolute;
+            right: 1px;
         
             & > a::after{
                 content: ">";
             }
         }
         .last{
-            float: left;
+            position: absolute;
+            left: 1px;
             & > a::after{
                 content: "<";
             }
@@ -48,6 +50,14 @@
         }
 
         .next,.last{
+            a::after{
+                color: $white;
+                font-size: 25px;
+                width: 30px;
+                height: 30px;
+                display: block;
+                text-decoration: none;
+        }
             @media screen and (min-width:1024px) {
                 width: 100px;
                 height: 100px;
@@ -72,9 +82,7 @@
 
                 a::after{
                         color: $white;
-                        border: 1px solid $white;
-                        border-radius: 50%;
-                        font-size: 20px;
+                        font-size: 35px;
                         width: 30px;
                         height: 30px;
                         display: block;
@@ -84,16 +92,7 @@
             a{
                 text-decoration: none;
             }
-            a::after{
-                color: $white;
-                border: 1px solid $white;
-                border-radius: 50%;
-                font-size: 20px;
-                width: 30px;
-                height: 30px;
-                display: block;
-                text-decoration: none;
-        }
+           
            
            
     }

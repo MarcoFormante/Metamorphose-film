@@ -4,7 +4,8 @@ import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
 import ProjectStaff from './ProjectStaff';
 import { isMobile } from 'react-device-detect';
 import SEO from '../../components/Seo/SEO';
-import { getProjectByName } from '../../api/projectsApi';
+import { getProjectByName, getProjectData } from '../../api/projectsApi';
+import { purifyProjectData } from '../../security/Dompurify/purify';
 
 
 
@@ -16,6 +17,7 @@ const Project = ({cookie}) => {
     const [project,setProject] = useState(location.state?.project)
     const [projectIndex,setProjectIndex] = useState(location.state?.index)
     const [fade,setFade] = useState(false)
+    const [projectData,setProjectData] = useState(null)
     const navigate = useNavigate()
     const param = useParams()
     const allProjects = location.state?.allProjects
@@ -53,6 +55,7 @@ const Project = ({cookie}) => {
         if (location.state?.project.name && projectIndex !== null && projectIndex !== undefined && allProjects) {
             setFade(true)
             setProject(null)
+            setProjectData(null)
             setShowAssets(false)
             if (!allProjects) {
                 return
@@ -78,6 +81,23 @@ const Project = ({cookie}) => {
         return ()=> clearTimeout(timeout)
     },[projectIndex,allProjects,location.state?.project.name])
 
+
+
+useEffect(() => {
+  if (projectData && showAssets) {
+      return
+  }
+  const getData = async ()=>{
+    const data = await getProjectData(project.id)
+    const purifiedData = purifyProjectData(data);
+    setProjectData(purifiedData || null);
+    
+  } 
+  if (showAssets && !projectData) {
+      getData()
+  }
+  
+}, [showAssets])
 
 
   return (
@@ -176,9 +196,9 @@ const Project = ({cookie}) => {
               !showAssets && "production__project-assets__hidden"
             }`}
           >
-            {showAssets && (
+            {showAssets && projectData &&  (
               <>
-                <ProjectStaff project={project} />
+                <ProjectStaff project={project} projectData={projectData} />
               </>
             )}
           </div>

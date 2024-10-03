@@ -1470,16 +1470,26 @@ body:has(.fallback) {
   }
 }
 .production .last-next-btns-container .next {
-  float: right;
+  position: absolute;
+  right: 1px;
 }
 .production .last-next-btns-container .next > a::after {
   content: ">";
 }
 .production .last-next-btns-container .last {
-  float: left;
+  position: absolute;
+  left: 1px;
 }
 .production .last-next-btns-container .last > a::after {
   content: "<";
+}
+.production .next a::after, .production .last a::after {
+  color: #ffffff;
+  font-size: 25px;
+  width: 30px;
+  height: 30px;
+  display: block;
+  text-decoration: none;
 }
 @media screen and (min-width: 1024px) {
   .production .next, .production .last {
@@ -1502,9 +1512,7 @@ body:has(.fallback) {
   }
   .production .next a::after, .production .last a::after {
     color: #ffffff;
-    border: 1px solid #ffffff;
-    border-radius: 50%;
-    font-size: 20px;
+    font-size: 35px;
     width: 30px;
     height: 30px;
     display: block;
@@ -1512,16 +1520,6 @@ body:has(.fallback) {
   }
 }
 .production .next a, .production .last a {
-  text-decoration: none;
-}
-.production .next a::after, .production .last a::after {
-  color: #ffffff;
-  border: 1px solid #ffffff;
-  border-radius: 50%;
-  font-size: 20px;
-  width: 30px;
-  height: 30px;
-  display: block;
   text-decoration: none;
 }
 .production::after {

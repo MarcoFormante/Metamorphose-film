@@ -4,19 +4,15 @@ import { getProjectData } from '../../api/projectsApi'
 import { purifyProjectData } from '../../security/Dompurify/purify'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
-const ProjectStaff = ({project}) => {
-const [projectData, setProjectData] = useState(null)
+const ProjectStaff = (props) => {
+const [projectData, setProjectData] = useState(props.projectData)
 const [loading, setLoading] = useState(true)
 
 useEffect(() => {
-  const getData = async ()=>{
-    const data = await getProjectData(project.id)
-    const purifiedData = purifyProjectData(data);
-    setProjectData(purifiedData || null);
-    setLoading(false)
-  } 
-  getData()
-}, [])
+    if (projectData) {
+        setLoading(false)
+    }
+}, [projectData])
 
 
 if (loading) return <Spinner inline={true} />;
@@ -25,16 +21,16 @@ if (loading) return <Spinner inline={true} />;
   return projectData &&(
     <React.Fragment>
        <div className='production__imgs'>
-           <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[0] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-           <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[1] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+           <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[0] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+           <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[1] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
        </div>
        <div className='production__imgs'>
-          <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[2] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-          <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[3] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+          <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[2] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+          <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[3] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
        </div>
        <div className='production__imgs'>
-        <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[4] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
-        <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[5] } alt={`Projet video ${project.name} de ${projectData.staff.production}`} />
+        <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[4] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+        <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[5] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
       </div>
       <div className='staff-list-flex'>
         
