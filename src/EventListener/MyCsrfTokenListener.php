@@ -15,10 +15,12 @@ class MyCsrfTokenListener
         $this->csrfTokenManager = $csrfTokenManager;
     }
 
-
     public function onKernelRequest(RequestEvent $event):void
     {
         $request = $event->getRequest();
+        if (!preg_match('#^/admin#', $request->getPathInfo())) {
+            return;
+        }
         if (!in_array($request->getMethod(), [ "POST",'PUT', 'DELETE', 'PATCH'], true)) {
             return;
         }
@@ -29,7 +31,6 @@ class MyCsrfTokenListener
             throw new InvalidCsrfTokenException();
         }
         if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $token))) {
-            var_dump($token);
             throw new InvalidCsrfTokenException();
         }
 

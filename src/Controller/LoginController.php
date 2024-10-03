@@ -36,8 +36,8 @@ class LoginController extends AbstractController
         }
         $csrfToken = $csrfTokenManager->getToken("authenticate")->getValue();
         $response = new JsonResponse(['success' => 'CSRF token generated', 'csrfToken' => $csrfToken], 200);
-        $cookie = new Cookie($sessionInterface->getName(), $sessionInterface->getId(), 0, '/', null, true, true,Cookie::SAMESITE_STRICT);
-        $csrfCookie = new Cookie('XSRF-TOKEN', $csrfToken, 0, '/', null, false, false,Cookie::SAMESITE_STRICT);
+        $cookie = new Cookie($sessionInterface->getName(), $sessionInterface->getId(), 0, '/', null, true, true,false,Cookie::SAMESITE_STRICT);
+        $csrfCookie = new Cookie('XSRF-TOKEN', $csrfToken, 0, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
         $response->headers->setCookie($cookie);
         $response->headers->setCookie($csrfCookie);
     
@@ -54,7 +54,7 @@ class LoginController extends AbstractController
      * @return JsonResponse $token
      */
     #[Route('/api/login', name: 'app_login',methods: ['POST'])]
-    public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger,RateLimiterFactory $apiLimiter): JsonResponse
+    public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger,RateLimiterFactory $apiLimiter,SessionInterface $sessionInterface): JsonResponse
     {
         try {
          
@@ -93,8 +93,10 @@ class LoginController extends AbstractController
             $token = JWT::encode($payload,$key, 'HS256');
             $response = new JsonResponse();
             $csrfToken = $csrfTokenInterface->getToken("authenticate")->getValue();
-            $cookie = new Cookie('XSRF-TOKEN', $csrfToken, time() + 200, '/', null, false, false,Cookie::SAMESITE_STRICT);
+            $cookie = new Cookie('XSRF-TOKEN', $csrfToken, 0, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
+            // $newCookieSession = new Cookie($sessionInterface->getName(), $sessionInterface->getId(), time() + 360 * 1000, '/', null, true, true,Cookie::SAMESITE_STRICT);
             $response->headers->setCookie($cookie);
+            // $response->headers->setCookie($newCookieSession);
             $response->setData(['token' => $token]);
             $response->setStatusCode(200);
             

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import Cookies from 'js-cookie'
 import { CookieContext } from '../../../contexts/CookieProvider'
-import { Link } from 'react-router-dom'
 
 const CookieBanner = ({openPrivacyPolicy}) => {
     const {setCookie} = useContext(CookieContext)
