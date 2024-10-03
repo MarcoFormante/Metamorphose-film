@@ -11,7 +11,7 @@ const Gallery = () => {
   return (
 
     <>
-     <SEO title={"Galerie - Metamorphose"} url={"/galerie"} />
+     <SEO title={"Galerie - Metamorphose"} url={"/galerie"} robots={true} />
    
       <div className='gallery'>
         <ul className='gallery__list'>

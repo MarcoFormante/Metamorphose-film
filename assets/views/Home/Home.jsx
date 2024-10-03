@@ -30,13 +30,14 @@ const Home = () => {
       }, []);
 
 
-    if (error) return <h1 style={{color:"white",textAlign:"center"}}>Erreur : Aucun projet</h1>;
+    if (error) return <p style={{color:"white",textAlign:"center"}}>Erreur : Aucun projet</p>;
 
     return  (
     <>
           <SEO
             title={"Accueil - Metamorphose"}
             url={"/"}
+            robots={true}
           />
         <div id='home'>
             <Swiper style={{color:"white"}}

@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import ReactPlayer from 'react-player';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
 import ProjectStaff from './ProjectStaff';
-import Fallback from '../../components/UI/Spinner/Spinner';
 import { isMobile } from 'react-device-detect';
 import SEO from '../../components/Seo/SEO';
-
+import { getProjectByName } from '../../api/projectsApi';
 
 
 
@@ -23,7 +22,9 @@ const Project = ({cookie}) => {
 
     useEffect(()=>{
       if (param.name && !location.state?.project) {
-          navigate("/")
+            getProjectByName(param.name).then(project=>{
+            setProject(project[0])
+          })
       }
   },[])
   
@@ -72,9 +73,6 @@ const Project = ({cookie}) => {
             }
             location.state.index = projectIndex
         
-        }else{
-            setProject(null)
-            setShowAssets(false)
         }
 
         return ()=> clearTimeout(timeout)
@@ -85,7 +83,7 @@ const Project = ({cookie}) => {
   return (
     project && (
       <>
-       <SEO title={project?.name + " - Metamorphose"} url={"/projet/" + project?.name} />
+       <SEO title={project?.name + " - Metamorphose"} url={"/projet/" + project?.name} robots={true} />
         <article className={`production ${fade ? "production-fadein" : ""}`}>
           <div className={`last-next-btns-container ${isMobile ? "" : "desktop"}`}>
             {lastProject && (
