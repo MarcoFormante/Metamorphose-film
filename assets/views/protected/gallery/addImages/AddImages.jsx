@@ -31,7 +31,7 @@ const AddImages = () => {
             1920,
             1080,
             "WEBP",
-            80,
+            85,
             0,
             (uri) => {
               resolve(uri);

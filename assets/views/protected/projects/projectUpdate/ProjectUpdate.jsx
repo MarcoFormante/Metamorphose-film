@@ -205,7 +205,7 @@ const ProjectUpdate = () => {
         500,
         1080,
         "WEBP",
-        85,
+        90,
         0,
         (uri) => {
           resolve(uri);

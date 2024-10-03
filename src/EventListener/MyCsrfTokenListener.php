@@ -22,12 +22,14 @@ class MyCsrfTokenListener
         if (!in_array($request->getMethod(), [ "POST",'PUT', 'DELETE', 'PATCH'], true)) {
             return;
         }
-
-        $token = $request->headers->get('X-Csrf-Token');
+      
+        $token = $request->cookies->get('XSRF-TOKEN');
         if (!$token) {
+          
             throw new InvalidCsrfTokenException();
         }
         if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $token))) {
+            var_dump($token);
             throw new InvalidCsrfTokenException();
         }
 

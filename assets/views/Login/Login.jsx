@@ -19,10 +19,7 @@ const Login = ({setIsAuth}) => {
             .then(res =>{
                 if (res.status === 200) {
                     const csrfToken =  res.data?.csrfToken 
-                    axiosInstance.defaults.headers.post['X-CSRF-Token'] = csrfToken
-                    axiosInstance.defaults.headers.delete['X-CSRF-Token'] = csrfToken
                     setCsrf(csrfToken)
-                    sessionStorage.setItem("csrfToken",csrfToken)
                 }
             }).catch(err => {
                 console.error("error csrfToken not Valid");
@@ -44,14 +41,12 @@ const Login = ({setIsAuth}) => {
         axiosInstance.post('login',formData)
         .then((res)=>{
             if (res?.data?.token) {
-                const token = res.data.token
+                const token = res?.data?.token
                 axiosInstance.defaults.headers.common = {
-                    'Authorization': 'Bearer ' + res?.data?.token,
+                    'Authorization': 'Bearer ' + token,
                 };
-                sessionStorage.setItem("token-ad",res?.data?.token)
-                
+                sessionStorage.setItem("token-ad",token)
                 setIsAuth(true)
-              
                 navigate("/admin/home")
             }
         })

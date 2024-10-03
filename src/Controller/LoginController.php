@@ -35,10 +35,11 @@ class LoginController extends AbstractController
             throw new TooManyRequestsHttpException();
         }
         $csrfToken = $csrfTokenManager->getToken("authenticate")->getValue();
-    
         $response = new JsonResponse(['success' => 'CSRF token generated', 'csrfToken' => $csrfToken], 200);
-        
-        $response->headers->setCookie(new Cookie(session_name(), $sessionInterface->getId()));
+        $cookie = new Cookie($sessionInterface->getName(), $sessionInterface->getId(), 0, '/', null, true, true,Cookie::SAMESITE_STRICT);
+        $csrfCookie = new Cookie('XSRF-TOKEN', $csrfToken, 0, '/', null, false, false,Cookie::SAMESITE_STRICT);
+        $response->headers->setCookie($cookie);
+        $response->headers->setCookie($csrfCookie);
     
         return $response;
     }
@@ -56,13 +57,16 @@ class LoginController extends AbstractController
     public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger,RateLimiterFactory $apiLimiter): JsonResponse
     {
         try {
+         
             $limiter = $apiLimiter->create($request->getClientIp());
+        
             if (false === $limiter->consume(1)->isAccepted()) {
                 throw new TooManyRequestsHttpException();
             }
             $data = $request->request->all();
-            $csrfToken = $data['csrfToken'];
-            if (!is_string($csrfToken) || !$csrfTokenInterface->isTokenValid(new CsrfToken('authenticate', $csrfToken))) {
+            $token = $request->cookies->get('XSRF-TOKEN');
+           
+            if (!is_string($token) || !$csrfTokenInterface->isTokenValid(new CsrfToken('authenticate', $token))) {
                     return $this->json(['error' => 'Invalid CSRF tosken'], 400);
                 }
             
@@ -87,9 +91,14 @@ class LoginController extends AbstractController
             $key = $_ENV['JWT_KEY'];
 
             $token = JWT::encode($payload,$key, 'HS256');
-            return $this->json([
-                "token" => $token
-            ],200);
+            $response = new JsonResponse();
+            $csrfToken = $csrfTokenInterface->getToken("authenticate")->getValue();
+            $cookie = new Cookie('XSRF-TOKEN', $csrfToken, time() + 200, '/', null, false, false,Cookie::SAMESITE_STRICT);
+            $response->headers->setCookie($cookie);
+            $response->setData(['token' => $token]);
+            $response->setStatusCode(200);
+            
+            return $response;
 
         } catch (\Throwable $th) {
             $logger->error($th->getMessage());
