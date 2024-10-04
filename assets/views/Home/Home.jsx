@@ -10,6 +10,7 @@ import { getProjects } from '../../api/projectsApi';
 const Home = () => {
     const [projects,setProjects] = useState([])    
     const [error,setError] = useState("")
+    const [swiperRealIndex, setSwiperRealIndex] = useState(0);
 
     useEffect(() => {
           const fetchProjects = async () => {
@@ -51,12 +52,18 @@ const Home = () => {
                 speed={1000}
                 direction='horizontal'
                 mousewheel={true}
+                onSlideChange={
+                  (swiper) => {
+                    setSwiperRealIndex(swiper.realIndex )
+                  }
+                
+               }
             >
                 {projects.length > 0 && (
                     projects.length > 1 ? (
                         projects.map((project,i) => (
                         <SwiperSlide key={project.id}>
-                            <Figure project={project} allProjects={projects} index={i} />
+                            <Figure project={project} allProjects={projects} index={i} swiperRealIndex={swiperRealIndex} />
                         </SwiperSlide>
                         ))
                     ) : (
