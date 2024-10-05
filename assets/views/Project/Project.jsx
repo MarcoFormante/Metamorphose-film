@@ -18,7 +18,6 @@ const Project = ({cookie}) => {
     const [projectIndex,setProjectIndex] = useState(location.state?.index)
     const [fade,setFade] = useState(false)
     const [projectData,setProjectData] = useState(null)
-    const navigate = useNavigate()
     const param = useParams()
     const allProjects = location.state?.allProjects
 

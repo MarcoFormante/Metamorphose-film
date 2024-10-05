@@ -5,13 +5,16 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { A11y, Keyboard, Mousewheel, Navigation, Pagination, Scrollbar } from 'swiper/modules'
 import { purifyProjects } from '../../security/Dompurify/purify';
 import { getProjects } from '../../api/projectsApi';
-
+import { useContext } from 'react';
+import { ProjectsContext } from '../../contexts/ProjectsContext';
 
 const Home = () => {
     const [projects,setProjects] = useState([])    
     const [error,setError] = useState("")
     const [swiperRealIndex, setSwiperRealIndex] = useState(0);
-
+    const {contextProjects,setContextProjects} = useContext(ProjectsContext)
+    
+    
     useEffect(() => {
           const fetchProjects = async () => {
             try {
@@ -21,13 +24,18 @@ const Home = () => {
               }
               const purifiedProjects = purifyProjects(data);
               setProjects(purifiedProjects);
+              setContextProjects(purifiedProjects);
              
             } catch (error) {
               console.error(error.message);
               setError(error.message);
             }
         }
-        fetchProjects();
+        if (contextProjects && contextProjects.length > 0) {
+          setProjects(contextProjects)
+        }else{
+          fetchProjects();
+        }
       }, []);
 
 
