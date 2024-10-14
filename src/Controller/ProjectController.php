@@ -57,10 +57,8 @@ class ProjectController extends AbstractController
             }
             $cacheKey = 'project_data_'.$id;
           
-            $isCacheHit = true;
-            $dataFromCache = $this->cache->get($cacheKey,function(ItemInterface $item) use ($id,$em){
+            $projectData = $this->cache->get($cacheKey,function(ItemInterface $item) use ($id,$em){
                 $item->expiresAfter(86400);
-                $isCacheHit = false;
                 $project = $em->getRepository(Project::class)->findOneBy(['id' => $this->sanitizer->sanitize($id,"int")]);
                 $staff = $project->getProjectStaff();
                 $projectImages = $project->getProjectImages();
@@ -86,14 +84,13 @@ class ProjectController extends AbstractController
                 return $data;
             });
            
-            if(!$dataFromCache){
+            if(!$projectData){
                 throw new Exception ('Project not found');
             }
             
-            $jsonProjectData = $this->serializer->serialize(["projectData"=>$dataFromCache,"hit" => $isCacheHit], 'json');
+            $jsonProjectData = $this->serializer->serialize(["projectData"=>$projectData], 'json');
             $response = new JsonResponse($jsonProjectData, 200,[], true);
             $response->headers->set('Cache-Control', 'max-age=86400, public');
-            $response->headers->set('X-Cache-Status', $isCacheHit ? 'HIT' : 'MISS');
             return $response;
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while getting project data: {$th->getMessage()}", [
@@ -441,6 +438,8 @@ class ProjectController extends AbstractController
            
             $em->persist($project);
             $em->flush();
+            $this->cache->delete('project_data_'.$id);
+            $this->cache->delete('home_projects');
 
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while updating project: {$th->getMessage()}", [
@@ -617,7 +616,8 @@ class ProjectController extends AbstractController
             }
             $em->remove($project);
             $em->flush();
-          
+            $this->cache->delete('project_data_'.$id);
+            $this->cache->delete('home_projects');
             return $this->json(["success" =>"Project Deleted"],200);
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while deleting the project: {$th->getMessage()}", [
@@ -654,6 +654,7 @@ class ProjectController extends AbstractController
             $project->setActive($newActiveState);
             $em->persist($project);
             $em->flush();
+            $this->cache->delete('home_projects');
             return $this->json(["isActive" => $newActiveState],200);
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while toggling project active state: {$th->getMessage()}", [
@@ -697,6 +698,7 @@ class ProjectController extends AbstractController
             $em->persist($project);
             $em->persist($secondProject);
             $em->flush();
+            $this->cache->delete('home_projects');
             return $this->json(["message" => "Projects reordered"], 200);
               
         } catch (\Throwable $th) {

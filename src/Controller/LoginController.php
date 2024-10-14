@@ -42,8 +42,8 @@ class LoginController extends AbstractController
         }
         $csrfToken = $csrfTokenManager->getToken("authenticate")->getValue();
         $response = new JsonResponse(['success' => 'CSRF token generated', 'csrfToken' => $csrfToken], 200);
-        $cookie = new Cookie($sessionInterface->getName(), $sessionInterface->getId(),  time() + 20, '/', null, true, true,false,Cookie::SAMESITE_STRICT);
-        $csrfCookie = new Cookie('XSRF-TOKEN', $csrfToken,  time() + 20, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
+        $cookie = new Cookie($sessionInterface->getName(), $sessionInterface->getId(),  time() + 3600, '/', null, true, true,false,Cookie::SAMESITE_STRICT);
+        $csrfCookie = new Cookie('XSRF-TOKEN', $csrfToken,  time() + 3600, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
         $response->headers->setCookie($cookie);
         $response->headers->setCookie($csrfCookie);
     
@@ -99,7 +99,7 @@ class LoginController extends AbstractController
             $token = JWT::encode($payload,$key, 'HS256');
             $response = new JsonResponse();
             $csrfToken = $csrfTokenInterface->getToken("authenticate")->getValue();
-            $cookie = new Cookie('XSRF-TOKEN', $csrfToken, time() + 20, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
+            $cookie = new Cookie('XSRF-TOKEN', $csrfToken, time() + 3600, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
             $response->headers->setCookie($cookie);
             $response->setData(['token' => $token]);
             $response->setStatusCode(200);
@@ -121,7 +121,7 @@ class LoginController extends AbstractController
                 throw new TooManyRequestsHttpException();
             }   
             $response = new JsonResponse();
-            $cookie = new Cookie('XSRF-TOKEN', "sadasd",  time() + 20, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
+            $cookie = new Cookie('XSRF-TOKEN', "sadasd",  time() + 3600, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
             $response->headers->setCookie($cookie);
             $response->setStatusCode(200);
             
