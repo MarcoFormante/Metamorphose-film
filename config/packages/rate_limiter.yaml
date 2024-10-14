@@ -1,7 +1,9 @@
 framework:
     rate_limiter:
         api:
-            policy: 'sliding_window'
+            policy: 'token_bucket'
             limit: 200
-            interval: '60 seconds'
+            rate: { interval: '60 seconds', amount: 10 }
+            cache_pool: 'cache.app'
+            
 
