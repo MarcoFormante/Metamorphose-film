@@ -18,8 +18,10 @@ security:
             lazy: true
             custom_authenticators: 
                 - App\Security\TokenAuthenticator
-
-
+            logout:
+                path: app_logout
+            # security: true
+            
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -29,8 +31,11 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/admin, roles: ROLE_ADMIN }
-        - { path: ^/api, roles: PUBLIC_ACCESS}
+        # - { path: ^/api/admin, roles: ROLE_ADMIN }
+        # - { path: ^/api, roles: PUBLIC_ACCESS}
+        # - { path: ^/api/admin, roles: ROLE_ADMIN }
+        # - { path: ^/api, roles: PUBLIC_ACCESS }
+        # - { path: ^/login, roles: PUBLIC_ACCESS }
 
 when@test:
     security:

@@ -15,9 +15,15 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class LoginController extends AbstractController
 {
+    private RateLimiterFactory $apiLimiter;
+    public function __construct(RateLimiterFactory $apiLimiter)
+    {
+        $this->apiLimiter = $apiLimiter;
+    }
 
       /**
      * GET CSRF TOKEN
@@ -28,16 +34,16 @@ class LoginController extends AbstractController
      * set cookie
      */
     #[Route('/api/csrfToken', name: 'app_csrfToken', methods: ['GET'])]
-    public function getCSRF(CsrfTokenManagerInterface $csrfTokenManager,SessionInterface $sessionInterface,RateLimiterFactory $apiLimiter,Request $request): JsonResponse
+    public function getCSRF(CsrfTokenManagerInterface $csrfTokenManager,SessionInterface $sessionInterface,Request $request): JsonResponse
     {
-        $limiter = $apiLimiter->create($request->getClientIp());
+        $limiter = $this->apiLimiter->create($request->getClientIp());
         if (false === $limiter->consume(1)->isAccepted()) {
             throw new TooManyRequestsHttpException();
         }
         $csrfToken = $csrfTokenManager->getToken("authenticate")->getValue();
         $response = new JsonResponse(['success' => 'CSRF token generated', 'csrfToken' => $csrfToken], 200);
-        $cookie = new Cookie($sessionInterface->getName(), $sessionInterface->getId(), 0, '/', null, true, true,false,Cookie::SAMESITE_STRICT);
-        $csrfCookie = new Cookie('XSRF-TOKEN', $csrfToken, 0, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
+        $cookie = new Cookie($sessionInterface->getName(), $sessionInterface->getId(),  time() + 20, '/', null, true, true,false,Cookie::SAMESITE_STRICT);
+        $csrfCookie = new Cookie('XSRF-TOKEN', $csrfToken,  time() + 20, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
         $response->headers->setCookie($cookie);
         $response->headers->setCookie($csrfCookie);
     
@@ -54,11 +60,11 @@ class LoginController extends AbstractController
      * @return JsonResponse $token
      */
     #[Route('/api/login', name: 'app_login',methods: ['POST'])]
-    public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger,RateLimiterFactory $apiLimiter,SessionInterface $sessionInterface): JsonResponse
+    public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger,SessionInterface $sessionInterface): JsonResponse
     {
         try {
          
-            $limiter = $apiLimiter->create($request->getClientIp());
+            $limiter = $this->apiLimiter->create($request->getClientIp());
         
             if (false === $limiter->consume(1)->isAccepted()) {
                 throw new TooManyRequestsHttpException();
@@ -93,10 +99,8 @@ class LoginController extends AbstractController
             $token = JWT::encode($payload,$key, 'HS256');
             $response = new JsonResponse();
             $csrfToken = $csrfTokenInterface->getToken("authenticate")->getValue();
-            $cookie = new Cookie('XSRF-TOKEN', $csrfToken, 0, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
-            // $newCookieSession = new Cookie($sessionInterface->getName(), $sessionInterface->getId(), time() + 360 * 1000, '/', null, true, true,Cookie::SAMESITE_STRICT);
+            $cookie = new Cookie('XSRF-TOKEN', $csrfToken, time() + 20, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
             $response->headers->setCookie($cookie);
-            // $response->headers->setCookie($newCookieSession);
             $response->setData(['token' => $token]);
             $response->setStatusCode(200);
             
@@ -107,4 +111,25 @@ class LoginController extends AbstractController
             return $this->json(['error' => 'An error occurred during LOGIN'], 500);
         }
     }
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/api/admin/logout', name: 'app_logout',methods: ['POST'])]
+    public function logout(Request $request,LoggerInterface $logger): JsonResponse
+    {
+        try {
+            $limiter = $this->apiLimiter->create($request->getClientIp());
+            if (false === $limiter->consume(1)->isAccepted()) {
+                throw new TooManyRequestsHttpException();
+            }   
+            $response = new JsonResponse();
+            $cookie = new Cookie('XSRF-TOKEN', "sadasd",  time() + 20, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
+            $response->headers->setCookie($cookie);
+            $response->setStatusCode(200);
+            
+            return $response;
+        } catch (\Throwable $th) {
+            $logger->error($th->getMessage());
+            return $this->json(['error' => 'An error occurred during LOGOUT'], 500);
+        }
+    }
+
 }

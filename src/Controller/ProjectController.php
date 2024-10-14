@@ -17,18 +17,26 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class ProjectController extends AbstractController
 {
     
     private Sanitizer $sanitizer;
     private LoggerInterface $logger;
+    private CacheInterface $cache;
+    private SerializerInterface $serializer;
+    private RateLimiterFactory $apiLimiter;
 
-    public function __construct(Sanitizer $sanitizer, LoggerInterface $logger)
+    public function __construct(Sanitizer $sanitizer, LoggerInterface $logger, CacheInterface $cache,SerializerInterface $serializer,RateLimiterFactory $apiLimiter)
     {
         $this->sanitizer = $sanitizer;
         $this->logger = $logger;
+        $this->cache = $cache;
+        $this->serializer = $serializer;
+        $this->apiLimiter = $apiLimiter;
     }
 
   /**
@@ -40,24 +48,26 @@ class ProjectController extends AbstractController
      * get project data by id
      */
     #[Route('/api/projectData/{id}', name: 'app_project',requirements: ['id' => '^[0-9]+$'], methods: ['GET'])]
-    public function index(int $id, EntityManagerInterface $em,RateLimiterFactory $apiLimiter,Request $request): JsonResponse
+    public function index(int $id, EntityManagerInterface $em,Request $request): JsonResponse
     {
         try {
-           
-            $limiter = $apiLimiter->create($request->getClientIp());
+            $limiter = $this->apiLimiter->create($request->getClientIp());
             if (false === $limiter->consume(1)->isAccepted()) {
                 throw new TooManyRequestsHttpException();
             }
-            $project = $em->getRepository(Project::class)->findOneBy(['id' => $this->sanitizer->sanitize($id,"int")]);
-            if(!$project){
-                throw new Exception ('Project not found');
-            }
-            $staff = $project->getProjectStaff();
-            $projectImages = $project->getProjectImages();
-            $data = [];
-            if (!$staff && !$projectImages) {
-                throw new Exception ('No staff or images found');
-            }
+            $cacheKey = 'project_data_'.$id;
+          
+            $isCacheHit = true;
+            $dataFromCache = $this->cache->get($cacheKey,function(ItemInterface $item) use ($id,$em){
+                $item->expiresAfter(86400);
+                $isCacheHit = false;
+                $project = $em->getRepository(Project::class)->findOneBy(['id' => $this->sanitizer->sanitize($id,"int")]);
+                $staff = $project->getProjectStaff();
+                $projectImages = $project->getProjectImages();
+                $data = [];
+                if (!$staff && !$projectImages) {
+                    throw new Exception ('No staff or images found');
+                }
           
                 $data["staff"]= [
                     "production" => $staff->getProduction(),
@@ -73,8 +83,18 @@ class ProjectController extends AbstractController
                 foreach($projectImages as $projectImage){
                     $data["images"][] = $projectImage->getSrc();
                 }
+                return $data;
+            });
+           
+            if(!$dataFromCache){
+                throw new Exception ('Project not found');
+            }
             
-            return $this->json(['projectData' => $data],200);
+            $jsonProjectData = $this->serializer->serialize(["projectData"=>$dataFromCache,"hit" => $isCacheHit], 'json');
+            $response = new JsonResponse($jsonProjectData, 200,[], true);
+            $response->headers->set('Cache-Control', 'max-age=86400, public');
+            $response->headers->set('X-Cache-Status', $isCacheHit ? 'HIT' : 'MISS');
+            return $response;
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while getting project data: {$th->getMessage()}", [
                 'exception' => $th
@@ -92,35 +112,44 @@ class ProjectController extends AbstractController
      * get all projects
      */
     #[Route('/api/home/projects', name: 'app_home_projects', methods: ['GET'])]
-    public function HomeProjects(EntityManagerInterface $em,RateLimiterFactory $apiLimiter,Request $request){
+    public function HomeProjects(EntityManagerInterface $em,Request $request){
        
         try {
-            $limiter = $apiLimiter->create($request->getClientIp());
+            
+            $limiter = $this->apiLimiter->create($request->getClientIp());
             if (false === $limiter->consume(1)->isAccepted()) {
                 throw new TooManyRequestsHttpException();
             }
-            $projects = $em->getRepository(Project::class)->findBy([],['orderIndex' => 'ASC']);
-            if(!$projects){
-                return $this->json(['message' => 'No projects found'],404);
-            }
-            $arrayOfProjects = [];
-
-            $filteredProjects = array_filter($projects, function($project){
-                return $project->isActive();
-            }); 
-            foreach($filteredProjects as $project){
-                    $arrayOfProjects[] = [
-                        "id" => $project->getId(),
-                        'name' => $project->getName(),
-                        "abrName" => $project->getAbrName(),
-                        'youtube_video' => $project->getYoutubeVideo(),
-                        'background_video' => $project->getBackgroundVideo(),
-                        'collab_with' => $project->getCollabWith(),
-                        'isActive' => $project->isActive(),
-                        "made_by" => $project->getMadeBy()
-                    ];
-            }
-            return $this->json(['projects' => $arrayOfProjects],200);
+            $cacheKey = 'home_projects';
+                $projects = $this->cache->get($cacheKey, function(ItemInterface $item) use ($em){
+                    $item->expiresAfter(86400);
+                    $projectList = $em->getRepository(Project::class)->findBy(["isActive"=>1],['orderIndex' => 'ASC']);
+                    $arrayOfProjects = [];
+           
+                    foreach($projectList as $project){
+                            $arrayOfProjects[] = [
+                                "id" => $project->getId(),
+                                'name' => $project->getName(),
+                                "abrName" => $project->getAbrName(),
+                                'youtube_video' => $project->getYoutubeVideo(),
+                                'background_video' => $project->getBackgroundVideo(),
+                                'collab_with' => $project->getCollabWith(),
+                                'isActive' => $project->isActive(),
+                                "made_by" => $project->getMadeBy()
+                            ];
+                    }
+                    return ["projects"=>$arrayOfProjects];
+                });
+                //
+                if(!$projects){
+                    return $this->json(['message' => 'No projects found'],404);
+                }
+           
+        
+            $jsonProjects = $this->serializer->serialize($projects, 'json');
+            $response = new JsonResponse($jsonProjects, 200, [], true);
+            $response->headers->set('Cache-Control', 'max-age=86400, public');
+            return $response;
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while getting projects: {$th->getMessage()}", [
                 'exception' => $th
@@ -139,11 +168,11 @@ class ProjectController extends AbstractController
      */
 
     #[Route('/api/projectByName/{name}', name: 'app_project_byName', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9-]+$'])]
-    public function projectByName( EntityManagerInterface $em, Request $request,RateLimiterFactory $apiLimiter): JsonResponse
+    public function projectByName( EntityManagerInterface $em, Request $request): JsonResponse
     {
         
         try {
-            $limiter = $apiLimiter->create($request->getClientIp());
+            $limiter = $this->apiLimiter->create($request->getClientIp());
             if (false === $limiter->consume(1)->isAccepted()) {
                 throw new TooManyRequestsHttpException();
             }

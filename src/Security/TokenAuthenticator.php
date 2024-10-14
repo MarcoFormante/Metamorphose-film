@@ -38,7 +38,7 @@ class TokenAuthenticator extends AbstractAuthenticator
     public function supports(Request $request): ?bool
     {
     
-        return $request->headers->has('Authorization');
+        return $request->headers->has('Authorization') && $request->cookies->has('XSRF-TOKEN') &&  $request->attributes->get('_route') !== 'app_login';
     }
 
     public function authenticate(Request $request,): Passport
