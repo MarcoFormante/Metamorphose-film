@@ -22,7 +22,7 @@ const ErrorHandler = () => {
         <div className='error-handler-page'>
          <BackButton
             props={{ width: 24, height: 24 }}
-            callback={() => navigate(-1, { replace: true })}
+            callback={() => navigate(error.status === 404 ? "/" : -1 , { replace: true })}
             label={"Retour"}
           />
       

@@ -14,16 +14,20 @@ use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class GalleryController extends AbstractController
 {
 
     private Sanitizer $s;
     private LoggerInterface $logger;
-    public function __construct(Sanitizer $s, LoggerInterface $logger)
+    private TagAwareCacheInterface $cache;
+    public function __construct(Sanitizer $s, LoggerInterface $logger,TagAwareCacheInterface $cache)
     {
         $this->s = $s;
         $this->logger = $logger;
+        $this->cache = $cache;
     }   
     /**
      * GET IMAGES OF GALLERY
@@ -41,41 +45,48 @@ class GalleryController extends AbstractController
                 throw new TooManyRequestsHttpException();
             }
             $offset = $this->s->sanitize($request->query->get('offset'),"int");
+            $limit = 10;
             $totalImages = false;
-            if ((int)$offset < 1) {
-                $imagesCount = $em->createQueryBuilder()
-                ->select('COUNT(g)')
-                ->from(GalleryImages::class, 'g')
-                ->where('g.gallery_name = :gallery_name')
-                ->setParameter('gallery_name', $this->s->sanitize($name,"string"))                
-                ->getQuery()
-                ->getResult();
-                if(is_integer($imagesCount[0][1])){
-                    $totalImages = $imagesCount[0][1];
+            $galleryName = strtolower($this->s->sanitize($name,"string"));
+            $images = [];
+            $gallery = $this->cache->get('gallery_' . $galleryName . '_offset_' . $offset, function (ItemInterface $item) use ($em, $galleryName,$limit,$offset,$images,$totalImages) {
+                $item->expiresAfter(86400);
+                $item->tag(['gallery_'.$galleryName]);
+                if ((int)$offset < 1) {
+                    $imagesCount = $em->createQueryBuilder()
+                    ->select('COUNT(g)')
+                    ->from(GalleryImages::class, 'g')
+                    ->where('g.gallery_name = :gallery_name')
+                    ->setParameter('gallery_name', $galleryName)                
+                    ->getQuery()
+                    ->getResult();
+                    $this->logger->info('Gallery images retrieved:');
+                    if(is_integer($imagesCount[0][1])){
+                        $totalImages = $imagesCount[0][1];
+                    }
                 }
-            }
+                $galleryImages =  $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $galleryName], ['order_index' => 'ASC'],$limit, $offset * $limit);
+                foreach ($galleryImages as $gallery) {
+                    if ($this->isGranted("ROLE_ADMIN")) {
+                        $images[] = ["src" => $gallery->getSrc(),"id" => $gallery->getId()];
+                    }else{
+                        $images[] = ["src" => $gallery->getSrc(),];
+                    }
+                }
+                return ['images' => $images,"total" => $totalImages];
+    
+            });
             
-            $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $this->s->sanitize($name,"string")], ['order_index' => 'ASC'], 10, $offset * 10);
-
             if (!$gallery) {
                 return $this->json(['error' => 'An error occurred getting Gallery' . $name], 204);
             }
-           
-            $images = [];
-    
-            foreach ($gallery as $gallery) {
-                if ($this->isGranted("ROLE_ADMIN")) {
-                    $images[] = ["src" => $gallery->getSrc(),"id" => $gallery->getId()];
-                }else{
-                    $images[] = ["src" => $gallery->getSrc(),];
-                }
-            }
+            
+            return $this->json(['images' => $gallery['images'], 'total' => $gallery['total']],200)->setMaxAge(86400)->setPublic();
         } catch (\Throwable $th) {
             $this->logger->error($th->getMessage());
             return $this->json(['error' => 'An error occurred getting Gallery' . $name], $th->getCode());
         }
        
-        return $this->json(['images' => $images,"total" => $totalImages],200);
     }
 
 
@@ -127,6 +138,7 @@ class GalleryController extends AbstractController
                 return $this->json(['error' => 'Id is required'], 400);
             }
             $image = $em->getRepository(GalleryImages::class)->findOneBy(['id' => $this->s->sanitize($request->get('id'),"int")]);
+            $galleryName = strtolower($image->getGalleryName());
             if (!$image) {
                 return $this->json(['error' => 'Image not found'], 404);
             }
@@ -135,6 +147,7 @@ class GalleryController extends AbstractController
             }
             $em->remove($image);
             $em->flush();
+            $this->cache->invalidateTags(['gallery_'.$galleryName]);
         } catch (\Throwable $th) {
             $this->logger->error($th->getMessage());
             return $this->json(['error' => 'An error occurred deleting Image'], 500);
@@ -212,7 +225,7 @@ class GalleryController extends AbstractController
             return  $this->json(["error"=>$errors], 400);
             }
             $em->flush();
-
+            $this->cache->invalidateTags(['gallery_'.strtolower($galleryName)]);
         }catch (\Throwable $th) {
             $this->logger->error($th->getMessage());
             return $this->json(['error' => 'An error occurred adding Images'], 500);
@@ -244,6 +257,7 @@ class GalleryController extends AbstractController
         if (!$secondImage) {
             return $this->json("Second Image not found", 404);
         }
+        $galleryName = strtolower($firstImage->getGalleryName());
         $tempOrder = $firstImage->getOrderIndex();
         $secondOrder = $secondImage->getOrderIndex();
         $firstImage->setOrderIndex($secondOrder);
@@ -251,7 +265,7 @@ class GalleryController extends AbstractController
         $em->persist($firstImage);
         $em->persist($secondImage);
         $em->flush();
-
+        $this->cache->invalidateTags(['gallery_'. $galleryName]);
     } catch (\Throwable $th) {
         $this->logger->error($th->getMessage());
         return $this->json(['error' => 'An error occurred reordering Images'], 500);

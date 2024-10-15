@@ -4,6 +4,5 @@ framework:
             policy: 'token_bucket'
             limit: 200
             rate: { interval: '60 seconds', amount: 10 }
-            cache_pool: 'cache.app'
             
 

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import StaffList from './StaffList'
-import { getProjectData } from '../../api/projectsApi'
-import { purifyProjectData } from '../../security/Dompurify/purify'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
 const ProjectStaff = (props) => {
@@ -39,16 +37,7 @@ if (loading) return <Spinner inline={true} />;
       <StaffList title={"Montage"} items={projectData.staff?.montage} className={"montage"} />
       <StaffList title={"Cadrage"} items={projectData.staff?.cadrage} className={"cadrage"} />
       <StaffList title={"Pilote de drone"} items={projectData.staff?.droniste} className={"droniste"} />
-      {projectData.staff?.photographePlateau && 
-        <>
-          <h2>Photographe de plateau</h2>
-          <ul className='photoplateau-list'>
-            {projectData.staff?.photographePlateau?.split(',').map((p, i) => <li key={i} className='photoplateau'>{p}</li>)}
-          </ul>
-        </>
-      }
-
-      <StaffList title="Photographe de plateau" items={projectData.staff?.photographePlateau} className="photoplateau" />
+      <StaffList title="Photographe de plateau" items={projectData.staff?.ph_plateau} className="photoplateau" />
       <StaffList title="Directeur de la photographie" items={projectData.staff?.decorateurs} className="deco" />
 
     

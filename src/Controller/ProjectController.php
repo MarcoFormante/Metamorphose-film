@@ -440,15 +440,13 @@ class ProjectController extends AbstractController
             $em->flush();
             $this->cache->delete('project_data_'.$id);
             $this->cache->delete('home_projects');
-
+            return $this->json(['message' => 'success'], 200);
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while updating project: {$th->getMessage()}", [
                 'exception' => $th
             ]);
             return $this->json(['error' => 'Error updating project: ' . $th->getMessage()], 500);
         }
-
-        return $this->json(['message' => 'success'], 200);
     }
 
 
