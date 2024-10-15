@@ -10,8 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -37,13 +35,10 @@ class GalleryController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/api/gallery/{name}', name: 'app_gallery', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9_]+$'])]
-    public function index(string $name, EntityManagerInterface $em,Request $request,RateLimiterFactory $apiLimiter): JsonResponse
+    public function index(string $name, EntityManagerInterface $em,Request $request): JsonResponse
     {
         try {
-            $limiter = $apiLimiter->create($request->getClientIp());
-            if (false === $limiter->consume(1)->isAccepted()) {
-                throw new TooManyRequestsHttpException();
-            }
+            
             $offset = $this->s->sanitize($request->query->get('offset'),"int");
             $limit = 10;
             $totalImages = false;

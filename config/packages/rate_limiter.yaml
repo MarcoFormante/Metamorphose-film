@@ -2,7 +2,7 @@ framework:
     rate_limiter:
         api:
             policy: 'token_bucket'
-            limit: 200
-            rate: { interval: '60 seconds', amount: 10 }
+            limit: 100
+            rate: { interval: '120 seconds', amount: 100}
             
 

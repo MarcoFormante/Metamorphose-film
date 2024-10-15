@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -19,12 +17,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class LoginController extends AbstractController
 {
-    private RateLimiterFactory $apiLimiter;
-    public function __construct(RateLimiterFactory $apiLimiter)
-    {
-        $this->apiLimiter = $apiLimiter;
-    }
-
+ 
+    
       /**
      * GET CSRF TOKEN
      * @method GET
@@ -34,12 +28,9 @@ class LoginController extends AbstractController
      * set cookie
      */
     #[Route('/api/csrfToken', name: 'app_csrfToken', methods: ['GET'])]
-    public function getCSRF(CsrfTokenManagerInterface $csrfTokenManager,SessionInterface $sessionInterface,Request $request): JsonResponse
+    public function getCSRF(CsrfTokenManagerInterface $csrfTokenManager,SessionInterface $sessionInterface): JsonResponse
     {
-        $limiter = $this->apiLimiter->create($request->getClientIp());
-        if (false === $limiter->consume(1)->isAccepted()) {
-            throw new TooManyRequestsHttpException();
-        }
+        
         $csrfToken = $csrfTokenManager->getToken("authenticate")->getValue();
         $response = new JsonResponse(['success' => 'CSRF token generated', 'csrfToken' => $csrfToken], 200);
         $cookie = new Cookie($sessionInterface->getName(), $sessionInterface->getId(),  time() + 3600, '/', null, true, true,false,Cookie::SAMESITE_STRICT);
@@ -60,15 +51,9 @@ class LoginController extends AbstractController
      * @return JsonResponse $token
      */
     #[Route('/api/login', name: 'app_login',methods: ['POST'])]
-    public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger,SessionInterface $sessionInterface): JsonResponse
+    public function index(Request $request,UserRepository $userRepository,CsrfTokenManagerInterface $csrfTokenInterface,LoggerInterface $logger): JsonResponse
     {
         try {
-         
-            $limiter = $this->apiLimiter->create($request->getClientIp());
-        
-            if (false === $limiter->consume(1)->isAccepted()) {
-                throw new TooManyRequestsHttpException();
-            }
             $data = $request->request->all();
             $token = $request->cookies->get('XSRF-TOKEN');
            
@@ -116,10 +101,6 @@ class LoginController extends AbstractController
     public function logout(Request $request,LoggerInterface $logger): JsonResponse
     {
         try {
-            $limiter = $this->apiLimiter->create($request->getClientIp());
-            if (false === $limiter->consume(1)->isAccepted()) {
-                throw new TooManyRequestsHttpException();
-            }   
             $response = new JsonResponse();
             $cookie = new Cookie('XSRF-TOKEN', "sadasd",  time() + 3600, '/',null, true,true,false,Cookie::SAMESITE_STRICT);
             $response->headers->setCookie($cookie);

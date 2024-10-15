@@ -14,8 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
-
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -28,15 +26,13 @@ class ProjectController extends AbstractController
     private LoggerInterface $logger;
     private CacheInterface $cache;
     private SerializerInterface $serializer;
-    private RateLimiterFactory $apiLimiter;
 
-    public function __construct(Sanitizer $sanitizer, LoggerInterface $logger, CacheInterface $cache,SerializerInterface $serializer,RateLimiterFactory $apiLimiter)
+    public function __construct(Sanitizer $sanitizer, LoggerInterface $logger, CacheInterface $cache,SerializerInterface $serializer)
     {
         $this->sanitizer = $sanitizer;
         $this->logger = $logger;
         $this->cache = $cache;
         $this->serializer = $serializer;
-        $this->apiLimiter = $apiLimiter;
     }
 
   /**
@@ -48,13 +44,9 @@ class ProjectController extends AbstractController
      * get project data by id
      */
     #[Route('/api/projectData/{id}', name: 'app_project',requirements: ['id' => '^[0-9]+$'], methods: ['GET'])]
-    public function index(int $id, EntityManagerInterface $em,Request $request): JsonResponse
+    public function index(int $id, EntityManagerInterface $em): JsonResponse
     {
         try {
-            $limiter = $this->apiLimiter->create($request->getClientIp());
-            if (false === $limiter->consume(1)->isAccepted()) {
-                throw new TooManyRequestsHttpException();
-            }
             $cacheKey = 'project_data_'.$id;
           
             $projectData = $this->cache->get($cacheKey,function(ItemInterface $item) use ($id,$em){
@@ -109,14 +101,9 @@ class ProjectController extends AbstractController
      * get all projects
      */
     #[Route('/api/home/projects', name: 'app_home_projects', methods: ['GET'])]
-    public function HomeProjects(EntityManagerInterface $em,Request $request){
+    public function HomeProjects(EntityManagerInterface $em){
        
         try {
-            
-            $limiter = $this->apiLimiter->create($request->getClientIp());
-            if (false === $limiter->consume(1)->isAccepted()) {
-                throw new TooManyRequestsHttpException();
-            }
             $cacheKey = 'home_projects';
                 $projects = $this->cache->get($cacheKey, function(ItemInterface $item) use ($em){
                     $item->expiresAfter(86400);
@@ -137,12 +124,11 @@ class ProjectController extends AbstractController
                     }
                     return ["projects"=>$arrayOfProjects];
                 });
-                //
+
                 if(!$projects){
                     return $this->json(['message' => 'No projects found'],404);
                 }
            
-        
             $jsonProjects = $this->serializer->serialize($projects, 'json');
             $response = new JsonResponse($jsonProjects, 200, [], true);
             $response->headers->set('Cache-Control', 'max-age=86400, public');
@@ -167,12 +153,7 @@ class ProjectController extends AbstractController
     #[Route('/api/projectByName/{name}', name: 'app_project_byName', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9-]+$'])]
     public function projectByName( EntityManagerInterface $em, Request $request): JsonResponse
     {
-        
         try {
-            $limiter = $this->apiLimiter->create($request->getClientIp());
-            if (false === $limiter->consume(1)->isAccepted()) {
-                throw new TooManyRequestsHttpException();
-            }
             $name = $this->sanitizer->sanitize($request->attributes->get('name'),"string");
             if($name === "" || !is_string($name) || is_numeric($name)){
                 return $this->json("Project Not Found",404);
