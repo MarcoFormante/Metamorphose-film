@@ -1472,6 +1472,7 @@ body:has(.fallback) {
 .production .last-next-btns-container .next {
   position: absolute;
   right: 1px;
+  top: -1px;
 }
 .production .last-next-btns-container .next > a::after {
   content: ">";
@@ -1479,6 +1480,7 @@ body:has(.fallback) {
 .production .last-next-btns-container .last {
   position: absolute;
   left: 1px;
+  top: -1px;
 }
 .production .last-next-btns-container .last > a::after {
   content: "<";
