@@ -14,3 +14,4 @@
 /public/build/
 ###< pentatrion/vite-bundle ###
 /public/assets/uploads/
+/public/assets/static/videos/
