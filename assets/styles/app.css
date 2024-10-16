@@ -830,9 +830,32 @@ body:has(.fallback) {
   z-index: 3;
   position: relative;
 }
+#service-video-trailer .backButton {
+  padding-left: 18px;
+}
 #service-video-trailer h1 {
   padding: 0 24px 24px;
-  line-height: 0.8;
+  line-height: 0.4;
+  position: relative;
+}
+#service-video-trailer h1 span {
+  font-size: 0.4em;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+@media screen and (max-width: 408px) {
+  #service-video-trailer h1 span {
+    position: absolute;
+    display: block;
+    left: clamp(170px, 40vw, 400px);
+    line-height: 1.8;
+  }
+}
+@media screen and (max-width: 408px) {
+  #service-video-trailer h1 .prod-video {
+    left: clamp(100px, 40vw, 400px);
+  }
 }
 #service-video-trailer #service-video-container {
   width: 90vw;
@@ -843,12 +866,12 @@ body:has(.fallback) {
   min-width: 60vw;
   max-width: clamp(200px, 50vw, 400px);
   max-height: clamp(100px, 40vw, 500px);
-  min-height: 28vw;
+  min-height: 30vw;
 }
 @media screen and (max-width: 1024px) {
   #service-video-trailer #service-video-container > div {
     min-width: 90vw;
-    max-height: 50vw;
+    max-height: 55svw;
   }
 }
 

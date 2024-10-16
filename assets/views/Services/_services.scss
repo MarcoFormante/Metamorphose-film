@@ -290,9 +290,33 @@
     z-index:3;
     position:relative;
 
+    .backButton{
+        padding-left: 18px;
+    }
+
     h1{
         padding: 0 24px 24px;
-        line-height:0.8;
+        line-height:0.4;
+        position: relative;
+
+        span{
+            font-size: 0.4em;
+            font-weight: 600;
+            margin-top: 5px;
+            margin-left: 5px;
+            @media screen and (max-width: 408px){
+                position: absolute;
+                display: block;
+                left: clamp(170px, 40vw, 400px);
+                line-height: 1.8;
+            }
+            
+        }
+        .prod-video{
+            @media screen and (max-width: 408px){
+                left: clamp(100px, 40vw, 400px); 
+            }
+        }
     }
 
     #service-video-container{
@@ -304,11 +328,11 @@
             min-width: 60vw;
             max-width: clamp(200px, 50vw, 400px);
             max-height: clamp(100px, 40vw, 500px);
-            min-height: 28vw;
+            min-height: 30vw;
             
             @media screen and (max-width: 1024px){
                 min-width: 90vw;
-                max-height: 50vw;
+                max-height: 55svw;
             }
         }
     }
