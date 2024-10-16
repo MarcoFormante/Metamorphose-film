@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import React, { lazy} from 'react';
 import ProjectsContextProvider from '../contexts/ProjectsContext';
+import ServicesVideoTrailer from '../views/Services/ServiceVideoTrailer/ServicesVideoTrailer';
 
 const Home = lazy(() => import('../views/Home/Home'));
 const Services = lazy(() => import('../views/Services/Services'));
@@ -18,6 +19,7 @@ const PublicRoutes = ({cookie,isAuth,setIsAuth}) => {
           <Route exact path="/" element={<Home /> }/>
           <Route path="*" element={<Navigate to="/error/404"/>}/>
           <Route path="/services" element={<Services />} />
+          <Route path="/services/:name" element={<ServicesVideoTrailer />} />
           <Route path="/a_propos" element={<About />} />
           <Route path="/galerie" element={<Gallery />} />
           <Route path="/galerie/:name" element={<GalleryImages />} />

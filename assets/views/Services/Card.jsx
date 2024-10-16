@@ -1,0 +1,23 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+
+const Card = ({videoName,title}) => {
+    const navigate = useNavigate()
+  return (
+    <article className='services-card-container '  >
+        <div className='video-background'>
+            <video autoPlay loop muted>
+                <source src={"/assets/static/videos/" + videoName + ".mp4"} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        </div>
+            <div>
+                <div className='card'> 
+                    <h1 className='art-h1' onClick={()=>navigate("/services/" + videoName)}>{title}</h1>
+                </div>
+          </div>
+        </article>
+  )
+}
+
+export default Card

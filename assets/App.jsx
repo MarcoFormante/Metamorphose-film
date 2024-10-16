@@ -20,7 +20,7 @@ const colorMap = {
   "/contact": "back__orange",
   "/a_propos": "back__black",
   "/galerie": "back__black",
-  "/error/202": "back__orange",
+  "/error": "back__black",
 };
 
 /**
@@ -42,8 +42,8 @@ function App() {
   
 
   useEffect(() => {
-    if (pathname.includes("/error")) {
-        setHeaderColor("back__orange" || "");
+    if (["/error","/services/"].some((path) => pathname.includes(path))) {
+        setHeaderColor("back__orange");
     }else{
       setHeaderColor(colorMap[pathname] || "");
     }

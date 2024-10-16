@@ -1,44 +1,19 @@
 import React from 'react'
+import Card from './Card'
 
 
 const ServicesCards = () => {
+    
   return (
     <section className='cards-section'>
-    <div className='flex-c-container services-flex-container'>
-        <article className='services-card-container ' >
-            <div>
-                <div className='card'> 
-                    <h1 className='art-h1'>Production Video</h1>
-                </div>
-          </div>
-        </article>
-
-        <article className='services-card-container' >
-            <div>
-                <div className='card'> 
-                    <h1 className='art-h1'>Montage</h1>
-                </div >
-          </div>
-        </article>
-    </div>
-
-    <div className='flex-c-container flex-container2'>
-        <article className='services-card-container ' >
-            <div >
-                <div className='card'> 
-                    <h1 className='art-h1'>Photographie</h1>
-                </div >
-          </div>
-        </article>
-
-        <article className='services-card-container ' >
-            <div>
-                <div className='card'> 
-                    <h1 className='art-h1'>Drone</h1>
-                </div>
-          </div>
-        </article>
-    </div>
+        <div className='flex-c-container services-flex-container'>
+            <Card title={"Production Video"} videoName={"production-video"}/>
+            <Card title={"Montage"} videoName={"montage"} />
+        </div>
+        <div className='flex-c-container flex-container2'>
+            <Card title={"Photographie"} videoName={"photographie"} />
+            <Card title={"Drone"} videoName={"drone"} />
+        </div>
   </section>
   )
 }
