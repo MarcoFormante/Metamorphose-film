@@ -7,12 +7,12 @@ const ServicesCards = () => {
   return (
     <section className='cards-section'>
         <div className='flex-c-container services-flex-container'>
-            <Card title={"Production Video"} videoName={"production-video"}/>
-            <Card title={"Montage"} videoName={"montage"} />
+            <Card hasVideo={false} title={"Production Video"} videoName={"production-video"}/>
+            <Card hasVideo={false} title={"Montage"} videoName={"montage"} />
         </div>
         <div className='flex-c-container flex-container2'>
-            <Card title={"Photographie"} videoName={"photographie"} />
-            <Card title={"Drone"} videoName={"drone"} />
+            <Card hasVideo={false} title={"Photographie"} videoName={"photographie"} />
+            <Card hasVideo={true} title={"Drone"} videoName={"drone"} />
         </div>
   </section>
   )

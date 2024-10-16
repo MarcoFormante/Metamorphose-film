@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Card = ({videoName,title}) => {
+const Card = ({videoName,title,hasVideo}) => {
     const navigate = useNavigate()
   return (
     <article className='services-card-container '  >
@@ -13,7 +13,7 @@ const Card = ({videoName,title}) => {
         </div>
             <div>
                 <div className='card'> 
-                    <h1 className='art-h1' onClick={()=>navigate("/services/" + videoName)}>{title}</h1>
+                    <h1 className='art-h1' onClick={()=> hasVideo ? navigate("/services/" + videoName) : null}>{title}</h1>
                 </div>
           </div>
         </article>
