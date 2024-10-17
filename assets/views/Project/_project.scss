@@ -121,7 +121,7 @@
     }
 
     h2{
-        font-size: 1rem;
+        font-size: 1.4rem;
         margin-top: 25px;
         font-weight: bold;
         @extend .poppins-bold;
@@ -129,6 +129,15 @@
     p{
         font-size: 1.1rem;
         margin: 2px;
+    }
+
+    .made-by-list{
+        list-style: none;
+        margin-bottom: 20px;
+
+        li{
+            margin: 5px 0;
+        }
     }
 
     &__imgs{
@@ -244,6 +253,10 @@
 
             ul{
                 list-style: none;
+
+                li{
+                    margin: 5px 0;
+                }
             }
 
             @media screen and (max-width: 1039px) {

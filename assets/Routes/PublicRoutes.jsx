@@ -20,7 +20,7 @@ const PublicRoutes = ({cookie,isAuth,setIsAuth}) => {
           <Route path="*" element={<Navigate to="/error/404"/>}/>
           <Route path="/services" element={<Services />} />
           <Route path="/services/:name" element={<ServicesVideoTrailer />} />
-          <Route path="/a_propos" element={<About />} />
+          <Route path="/a-propos" element={<About />} />
           <Route path="/galerie" element={<Gallery />} />
           <Route path="/galerie/:name" element={<GalleryImages />} />
           <Route path="projet/:name" element={<Project cookie={cookie} />} />

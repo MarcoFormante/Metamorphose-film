@@ -51,7 +51,7 @@ function Header(){
           <NavLink to={"/services"}>Services</NavLink>
         </li>
         <li className="header__menu__item">
-          <NavLink to={"/a_propos"}>À propos</NavLink>
+          <NavLink to={"/a-propos"}>À propos</NavLink>
         </li>
       </ul>
     </header>

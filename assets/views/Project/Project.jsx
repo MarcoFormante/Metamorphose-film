@@ -148,7 +148,7 @@ useEffect(() => {
           <h1 className="production__title">{project?.name}</h1>
           <h2>Realisé par</h2>
           {project?.made_by && (
-            <ul>
+            <ul className='made-by-list'>
               {project?.made_by?.split(",").map((r, i) => (
                 <li key={i}>{r}</li>
               ))}

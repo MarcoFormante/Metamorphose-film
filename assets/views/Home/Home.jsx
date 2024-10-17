@@ -49,6 +49,7 @@ const Home = () => {
             robots={true}
           />
         <div id='home'>
+          <h1 style={{ display: 'none' }}>Accueil - Metamorphose</h1>
             <Swiper style={{color:"white"}}
                 modules={[Navigation, Pagination, Scrollbar, A11y,Keyboard,Mousewheel]}
                 spaceBetween={0}
