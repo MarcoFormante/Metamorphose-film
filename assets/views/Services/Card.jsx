@@ -13,7 +13,7 @@ const Card = ({videoName,title,hasVideo}) => {
         </div>
             <div>
                 <div className='card'> 
-                    <h1 className='art-h1' onClick={()=> hasVideo ? navigate("/services/" + videoName) : null}>{title}</h1>
+                    <h2 className='art-h1' onClick={()=> hasVideo ? navigate("/services/" + videoName) : null}>{title}</h2>
                 </div>
           </div>
         </article>

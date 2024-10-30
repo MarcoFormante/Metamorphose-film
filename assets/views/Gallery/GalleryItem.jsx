@@ -9,7 +9,7 @@ const stateName = name === 'Événementiel' ? 'evenementiel' : name
       <li className='gallery__item'>
         <div className='gallery__item__img'>
         <Link to={link} state={stateName}>
-      <img src={src} alt={alt} onLoad={()=> setImgLoadedCounter(prev => prev + 1)}/>
+      <img src={src} width={300} loading='eager' height={400} alt={alt} title={alt} onLoad={()=> setImgLoadedCounter(prev => prev + 1)}/>
           </Link>
         </div>
         <div className='gallery__item__title'>

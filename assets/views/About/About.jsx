@@ -81,10 +81,10 @@ const About = () => {
             {persons.map((person,index) =>
             <article key={person.instaName}>
             <div className={index === 1 ? "article-container-left" : "article-container"}>
-                <img  src={"/assets/static/images/" + person.src} alt="" />
+                <img  src={"/assets/static/images/" + person.src} loading='lazy' width={"100%"} height={"100%"} alt={"Metamorphose - équipe - " + person.name} title={"Metamorphose - équipe - " + person.name} />
                 <div className={index === 1 ? "flex-left" : "flex-right"}>
                     <div>
-                        <h1 >{person.name}</h1>
+                        <h2 >{person.name}</h2>
                         <a className='article-insta'  href={person.instaLink}>{person.instaName}</a>
                     </div>
                   
@@ -109,8 +109,8 @@ const About = () => {
                   <div >
                   <ReactCardFlip isFlipped={handleSetFlippedState(index)} flipDirection="horizontal" flipSpeedBackToFront={1} flipSpeedFrontToBack={1}>
                       <div className='card1'> 
-                          <h1 className='art-h1'>{person.name}</h1>
-                          <img src={"/assets/static/images/" + person.src} alt="" />
+                          <h2 className='art-h1'>{person.name}</h2>
+                          <img src={"/assets/static/images/" + person.src} loading='eager' width={"100%"} height={"100%"} alt={"Metamorphose - équipe - " + person.name} title={"Metamorphose - équipe - " + person.name} />
                           <span className='show-card'>{"En savoir plus >"}</span>
                       </div >
                       <div className='card2'>

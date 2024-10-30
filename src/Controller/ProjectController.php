@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -150,18 +149,20 @@ class ProjectController extends AbstractController
      * get project by name
      */
 
-    #[Route('/api/projectByName/{name}', name: 'app_project_byName', methods: ['GET'], requirements: ['name' => '^[a-zA-Z0-9-]+$'])]
+    #[Route('/api/projectByName/{name}', name: 'app_project_byName', methods: ['GET'] , requirements: ['name' => '.+'])]
     public function projectByName( EntityManagerInterface $em, Request $request): JsonResponse
-    {
+    {  
+        
         try {
-            $name = $this->sanitizer->sanitize($request->attributes->get('name'),"string");
+            $name =  $this->sanitizer->sanitize($request->attributes->get('name'),"string");
+            $name = urldecode($name);
             if($name === "" || !is_string($name) || is_numeric($name)){
                 return $this->json("Project Not Found",404);
             }
             $project = $em->getRepository(Project::class)->findOneBy(['name' => $name]);
     
             if(!$project){
-                return $this->json(['error' => 'Project Not found'],404);
+                return $this->json(['error' => 'Project Not found'],204);
             }
             
             $data = [];
@@ -176,16 +177,18 @@ class ProjectController extends AbstractController
                     'isActive' => $project->isActive(),
                     "made_by" => $project->getMadeBy()
                 ];
+                return $this->json(['project' => $data],200);
             }else{
                 return $this->json("Not Found",404);
             }
         } catch (\Throwable $th) {
+            $this->json($th);
             $this->logger->error("An error occurred while getting project: {$th->getMessage()}", [
                 'exception' => $th
             ]);
             return $this->json(['error' => "error finding project"],500);
         }
-        return $this->json(['project' => $data],200);
+        
     }
 
   /**
@@ -557,7 +560,7 @@ class ProjectController extends AbstractController
         $this->logger->error("An error occurred while creating project: {$th->getMessage()}", [
             'exception' => $th
         ]);
-        return $this->json(['error' => 'Error creating project : '], 500);
+        return $this->json(['error' => 'Error creating project'], 500);
     }
        
         return $this->json(['message' => 'Project created'],200);

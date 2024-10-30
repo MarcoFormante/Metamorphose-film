@@ -107,7 +107,7 @@ const GalleryImages = () => {
           />
         {location.state && (
           <h1 className="gallery__images__gallery-name">
-            Galerie<span>{location.state}</span>
+            Galerie<span className='hidden'>-</span><span>{location.state}</span>
           </h1>
         )}
 
@@ -129,7 +129,9 @@ const GalleryImages = () => {
                 alt={"Image of " + location.state + " gallery"}
                 id={index === images.length - 1 ? "last" : ""}
                 loading='lazy'
-                width={360}
+                width={"100%"}
+                height={"100%"}
+                title={"Image de la galerie " + location.state || params.name}
               />
             </figure>
           ))}

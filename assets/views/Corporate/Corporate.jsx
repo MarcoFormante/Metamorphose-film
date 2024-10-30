@@ -12,7 +12,7 @@ const Corporate = () => {
           <a href="/error/202">
             <div>
                 <div className='card btn'> 
-                  <h1 className='art-h1'>PUBLICITAIRE</h1>
+                  <h2 className='art-h1'>PUBLICITAIRE</h2>
                 </div>
             </div>
           </a>
@@ -23,7 +23,7 @@ const Corporate = () => {
           <a href="/error/202">
             <div>
                   <div className='card btn'> 
-                      <h1 className='art-h1'>CORPORATE</h1>
+                      <h2 className='art-h1'>CORPORATE</h2>
                   </div >
             </div>
           </a>
@@ -35,7 +35,7 @@ const Corporate = () => {
         <a href="/error/202">
           <div>
                   <div className='card btn'> 
-                    <h1 className='art-h1'>ÉVÉNEMENTIEL</h1>
+                    <h2 className='art-h1'>ÉVÉNEMENTIEL</h2>
                   </div >
             </div>
           </a>
@@ -45,7 +45,7 @@ const Corporate = () => {
         <a href="/error/202">
             <div>
                 <div className='card btn'> 
-                  <h1 className='art-h1'>CLIP VIDÉO</h1>
+                  <h2 className='art-h1'>CLIP VIDÉO</h2>
                 </div>
           </div>
           </a>

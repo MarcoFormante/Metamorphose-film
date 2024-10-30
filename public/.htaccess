@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+    ServerName localhost
+
+    DocumentRoot  http://localhost:5173/
+
+    <Directory   http://localhost:5173/build/
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ProxyPass /sitemap.xml http://127.0.0.1:8000/sitemap.xml
+    ProxyPassReverse /sitemap.xml http://127.0.0.1:8000/sitemap.xml
+</VirtualHost>

@@ -38,7 +38,7 @@ export const getProjectData = async (id) => {
 
 export const getProjectByName = async (name) => {
     try {
-        const response = await axiosInstance.get("projectByName/" + name);
+        const response = await axiosInstance.get("projectByName/" + encodeURIComponent(name));
         
         if (response.status !== 200) {
             throw new Error("Error fetching project");

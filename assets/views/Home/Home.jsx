@@ -52,6 +52,7 @@ const Home = () => {
           <h1 style={{ display: 'none' }}>Accueil - Metamorphose</h1>
             <Swiper style={{color:"white"}}
                 modules={[Navigation, Pagination, Scrollbar, A11y,Keyboard,Mousewheel]}
+                passiveListeners={true}
                 spaceBetween={0}
                 slidesPerView={1}
                 navigation

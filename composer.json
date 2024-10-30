@@ -16,6 +16,7 @@
         "firebase/php-jwt": "^6.10",
         "nelmio/cors-bundle": "^2.4",
         "pentatrion/vite-bundle": "^6.4",
+        "samdark/sitemap": "^2.4",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",

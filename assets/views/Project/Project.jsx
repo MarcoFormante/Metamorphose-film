@@ -114,7 +114,7 @@ useEffect(() => {
                   to={"/projet/" + lastProject.name}
                   state={{ project: lastProject, index: projectIndex - 1 ,allProjects}}
                 >
-                  {""}
+                  <span className='hidden'>{lastProject.name}</span>
                 </Link>
               </span>
             )}
@@ -126,7 +126,7 @@ useEffect(() => {
                   to={"/projet/" + nextProject.name}
                   state={{ project: nextProject, index: projectIndex + 1 ,allProjects}}
                 >
-                  {""}
+                   <span className='hidden'>{nextProject.name}</span>
                 </Link>
               </span>
             )}

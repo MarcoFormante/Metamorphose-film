@@ -58,7 +58,7 @@ import SEO from '../../components/Seo/SEO';
         
         <section className='mb'>
             <div>
-                  <h3 className='section-title sub-tl sub-tl-m'>Nos types de projets :</h3>
+                  <h2 className='section-title sub-tl sub-tl-m'>Nos types de projets :</h2>
             </div>
 
             <Corporate/>

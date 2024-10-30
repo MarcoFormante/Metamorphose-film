@@ -8,33 +8,27 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
             <div className='flex-container'>
               <div className='desc-card1' onClick={handleClick} >
               <ReactCardFlip isFlipped={isFlipped_Card1} flipDirection="horizontal" flipSpeedBackToFront={1} flipSpeedFrontToBack={1}>
-              <article className='desc-card '>
+                <article className='desc-card '>
                   <div className='desc-card-left'>
                     <h2>Concept et Planification</h2>
                     <ul>
-                          <li>Développer l'idée</li>
-                          <li>Storyboard</li>
-                          <li>Budget et Planning</li>
-                         
+                        <li>Développer l'idée</li>
+                        <li>Storyboard</li>
+                        <li>Budget et Planning</li>
                     </ul>
                   </div>
-                  
                 </article>
-
                 <article className='desc-card  desc-card1'>
                   <div className='desc-card-left desc-card-left__mobile'>
                     <div className='desc-card-left__title'>
-                        <h1>1. Préproduction </h1>
+                        <h3>1. Préproduction </h3>
                     </div>
-                   
                   </div>
-                  
                 </article>
               </ReactCardFlip>
               <div className='desc-card-right'>
                   </div>
               </div>
-            
               <div className='desc-card2' onClick={handleClick} >
               <ReactCardFlip isFlipped={isFlipped_Card2} flipDirection="horizontal" flipSpeedBackToFront={1} flipSpeedFrontToBack={1}>
               <article className='desc-card'>
@@ -53,7 +47,7 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                 <article className='desc-card'>
                   <div className='desc-card-left desc-card-left__mobile'>
                     <div className='desc-card-left__title'>
-                        <h1>2. Production </h1>
+                        <h3>2. Production </h3>
                     </div>
                    
                   </div>
@@ -82,7 +76,7 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                 <article className='desc-card'>
                   <div className='desc-card-left desc-card-left__mobile'>
                     <div className='desc-card-left__title'>
-                        <h1>3. Postproduction </h1>
+                        <h3>3. Postproduction </h3>
                     </div>
                    
                   </div>
@@ -115,7 +109,7 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                 <article className='desc-card'>
                   <div className='desc-card-left desc-card-left__mobile'>
                     <div className='desc-card-left__title'>
-                        <h1>4. Distribution</h1>
+                        <h3>4. Distribution</h3>
                     </div>
                   </div>
                   

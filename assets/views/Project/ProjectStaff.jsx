@@ -19,16 +19,16 @@ if (loading) return <Spinner inline={true} />;
   return projectData &&(
     <React.Fragment>
        <div className='production__imgs'>
-           <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[0] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
-           <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[1] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+           <img loading='lazy' width={500} height={667} src={"/assets/uploads/images/projects/" + projectData?.images[0] } title={`Projet video ${props.project.name} de ${projectData.staff.production}`} alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+           <img loading='lazy' width={500} height={667} src={"/assets/uploads/images/projects/" + projectData?.images[1] } title={`Projet video ${props.project.name} de ${projectData.staff.production}`} alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
        </div>
        <div className='production__imgs'>
-          <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[2] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
-          <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[3] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+          <img loading='lazy' width={500} height={667} src={"/assets/uploads/images/projects/" + projectData?.images[2] } title={`Projet video ${props.project.name} de ${projectData.staff.production}`} alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+          <img loading='lazy' width={500} height={667} src={"/assets/uploads/images/projects/" + projectData?.images[3] } title={`Projet video ${props.project.name} de ${projectData.staff.production}`} alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
        </div>
        <div className='production__imgs'>
-        <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[4] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
-        <img loading='lazy' src={"/assets/uploads/images/projects/" + projectData?.images[5] } alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+        <img loading='lazy' width={500} height={667} src={"/assets/uploads/images/projects/" + projectData?.images[4] } title={`Projet video ${props.project.name} de ${projectData.staff.production}`} alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
+        <img loading='lazy' width={500} height={667} src={"/assets/uploads/images/projects/" + projectData?.images[5] } title={`Projet video ${props.project.name} de ${projectData.staff.production}`} alt={`Projet video ${props.project.name} de ${projectData.staff.production}`} />
       </div>
       <div className='staff-list-flex'>
         

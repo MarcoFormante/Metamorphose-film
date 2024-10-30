@@ -28,6 +28,8 @@ function Header(){
           width={250}
           alt="Metamorphose"
           height={42}
+          title='Metamorphose'
+          loading='eager'
         />
       </Link>
 

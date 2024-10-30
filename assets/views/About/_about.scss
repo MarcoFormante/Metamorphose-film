@@ -60,7 +60,7 @@
             }
           
 
-            h1{
+            h2{
                 text-align: center;
                 font-size: 1.4em;
                 color: $white;
@@ -169,11 +169,12 @@
         }
 
         .article-container, .article-container-left{
-            transition: all 0.3s;
+            transition: background-color 0.3s, color 0.3s;
+            
             border: 3px solid white;
             &:hover{
                 background-color:$white;
-                h1,ul{
+                h2,ul{
                     color:$black;
                 }
             }
@@ -216,7 +217,7 @@
             color:$white;
         }
 
-        h1{
+        h2{
             font-size:clamp(4em, 6.5vw, 8em);
             color:black;
             @extend .poppins-bold;
