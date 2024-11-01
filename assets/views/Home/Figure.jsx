@@ -44,7 +44,7 @@ const Figure = ({project,index,allProjects,swiperRealIndex}) => {
           }
         <figcaption className='carousel__player__button'>
            
-                <Link to={"/projet/" + project.name} state={{project,index,allProjects}}>
+                <Link to={"/projet/" + project.slug} state={{project,index,allProjects}}>
                   <h2>
                     {!isMobile ? projectName : abrProjectName}
                   </h2>

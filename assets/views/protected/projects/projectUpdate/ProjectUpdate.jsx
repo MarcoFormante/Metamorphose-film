@@ -4,7 +4,7 @@ import Resizer from "react-image-file-resizer";
 import { axiosInstance } from '../../../../api/axiosInstance';
 import Fallback from '../../../../components/UI/Spinner/Spinner';
 import { purifyProjectDataAdminPage } from '../../../../security/Dompurify/purify';
-import {z} from 'zod'
+import {set, z} from 'zod'
 
 const ProjectUpdate = () => {
   const location = useLocation()
@@ -27,9 +27,10 @@ const ProjectUpdate = () => {
   const [phPlateau, setPhPlateau] = useState(null)
   const [decorateurs, setDecorateurs] = useState(null)
   const [newVideo, setNewVideo] = useState(false)
+  const [slug, setSlug] = useState(null)
   const [moreStaffFields, setMoreStaffFields] = useState(null)
   const [moreStaffFieldsCounter, setMoreStaffFieldsCounter] = useState(0)
-  const [updatedValues, setUpdatedValues] = useState({imgs:[],video:false,projectName:false,abrName:false,youtubeLink:false,collab:false,production:false,madeBy:false,artists:false,montage:false,cadrage:false,droniste:false,phPlateau:false,decorateurs:false,lastMoreStaffFields:[],newMoreStaffFields:[],lastStaff:false,newStaff:false})
+  const [updatedValues, setUpdatedValues] = useState({imgs:[],video:false,projectName:false,slug:false,abrName:false,youtubeLink:false,collab:false,production:false,madeBy:false,artists:false,montage:false,cadrage:false,droniste:false,phPlateau:false,decorateurs:false,lastMoreStaffFields:[],newMoreStaffFields:[],lastStaff:false,newStaff:false})
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -58,6 +59,7 @@ const ProjectUpdate = () => {
           setImages(proj.images)
           setLastVideo(proj.background_video)
           setProjectActive(proj.isActive)
+          setSlug(proj.slug)
       }else{
         navigate("/admin/home/")
       }
@@ -172,6 +174,9 @@ const ProjectUpdate = () => {
     }
     if (updatedValues.decorateurs) {
       formData.append('decorateurs',decorateurs.trim())
+    }
+    if (updatedValues.slug) {
+      formData.append('slug',slug.trim())
     }
 
 
@@ -362,6 +367,14 @@ useEffect(()=>{
               }
                   } />
             </div>
+
+            <div className='inpt-container'>
+            <label htmlFor='p-staff-madeby'>{"URL-(SLUG)"}</label>
+            <input type='text' id='p-slug' name='p-slug' required={!slug}  value={slug} onChange={(e)=>{
+              setSlug(e.target.value)
+              setUpdatedValues({...updatedValues,slug:e.target.value !== slug})
+            }} />
+          </div>
 
             <div className='inpt-container'>
             <label htmlFor='p-staff-madeby'>Realisé par</label>

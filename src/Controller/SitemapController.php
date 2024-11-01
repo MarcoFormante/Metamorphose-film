@@ -1,81 +1,72 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Pages;
 use App\Entity\Project;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 use samdark\sitemap\Sitemap;
-use samdark\sitemap\Index;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 class SitemapController extends AbstractController
 {
-    #[Route('/api/generate-sitemap', name: 'app_generate_sitemap', methods: ['POST'])]
-    public function generateSitemap(Request $request, EntityManagerInterface $em): Response
+    public function generateSitemap( EntityManagerInterface $em): Response
     {
-        $data = $request->request->all();
-        
-        $homelastTime = new \DateTime("2024-10-29T00:39:38+01:00");
-        $homeTimeStamp = $homelastTime->getTimestamp();
 
-        $galerielastTime = new \DateTime("2024-10-29T00:39:38+01:00");
-        $galerieTimeStamp = $galerielastTime->getTimestamp();
-
-        $serviceslastTime = new \DateTime("2024-10-29T00:39:38+01:00");
-        $servicesTimeStamp = $serviceslastTime->getTimestamp();
-
-        if(isset($data['home'])){
-            $homeTimeStamp = time();
-        }
-
-        if(isset($data['galerie'])){
-            $galerieTimeStamp = time();
-        }
-
-        if(isset($data['services'])){
-            $servicesTimeStamp = time();
-        }
-
-
-        $hostname = 'https://yourwebsite.com';
-        $sitemapPath = $this->getParameter('kernel.project_dir') . '/public/sitemap.xml';
+        $isDev = $_ENV["APP_ENV"] === "dev" ? true : false;
+        $hostname = 'https://metamorphosefilm.com';
+        $sitemapPath = $this->getParameter('kernel.project_dir') . ($isDev ? '/public/sitemap.xml' : "/public_html/sitemap.xml");
         $sitemap = new Sitemap($sitemapPath);
 
-        // Aggiungi URL statici
-        $sitemap->addItem($hostname . "/", $homeTimeStamp, Sitemap::MONTHLY, 1.0);
-        $sitemap->addItem($hostname . "/galerie",  $galerieTimeStamp, Sitemap::MONTHLY, 0.8);
-        $sitemap->addItem($hostname . "/services", $servicesTimeStamp, Sitemap::MONTHLY, 1.0);
-        $sitemap->addItem($hostname . "/a-propos", $servicesTimeStamp, Sitemap::MONTHLY, 1.0);
-        
-        if(isset($data['videos'])){
-            $projects = $em->getRepository(Project::class)->findBy(["isActive"=>1]);
-            foreach ($projects as $project) {
-                $sitemap->addItem(
-                    $hostname . "/projet/" .  urlencode($project->getName()),
-                    time(),
-                    Sitemap::MONTHLY,
-                    0.7
-                );
-            }
-        }else{
-            $projects = $em->getRepository(Project::class)->findBy(["isActive"=>1]);
-            foreach ($projects as $project) {
-                $sitemap->addItem(
-                    $hostname . "/projet/" .  urlencode($project->getName()),
-                    $project->getUpdatedAt()->getTimestamp(),
-                    Sitemap::MONTHLY,
-                    0.7
-                );
-            }
+        // Static pages
+       $pages = $em->getRepository(Pages::class)->findBy(["isActive"=>1]);
+        foreach($pages as $page){
+            $sitemap->addItem(
+                $hostname . $page->getPage(),
+                $page->getUpdatedAt()->getTimestamp(),
+                Sitemap::MONTHLY,
+                $page->getPriority()
+            );
         }
         
-        // Scrivi la sitemap nel filesystem
+        //Videos
+            $projects = $em->getRepository(Project::class)->findBy(["isActive"=>1]);
+            foreach ($projects as $project) {
+                $sitemap->addItem(
+                    $hostname . "/projet/" .  $project->getSlug(),
+                    $project->getUpdatedat()->getTimestamp(),
+                    Sitemap::MONTHLY,
+                    0.8
+                );
+            }
+        
+        
         $sitemap->write();
 
         return new Response('Sitemap generated successfully!', Response::HTTP_OK);
+    }
+
+
+    public function updatePage(EntityManagerInterface $em, $page, $priority = null, $isActive = null)
+    {
+        $pageRepository = $em->getRepository(Pages::class);
+        $pageExists = $pageRepository->findOneBy(["page" => $page]);
+        if ($pageExists) {
+            $pageExists->setUpdatedAt(new \DateTimeImmutable());
+            $pageExists->setActive($isActive ? $isActive : $pageExists->isActive());
+            $pageExists->setPriority($priority ? $priority : $pageExists->getPriority());
+            $em->persist($pageExists);
+           
+        } else {
+            $pages = new Pages();
+            $pages->setPage($page);
+            $pages->setUpdatedAt(new \DateTimeImmutable());
+            $pages->setActive($isActive);
+            $pages->setPriority($priority);
+            $em->persist($pages);
+        }
+        
     }
 }

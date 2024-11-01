@@ -9,7 +9,7 @@ const SEO = ({ title,url,robots}) => {
     <Helmet>
       <title>{title}</title>
       <meta name="robots" content={robots  ? "index, follow" : "noindex, nofollow"} />
-      <link rel="canonical" href={"https://meta.metamorphose.com" + url} />
+      <link rel="canonical" href={"https://metamorphosefilm.com" + url} />
       </Helmet>
     );
   }

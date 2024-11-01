@@ -11,6 +11,7 @@ import { newProjectSchema } from '../../../security/Zod/zod';
 const NewProject = () => {
   const [projectName, setProjectName] = useState('')
   const [abrName, setAbrName] = useState('')
+  const [slug, setSlug] = useState('')
   const [youtubeLink, setYoutubeLink] = useState('')
   const [collab, setCollab] = useState('')
   const [bgVideo, setBgVideo] = useState(null)
@@ -60,14 +61,14 @@ const NewProject = () => {
   }
 
   useEffect(()=>{
-    if (projectName && youtubeLink && collab && bgVideo && pageCounter === 0) {
+    if (projectName && youtubeLink && collab && bgVideo && slug &&  pageCounter === 0) {
       setCanNext(true)
     }else if ( pageCounter === 1 && images.length > 0) {
       setCanNext(true)
     }else{
       setCanNext(false)
     }
-},[projectName,youtubeLink,collab,bgVideo,pageCounter,images])
+},[projectName,youtubeLink,collab,bgVideo,pageCounter,images,slug])
 
 
 useEffect(()=>{
@@ -82,12 +83,12 @@ useEffect(()=>{
 
 
 useEffect(()=>{
-  if (projectName  && abrName &&  youtubeLink  && collab  && bgVideo  && images &&  production && madeBy && pageCounter === 2 ) {
+  if (projectName  && abrName &&  youtubeLink  && collab  && bgVideo  && images &&  production && madeBy && slug &&  pageCounter === 2 ) {
     setCanSubmit(true)
   }else{
     setCanSubmit(false)
   }
-},[ projectName, youtubeLink, abrName, collab, bgVideo, images, production, madeBy, pageCounter])
+},[ projectName, youtubeLink, abrName, collab, bgVideo, images, production, madeBy, pageCounter,slug])
 
 const handleImages = (files) => {
   if (files.length !== 6) {
@@ -129,7 +130,8 @@ const handleSubmit = async(e) => {
         phPlateau: phPlateau.trim(),
         decorateurs: decorateurs.trim(),
         moreStaffFields: moreStaffFields,
-        images: [...compressedImages]
+        images: [...compressedImages],
+        slug: slug.trim()
       }
 
     const validate = newProjectSchema.safeParse(objectToVerify)
@@ -144,6 +146,7 @@ const handleSubmit = async(e) => {
     
     formdata.append('name',validate.data.name)
     formdata.append('abrName',validate.data.abrName)
+    formdata.append('slug',validate.data.slug)
     formdata.append('yt',validate.data.yt)
     formdata.append('collab',validate.data.collab)
     formdata.append('video',validate.data.video)
@@ -180,6 +183,7 @@ const handleSubmit = async(e) => {
         setAbrName('')
         setYoutubeLink('')
         setCollab('')
+        setSlug('')
         setBgVideo(null)
         setImages([])
         setIsSubmit(false)
@@ -240,6 +244,8 @@ const handleMoreStaffFields2 = (value,index) => {
               setYoutubeLink={setYoutubeLink}
               setCollab={setCollab}
               setBgVideo={setBgVideo}
+              slug={slug}
+              setSlug={setSlug}
             />
         }
         

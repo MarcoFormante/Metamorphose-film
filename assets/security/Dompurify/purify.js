@@ -9,7 +9,8 @@ export  const purifyProjects = (projects) => {
         made_by: DOMPurify.sanitize(p.made_by),
         youtube_video: DOMPurify.sanitize(p.youtube_video),
         background_video: DOMPurify.sanitize(p.background_video),
-        isActive: DOMPurify.sanitize(p.isActive)
+        isActive: DOMPurify.sanitize(p.isActive),
+        slug: DOMPurify.sanitize(p.slug)
     }))
 }
 
@@ -34,7 +35,8 @@ export const purifyProjectDataAdminPage = (p) => {
             moreStaffFields: p.staff.moreStaffFields ?  p.staff.moreStaffFields.map(f => DOMPurify.sanitize(f)) : [],
             phPlateau: DOMPurify.sanitize(p.staff.phPlateau),
             production: DOMPurify.sanitize(p.staff.production),
-        }
+        },
+        slug: DOMPurify.sanitize(p.slug)
     }}
 
 

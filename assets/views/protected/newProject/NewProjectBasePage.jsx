@@ -12,7 +12,9 @@ const NewProjectBasePage = ({
     madeBy,
     youtubeLink,
     collab,
-    bgVideo
+    bgVideo,
+    slug,
+    setSlug
 }) => {
   return (
     <div>
@@ -24,6 +26,11 @@ const NewProjectBasePage = ({
           <div className='inpt-container'>
             <label htmlFor='p-name-abr'>Nom pour petits ecrans</label>
             <input type='text' required id='p-name-abr' name='p-name-abr' value={abrName} onInput={(e)=>setAbrName(e.target.value)} />
+          </div>
+
+          <div className='inpt-container'>
+            <label htmlFor='p-slug'>{"URL-(SLUG)"}</label>
+            <input type='text' required id='p-slug' name='p-slug' placeholder={'ex. heliopolis (tout minuscule)'} value={slug} onInput={(e)=>setSlug(e.target.value)} />
           </div>
 
           <div className='inpt-container'>

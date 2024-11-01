@@ -102,7 +102,7 @@ useEffect(() => {
   return (
     project && (
       <>
-       <SEO title={project?.name + " - Metamorphose"} url={"/projet/" + project?.name} robots={true} />
+       <SEO title={project?.name + " - Metamorphose"} url={"/projet/" + project?.slug} robots={true} />
         <article className={`production ${fade ? "production-fadein" : ""}`}>
           <div className={`last-next-btns-container ${isMobile ? "" : "desktop"}`}>
             {lastProject && (
@@ -111,10 +111,10 @@ useEffect(() => {
                   onClick={() =>
                     setProjectIndex((prev) => (prev > 0 ? prev - 1 : 0))
                   }
-                  to={"/projet/" + lastProject.name}
+                  to={"/projet/" + lastProject.slug}
                   state={{ project: lastProject, index: projectIndex - 1 ,allProjects}}
                 >
-                  <span className='hidden'>{lastProject.name}</span>
+                  <span className='hidden'>{lastProject.slug}</span>
                 </Link>
               </span>
             )}
@@ -123,10 +123,10 @@ useEffect(() => {
               <span className="next">
                 <Link
                   onClick={() => setProjectIndex((prev) => prev + 1)}
-                  to={"/projet/" + nextProject.name}
+                  to={"/projet/" + nextProject.slug}
                   state={{ project: nextProject, index: projectIndex + 1 ,allProjects}}
                 >
-                   <span className='hidden'>{nextProject.name}</span>
+                   <span className='hidden'>{nextProject.slug}</span>
                 </Link>
               </span>
             )}

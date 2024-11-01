@@ -118,7 +118,8 @@ class ProjectController extends AbstractController
                                 'background_video' => $project->getBackgroundVideo(),
                                 'collab_with' => $project->getCollabWith(),
                                 'isActive' => $project->isActive(),
-                                "made_by" => $project->getMadeBy()
+                                "made_by" => $project->getMadeBy(),
+                                "slug" => $project->getSlug()
                             ];
                     }
                     return ["projects"=>$arrayOfProjects];
@@ -159,7 +160,7 @@ class ProjectController extends AbstractController
             if($name === "" || !is_string($name) || is_numeric($name)){
                 return $this->json("Project Not Found",404);
             }
-            $project = $em->getRepository(Project::class)->findOneBy(['name' => $name]);
+            $project = $em->getRepository(Project::class)->findOneBy(['slug' => $name]);
     
             if(!$project){
                 return $this->json(['error' => 'Project Not found'],204);
@@ -215,6 +216,7 @@ class ProjectController extends AbstractController
                 "id" => $project->getId(),
                 'name' => $project->getName(),
                 "abrName" => $project->getAbrName(),
+                "slug" => $project->getSlug(),
                 'youtube_video' => $project->getYoutubeVideo(),
                 'background_video' => $project->getBackgroundVideo(),
                 'collab_with' => $project->getCollabWith(),
@@ -292,7 +294,7 @@ class ProjectController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/project/update', name: 'app_project_update', methods: ['POST'])]
-    public function updateProject(EntityManagerInterface $em, Request $request):JsonResponse{
+    public function updateProject(EntityManagerInterface $em, Request $request,SitemapController $sitemapController):JsonResponse{
         try {
             $id = $this->sanitizer->sanitize($request->request->get('id'),"int");
             if (!$id){ 
@@ -310,6 +312,10 @@ class ProjectController extends AbstractController
             
             if (isset($data['name']) && is_string($data['name']) && $data['name'] !== "") {
                 $project->setName($this->sanitizer->sanitize($data['name'],"string"));
+            }
+
+            if (isset($data['slug']) && is_string($data['slug']) && $data['slug'] !== "") {
+                $project->setSlug($this->sanitizer->sanitize($data['slug'],"string"));
             }
 
             if (isset($data['yt']) && filter_var($data['yt'], FILTER_VALIDATE_URL) && $data['yt'] !== "") {
@@ -419,7 +425,10 @@ class ProjectController extends AbstractController
             if($video){
                 $video->move("assets/uploads/videos/", $RandomVideoName);
             }
-           
+
+            $project->setUpdatedAt(new \DateTimeImmutable());
+            $sitemapController->updatePage($em,"/",null,null);
+            $sitemapController->generateSitemap($em);
             $em->persist($project);
             $em->flush();
             $this->cache->delete('project_data_'.$id);
@@ -456,7 +465,7 @@ class ProjectController extends AbstractController
         $video = $request->files->get('video');
       
 
-        $requiredFields = ['name', 'yt', 'collab', 'abrName', 'images', 'video', 'production', 'madeBy', 'artists', 'montage', 'cadrage', 'droniste', 'phPlateau', 'decorateurs'];
+        $requiredFields = ['name', 'yt', 'collab', 'slug','abrName', 'images', 'video', 'production', 'madeBy', 'artists', 'montage', 'cadrage', 'droniste', 'phPlateau', 'decorateurs'];
         foreach ($requiredFields as $field) {
             if (!isset($data[$field])  && !isset(${$field})) {
                 return $this->json(['error' => 'Missing data: ' . $field], 400);
@@ -512,7 +521,8 @@ class ProjectController extends AbstractController
             $project->setAbrName($this->sanitizer->sanitize($data['abrName'],'string'));
             $project->setMadeBy($this->sanitizer->sanitize($data['madeBy'],'string'));
             $project->setOrderIndex($this->sanitizer->sanitize($orderIndex,'int'));
-
+            $project->setUpdatedAt( new \DateTimeImmutable());
+            $project->setSlug($this->sanitizer->sanitize($data['slug'],'string'));
             $imageNames = [];
             foreach ($images as $image) {
                 $newImage = new ProjectImages();
@@ -560,7 +570,7 @@ class ProjectController extends AbstractController
         $this->logger->error("An error occurred while creating project: {$th->getMessage()}", [
             'exception' => $th
         ]);
-        return $this->json(['error' => 'Error creating project'], 500);
+        return $this->json(['error' => 'Error creating project' . $th], 500);
     }
        
         return $this->json(['message' => 'Project created'],200);
@@ -580,7 +590,7 @@ class ProjectController extends AbstractController
   
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/project/{id}', name: 'app_project_delete', methods: ['DELETE'],requirements: ['id' => '\d+'])]
-    public function deleteProject(EntityManagerInterface $em,int $id):JsonResponse{
+    public function deleteProject(EntityManagerInterface $em,int $id,SitemapController $sitemapController):JsonResponse{
         try {
             $project = $em->getRepository(Project::class)->findOneBy(['id' => $this->sanitizer->sanitize($id,"int")]);
             if (!$project) {
@@ -600,6 +610,12 @@ class ProjectController extends AbstractController
             $em->flush();
             $this->cache->delete('project_data_'.$id);
             $this->cache->delete('home_projects');
+            if ($project->isActive()) {
+                $sitemapController->updatePage($em,"/",null,null);
+                $sitemapController->generateSitemap($em);
+                $em->flush();
+            }
+            
             return $this->json(["success" =>"Project Deleted"],200);
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while deleting the project: {$th->getMessage()}", [
@@ -623,7 +639,7 @@ class ProjectController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/project/active', name: 'app_project_active', methods: ['POST'])]
-    public function projectActiveToggle(EntityManagerInterface $em, Request $request):JsonResponse{
+    public function projectActiveToggle(EntityManagerInterface $em, Request $request,SitemapController $sitemapController):JsonResponse{
         try {
             $id = $this->sanitizer->sanitize($request->request->get("id"),"int");
             
@@ -637,6 +653,10 @@ class ProjectController extends AbstractController
             $em->persist($project);
             $em->flush();
             $this->cache->delete('home_projects');
+            $project->setUpdatedAt(new \DateTimeImmutable());
+            $sitemapController->updatePage($em,"/",null,null);
+            $sitemapController->generateSitemap($em);
+            $em->flush();
             return $this->json(["isActive" => $newActiveState],200);
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while toggling project active state: {$th->getMessage()}", [
