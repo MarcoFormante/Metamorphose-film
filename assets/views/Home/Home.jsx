@@ -44,7 +44,7 @@ const Home = () => {
     return  (
     <>
           <SEO
-            title={"Accueil - Metamorphose"}
+            title={"Accueil-Metamorphose"}
             url={"/"}
             robots={true}
           />
