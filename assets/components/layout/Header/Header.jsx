@@ -19,9 +19,8 @@ function Header(){
   },[pathname,windowWidth])  
 
   
-  
   return (
-    <header id={`header`} >
+    <header id={`header`}>
       <Link to={"/"} id="header__logo">
         <img
           src={logo_wh}
@@ -33,9 +32,10 @@ function Header(){
         />
       </Link>
 
-      <div
-        className={`${menuActive ? "hamburger__active" : "hamburger"}`}
-        onClick={() => setMenuActive(!menuActive)}
+      <div 
+        hidden={pathname === "/privacy-policy"}
+        className={`${menuActive ?  "hamburger__active" : "hamburger"}`}
+        onClick={() => pathname !== "/privacy-policy" ? setMenuActive(!menuActive) : null}
       >
         <div className="hamburger__line"></div>
         <div className="hamburger__line"></div>

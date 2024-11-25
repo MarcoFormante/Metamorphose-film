@@ -166,10 +166,11 @@ const handleSubmit = async(e) => {
       formdata.append('moreStaffFields',JSON.stringify(arrayMoreFieldsWithoutUndefinedAndVoid))
     }
     
-
     axiosInstance.post('admin/project/new',formdata)
     .then(res => {
-      if (res.status === 200) {
+      console.log(res.data);
+      console.log(res);
+      
         alert('Project created successfully')
         setProduction('')
         setMadeBy('')
@@ -191,11 +192,8 @@ const handleSubmit = async(e) => {
         setMoreStaffFieldsCounter(0)
         setInputsHidden([])
         navigate(-1)
-      }else{
-        setIsSubmit(false)
-        alert('An error occured')
       }
-  }).catch(err => {
+  ).catch(err => {
     alert('An error occured : '+ err)
     console.log(err);
     setIsSubmit(false)

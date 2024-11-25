@@ -68,7 +68,7 @@ const About = () => {
    
   return (
     <>
-        <SEO title={"À propos - Metamorphose"} url={"/a-propos"} robots={true} />
+        <SEO title={"Metamorphose Film - À propos "} url={"/a-propos"} robots={true} />
    
       <div className='about '>
         <section className='about-valeurs'>
@@ -81,7 +81,7 @@ const About = () => {
             {persons.map((person,index) =>
             <article key={person.instaName}>
             <div className={index === 1 ? "article-container-left" : "article-container"}>
-                <img  src={"/assets/static/images/" + person.src} loading='lazy' width={"100%"} height={"100%"} alt={"Metamorphose - équipe - " + person.name} title={"Metamorphose - équipe - " + person.name} />
+                <img  src={"/assets/static/images/" + person.src} loading='lazy' width={"100%"} height={"100%"} alt={"Metamorphose Film - équipe - " + person.name} title={"Metamorphose - équipe - " + person.name} />
                 <div className={index === 1 ? "flex-left" : "flex-right"}>
                     <div>
                         <h2 >{person.name}</h2>
@@ -110,7 +110,7 @@ const About = () => {
                   <ReactCardFlip isFlipped={handleSetFlippedState(index)} flipDirection="horizontal" flipSpeedBackToFront={1} flipSpeedFrontToBack={1}>
                       <div className='card1'> 
                           <h2 className='art-h1'>{person.name}</h2>
-                          <img src={"/assets/static/images/" + person.src} loading='eager' width={"100%"} height={"100%"} alt={"Metamorphose - équipe - " + person.name} title={"Metamorphose - équipe - " + person.name} />
+                          <img src={"/assets/static/images/" + person.src} loading='eager' width={"100%"} height={"100%"} alt={"Metamorphose Film - équipe - " + person.name} title={"Metamorphose Film - équipe - " + person.name} />
                           <span className='show-card'>{"En savoir plus >"}</span>
                       </div >
                       <div className='card2'>

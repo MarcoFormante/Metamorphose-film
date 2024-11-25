@@ -97,7 +97,7 @@ const GalleryImages = () => {
   return  images && 
   (
     <>
-      <SEO title={"Galerie " + (location.state || params.name) + " - Metamorphose"} url={"/galerie/" + (location.state || params.name)} robots={true} />
+      <SEO title={"Metamorphose Film - Galerie " + (location.state || params.name) } url={"/galerie/" + (location.state || params.name)} robots={true} />
       <div className="gallery__images">
         {isLoading && <Fallback />}
           <BackButton

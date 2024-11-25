@@ -42,7 +42,7 @@ const PrivacyTest = () => {
 <p><strong>Données d'Utilisation</strong> désigne les données collectées automatiquement, générées soit par l'utilisation du Service, soit par l'infrastructure du Service elle-même (par exemple, la durée d'une visite de page).</p>
 </li>
 <li>
-<p><strong>Site Web</strong> fait référence à Métamorphose, accessible à partir de <a href="https://meta.marcoformante.com" rel="external nofollow noopener" target="_blank">https://meta.marcoformante.com</a></p>
+<p><strong>Site Web</strong> fait référence à Métamorphose, accessible à partir de <a href="https://metamorphosefilm.com">https://metamorphosefilm.com</a></p>
 </li>
 <li>
 <p><strong>Vous</strong> désigne l'individu accédant ou utilisant le Service, ou l'entreprise, ou toute autre entité légale pour le compte de laquelle cet individu accède ou utilise le Service, selon le cas.</p>
@@ -68,8 +68,8 @@ const PrivacyTest = () => {
 <p>Les Cookies peuvent être « Persistants » ou « de Session ». Les Cookies Persistants restent sur Votre ordinateur personnel ou appareil mobile lorsque Vous êtes hors ligne, tandis que les Cookies de Session sont supprimés dès que Vous fermez Votre navigateur web.</p>
 <p>Nous utilisons les Cookies pour gérer le consentement de l'utilisateur aux cookies sur notre site :</p>
 <ul>
-<li><strong>cookieConsent :</strong> Ce cookie est installé lorsque Vous acceptez ou refusez les cookies via le bouton de consentement. Il est valide pour 300 jours et mémorise Votre choix (accepté ou refusé).</li>
-<li><strong>cookieConsentUsed :</strong> Ce cookie de session ou valide pour une durée de deux heures est installé dès que Vous interagissez avec les boutons (accepter ou refuser). Il permet de Vous demander ultérieurement si Vous souhaitez réactiver les cookies.</li>
+<li><strong>cookie : accepted</strong> Ce cookie est installé lorsque Vous acceptez ou refusez les cookies via le bouton de consentement. Il est valide pour 365 jours et mémorise Votre choix (accepté ou refusé).</li>
+
 </ul>
 <ul>
 <li> <strong>Third-party Cookie(youtube) : </strong>
@@ -96,6 +96,60 @@ const PrivacyTest = () => {
   <li><a href="https://privacy.instagram.com/" target="_blank">Politique de confidentialité d'Instagram</a></li>
   <li><a href="https://www.linkedin.com/legal/privacy-policy" target="_blank">Politique de confidentialité de LinkedIn</a></li>
 </ul>
+<section>
+<h2>Qu'est-ce que les Cookies ?</h2>
+<p>
+    Les cookies sont de petits fichiers de données que les sites web placent sur votre appareil lorsque vous les visitez. 
+    Ils sont largement utilisés pour rendre les sites plus efficaces, pour fournir des informations aux propriétaires du site 
+    et pour améliorer l'expérience utilisateur. Les cookies peuvent mémoriser vos préférences, faciliter la navigation et 
+    offrir un contenu personnalisé en fonction de vos comportements et intérêts.
+</p>
+</section>
+<section>
+
+<h2>Politique des Cookies de YouTube</h2>
+<p>
+    Lorsque vous visitez notre site et interagissez avec les vidéos YouTube, nous pouvons placer certains cookies sur votre appareil. 
+    Ces cookies sont essentiels pour offrir une expérience utilisateur optimale et garantir le bon fonctionnement des vidéos. 
+    Voici une description des principaux cookies utilisés :
+</p>
+
+<ul>
+    <li><strong>APISID, HSID, SAPISID, SID, SSID :</strong> Ces cookies sont utilisés pour gérer l'authentification des utilisateurs et garantir une session sécurisée lorsque vous interagissez avec les contenus de YouTube. Ils aident également à prévenir les abus et à maintenir la sécurité de votre expérience de navigation.</li>
+    <li><strong>LOGIN_INFO :</strong> Ce cookie conserve des informations relatives à votre connexion à YouTube, facilitant l'authentification pour les sessions futures.</li>
+    <li><strong>PREF :</strong> Ce cookie sert à mémoriser vos préférences d'affichage, telles que la langue et d'autres paramètres personnalisés, afin d'offrir une expérience sur mesure.</li>
+    <li><strong>VISITOR_INFO1_LIVE :</strong> Utilisé pour déterminer si votre navigateur est compatible avec les nouvelles fonctionnalités de YouTube et pour optimiser l'expérience de visualisation.</li>
+    <li><strong>YSC :</strong> Ce cookie suit les interactions des utilisateurs avec les vidéos de YouTube et nous aide à comprendre quels contenus sont les plus appréciés.</li>
+    <li><strong>__Secure-1PAPISID, __Secure-1PSID, __Secure-3PSID :</strong> Ces cookies de sécurité garantissent que vos informations sont protégées et que vous pouvez accéder aux contenus de manière sécurisée.</li>
+</ul>
+</section>
+
+<section>
+
+<h2>Consentement à l'Utilisation des Cookies</h2>
+<p>
+    Avant de continuer dans ce site web, nous vous demandons d'accepter l'utilisation de ces cookies. Vous pouvez choisir de ne pas les accepter, mais dans ce cas, vous ne pourrez pas visualiser les vidéos intégrées.
+</p>
+</section>
+
+<section>
+    <h2>Gestion des Cookies</h2>
+    <p>
+        Vous avez la possibilité de gérer vos préférences en matière de cookies via les paramètres de votre navigateur. 
+        La plupart des navigateurs web vous permettent de consulter les cookies stockés sur votre appareil, 
+        de supprimer des cookies spécifiques ou de supprimer tous les cookies. Voici des étapes générales pour le faire :
+    </p>
+    <ul>
+        <li>Dans votre navigateur web, accédez au menu des paramètres ou des préférences.</li>
+        <li>Cherchez une section relative à la confidentialité ou à la sécurité.</li>
+        <li>De là, vous devriez trouver des options pour visualiser et gérer les cookies.</li>
+        <li>Vous pouvez supprimer des cookies individuels ou effacer tous les cookies stockés dans votre navigateur.</li>
+    </ul>
+    <p>
+        Veuillez noter que si vous supprimez des cookies, cela peut affecter votre expérience sur notre site web, 
+        et vous devrez peut-être réintroduire vos préférences.
+    </p>
+</section>
     </div>
   )
 }

@@ -17,7 +17,7 @@ const navigate = useNavigate()
 
   return (
     <div id='service-video-trailer' >
-      <SEO title={`Services-${name}`} robots={true} url={`/services/${name}`}/>
+      <SEO title={`Metamorphose Film - Service ${name}`} robots={true} url={`/services/${name}`}/>
       <BackButton callback={()=>navigate("/services")} label={"Retour"} props={{width: "30", height: "30"}}/>
         <h1 style={{fontSize: "clamp(3rem, 10vw, 8rem)",color:"white"}}>Service<span className={name === "production video" ? "prod-video" : ""}>{name}</span></h1>
         <div id='service-video-container' >

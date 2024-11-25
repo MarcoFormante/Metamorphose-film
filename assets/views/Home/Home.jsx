@@ -44,12 +44,12 @@ const Home = () => {
     return  (
     <>
           <SEO
-            title={"Accueil-Metamorphose"}
+            title={"Metamorphose Film - Accueil"}
             url={"/"}
             robots={true}
           />
         <div id='home'>
-          <h1 style={{ display: 'none' }}>Accueil - Metamorphose</h1>
+          <h1 style={{position:'fixed',left:-5000,opacity:0}}>Metamorphose Film - Accueil</h1>
             <Swiper style={{color:"white"}}
                 modules={[Navigation, Pagination, Scrollbar, A11y,Keyboard,Mousewheel]}
                 passiveListeners={true}

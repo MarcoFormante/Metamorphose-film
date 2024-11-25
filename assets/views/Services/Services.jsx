@@ -30,7 +30,7 @@ import SEO from '../../components/Seo/SEO';
   
   return (
     <>
-      <SEO title={"Services - Metamorphose"} url={"/services"} robots={true} />
+      <SEO title={"Metamorphose Film - Services"} url={"/services"} robots={true} />
    
       <div className='services__body ' id='services-page'>
         <h1 className='title relative'>Services</h1>

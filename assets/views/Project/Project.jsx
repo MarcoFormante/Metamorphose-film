@@ -20,12 +20,14 @@ const Project = ({cookie}) => {
     const [projectData,setProjectData] = useState(null)
     const param = useParams()
     const allProjects = location.state?.allProjects
+    const navigate = useNavigate()
 
     useEffect(()=>{
       if (param.name && !location.state?.project) {
-            getProjectByName(param.name).then(project=>{
+            getProjectByName(param.name)
+            .then(project=>{
             setProject(project[0])
-          })
+          }).catch(()=> navigate("/"))
       }
   },[])
   
@@ -102,7 +104,7 @@ useEffect(() => {
   return (
     project && (
       <>
-       <SEO title={project?.name + " - Metamorphose"} url={"/projet/" + project?.slug} robots={true} />
+       <SEO title={"Metamorphose Film - Projet " + project?.name } url={"/projet/" + project?.slug} robots={true} />
         <article className={`production ${fade ? "production-fadein" : ""}`}>
           <div className={`last-next-btns-container ${isMobile ? "" : "desktop"}`}>
             {lastProject && (

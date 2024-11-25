@@ -7,7 +7,6 @@ import useEventListener from './hooks/useEventListener';
 import Spinner from './components/UI/Spinner/Spinner';
 import { useContext } from 'react';
 import { CookieContext } from './contexts/CookieProvider';
-import PrivacyPolicy from './views/PrivacyPolicy/PrivacyPolicy';
 
 const Header = lazy(() => import('./components/layout/Header/Header'));
 const PublicRoutes = lazy(() => import('./Routes/PublicRoutes'));
@@ -33,7 +32,6 @@ function App() {
   const [isShowingPages, setIsShowingPages] = useState(false);
   const [isAuth, setIsAuth] = useState(sessionStorage.getItem("token-ad"));
   const [headerColor, setHeaderColor] = useState("");
-  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const { pathname } = useLocation();
   const helmetContext = {}
   const token = sessionStorage.getItem("token-ad")
@@ -87,9 +85,7 @@ function App() {
 
   return (
     <HelmetProvider context={helmetContext}>
-    { showPrivacyPolicy &&  <PrivacyPolicy setShowPrivacyPolicy={()=>setShowPrivacyPolicy(false)}/>}
-     
-       {!cookie && <CookieBanner openPrivacyPolicy={ () => setShowPrivacyPolicy(true)}/>}
+       {!cookie && <CookieBanner/>}
       <div className={`app ${headerColor}`} >
         <Header isShowingPages={isShowingPages} setIsShowingPages={setIsShowingPages} headerColor={headerColor} />
         <main className="main">

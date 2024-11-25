@@ -347,6 +347,10 @@ button.backButton span {
   font-weight: 800;
   font-family: Poppins, sans-serif;
 }
+.cookie-banner a {
+  color: #ffffff;
+  text-decoration: underline;
+}
 
 @keyframes fadeUp {
   0% {

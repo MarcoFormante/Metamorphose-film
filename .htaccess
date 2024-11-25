@@ -1,0 +1,158 @@
+<RequireAll>
+ 
+</RequireAll>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect from www to non-www
+    RewriteCond %{HTTP_HOST} ^www\.metamorphosefilm\.com [NC]
+    RewriteRule ^(.*)$ https://metamorphosefilm.com/$1 [L,R=301]
+    
+    # Force HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # URL rewriting
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Deny access to sensitive files
+<FilesMatch "(^\.|composer\.(json|lock|phar)|\.env|\.htaccess|\.htpasswd|\.git|\.svn)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Set headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header set Referrer-Policy "no-referrer-when-downgrade"
+     Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.youtube-nocookie.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; media-src 'self' blob:;"
+   
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Deny access to the entire vendor directory
+<Directory "/path/to/your/vendor">
+    Order allow,deny
+    Deny from all
+</Directory>
+
+# Turn off server signature
+ServerSignature Off
+
+<IfModule mod_mime.c>
+  # Data interchange
+    AddType application/atom+xml      atom
+    AddType application/json          json map topojson
+    AddType application/ld+json       jsonld
+    AddType application/rss+xml       rss
+    AddType application/geo+json      geojson
+    AddType application/rdf+xml       rdf
+    AddType application/xml           xml
+  # JavaScript
+    AddType text/javascript           js mjs
+  # Manifest files
+    AddType application/manifest+json     webmanifest
+    AddType application/x-web-app-manifest+json         webapp
+    AddType text/cache-manifest           appcache
+  # Media files
+    AddType audio/mp4                     f4a f4b m4a
+    AddType audio/ogg                     oga ogg opus
+    AddType image/bmp                     bmp
+    AddType image/svg+xml                 svg svgz
+    AddType image/webp                    webp
+    AddType video/mp4                     f4v f4p m4v mp4
+    AddType video/ogg                     ogv
+    AddType video/webm                    webm
+    AddType image/x-icon    cur ico
+  # HEIF Images
+    AddType image/heic                    heic
+    AddType image/heif                    heif
+  # HEIF Image Sequence
+    AddType image/heics                   heics
+    AddType image/heifs                   heifs
+  # AVIF Images
+    AddType image/avif                    avif
+  # AVIF Image Sequence
+    AddType image/avis                    avis
+  # WebAssembly
+    AddType application/wasm              wasm
+  # Web fonts
+    AddType font/woff                         woff
+    AddType font/woff2                        woff2
+    AddType application/vnd.ms-fontobject                eot
+    AddType font/ttf                          ttf
+    AddType font/collection                   ttc
+    AddType font/otf                          otf
+  # Other
+    AddType application/octet-stream          safariextz
+    AddType application/x-bb-appworld         bbaw
+    AddType application/x-chrome-extension    crx
+    AddType application/x-opera-extension     oex
+    AddType application/x-xpinstall           xpi
+    AddType text/calendar                     ics
+    AddType text/markdown                     markdown md
+    AddType text/vcard                        vcard vcf
+    AddType text/vnd.rim.location.xloc        xloc
+    AddType text/vtt                          vtt
+    AddType text/x-component                  htc
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Images
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # Video
+  ExpiresByType video/webm "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 year"
+  ExpiresByType video/mpeg "access plus 1 year"
+
+  # Fonts
+
+
+  # CSS, JavaScript
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+
+  # Others
+  ExpiresByType application/pdf "access plus 1 year"
+  ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  # Compress text, HTML, JavaScript, CSS, XML:
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/ld+json
+</IfModule>
+
+
+# # DO NOT REMOVE THIS LINE AND THE LINES BELOW HOTLINKID:uXrEzk8GCQ
+# RewriteEngine on
+# RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?metamorphosefilm.com/.*$      [NC]
+# RewriteRule .*\.(.*|jpg|jpeg|gif|png|bmp|tiff|avi|mpeg|mpg|wma|mov|zip|rar|exe|mp3|pdf|swf|psd|txt|html|htm|php)$ https://metamorphosefilm.com [R,NC]
+# # DO NOT REMOVE THIS LINE AND THE LINES ABOVE uXrEzk8GCQ:HOTLINKID
+
