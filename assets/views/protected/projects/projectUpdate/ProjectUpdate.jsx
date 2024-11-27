@@ -184,6 +184,7 @@ const ProjectUpdate = () => {
     if(slug.includes(" ")){
       throw new Error("ERROR: Le Slug doit etre : ex. heliopolis (tout minuscule) ou Ciel-Heither (avec le trait - pour l\'espace)")
     }
+    
     setLoading(true)
     axiosInstance.post('admin/project/update',formData)
     .then(res => {
