@@ -12,7 +12,7 @@ const ServicesCards = () => {
         </div>
         <div className='flex-c-container flex-container2'>
             <Card hasVideo={false} title={"Photographie"} videoName={"photographie"} />
-            <Card hasVideo={true} title={"Drone"} videoName={"drone"} />
+            <Card hasVideo={false} title={"Drone"} videoName={"drone"} />
         </div>
   </section>
   )

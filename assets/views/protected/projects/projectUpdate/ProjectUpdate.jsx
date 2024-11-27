@@ -69,8 +69,8 @@ const ProjectUpdate = () => {
     })
   },[])
 
-
-
+ 
+  
   useEffect(()=>{
     try {
       if (moreStaffFields && moreStaffFields.length > 0) {
@@ -87,12 +87,12 @@ const ProjectUpdate = () => {
 
 
   const handleSubmit = async(e) => {
+    try {
     e.preventDefault()
-    setIsSubmit(true)
     if (images.length !== 6) {
       return alert("You have to upload 6 images")
     }
-
+    setIsSubmit(true)
     let compressedImages = []
     const formData = new FormData()
     if (updatedValues.imgs.length > 0) {
@@ -172,28 +172,38 @@ const ProjectUpdate = () => {
     if (updatedValues.phPlateau) {
       formData.append('phPlateau',phPlateau.trim())
     }
+    
     if (updatedValues.decorateurs) {
       formData.append('decorateurs',decorateurs.trim())
     }
-    if (updatedValues.slug) {
-      formData.append('slug',slug.trim())
+    
+    if (updatedValues.slug ) {
+        formData.append('slug',slug.toLowerCase().trim())
     }
-
-
+    
+    if(slug.includes(" ")){
+      throw new Error("ERROR: Le Slug doit etre : ex. heliopolis (tout minuscule) ou Ciel-Heither (avec le trait - pour l\'espace)")
+    }
     setLoading(true)
     axiosInstance.post('admin/project/update',formData)
     .then(res => {
-      if (res.status !== 200) {
-        setIsSubmit(false)
-        return alert('An error occurred while updating project, please try again')
-      }else{
+      if (res.status === 200) {
         alert('Project updated successfully')
         window.history.back()
+       
+      }else{
+        setIsSubmit(false)
+        return alert('An error occurred while updating project, please try again')
       }
     }).catch(err => { 
-      alert('An error occurred while updating project, please try again')
+      alert('An error occurred while updating project, please try again ' + err)
       setIsSubmit(false)
     }).finally(()=> {setLoading(false),setIsSubmit(false)})
+
+    } catch (error) {
+        alert("An error occurred while updating project" + error)
+        setIsSubmit(false)
+    }
   }
 
   const handleVideo = (file) => {
@@ -210,7 +220,7 @@ const ProjectUpdate = () => {
         500,
         1080,
         "WEBP",
-        90,
+        100,
         0,
         (uri) => {
           resolve(uri);
@@ -369,8 +379,8 @@ useEffect(()=>{
             </div>
 
             <div className='inpt-container'>
-            <label htmlFor='p-staff-madeby'>{"URL-(SLUG)"}</label>
-            <input type='text' id='p-slug' name='p-slug' required={!slug}  value={slug} onChange={(e)=>{
+            <label htmlFor='p-slug'>{"URL-(SLUG)"}</label>
+            <input type='text' id='p-slug' name='p-slug' placeholder={'ex. heliopolis (tout minuscule) ou Ciel-Heither (avec le trait - pour l\'espace)'} required={!slug}  value={slug} onChange={(e)=>{
               setSlug(e.target.value)
               setUpdatedValues({...updatedValues,slug:e.target.value !== slug})
             }} />
@@ -427,8 +437,8 @@ useEffect(()=>{
               <div key={img.id}>
                 <input type='file' className='pointer' required={!img.src} id={'p-images'+ index} name={'p-images' + index} accept='.jpg,.jpeg,.png,.webp'  onChange={(e)=> e.target.files[0]  ? handleImages(e.target.files[0],index,img.id) : null}/>
                 { updatedValues.imgs.includes(img.id) ?  
-                <img key={index} src={ URL.createObjectURL(img.src) } alt=''/>
-                  : <img key={index} src={"/assets/uploads/images/projects/" + img.src} alt=''/>
+                <img width={500} height={375} key={index} src={ URL.createObjectURL(img.src) } alt=''/>
+                  : <img width={500} height={375} key={index} src={"/assets/uploads/images/projects/" + img.src} alt=''/>
                 }
               </div>
               )}

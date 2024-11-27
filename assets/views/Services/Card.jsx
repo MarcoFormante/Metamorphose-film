@@ -6,14 +6,14 @@ const Card = ({videoName,title,hasVideo}) => {
   return (
     <article className='services-card-container '  >
         <div className='video-background'>
-            <video autoPlay loop muted>
+           { hasVideo &&  <video autoPlay loop muted>
                 <source src={"/assets/static/videos/" + videoName + ".mp4"} type="video/mp4" />
                 Your browser does not support the video tag.
-            </video>
+            </video>}
         </div>
             <div>
-                <div className='card'> 
-                    <h2 className='art-h1' onClick={()=> hasVideo ? navigate("/services/" + videoName) : null}>{title}</h2>
+                <div className='card' onClick={()=> hasVideo ? navigate("/services/" + videoName) : null}> 
+                    <h2 className='art-h1'>{title}</h2>
                 </div>
           </div>
         </article>

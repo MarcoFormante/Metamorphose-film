@@ -30,7 +30,7 @@ const NewProjectBasePage = ({
 
           <div className='inpt-container'>
             <label htmlFor='p-slug'>{"URL-(SLUG)"}</label>
-            <input type='text' required id='p-slug' name='p-slug' placeholder={'ex. heliopolis (tout minuscule)'} value={slug} onInput={(e)=>setSlug(e.target.value)} />
+            <input type='text' required id='p-slug' name='p-slug' placeholder={'ex. heliopolis (tout minuscule) ou Ciel-Heither (avec le trait - pour l\'espace)'} value={slug} onInput={(e)=>setSlug(e.target.value)} />
           </div>
 
           <div className='inpt-container'>
@@ -53,7 +53,7 @@ const NewProjectBasePage = ({
             <input type='file' required id='p-bg-v' name='p-bg-v' accept='.mp4' onChange={(e)=>setBgVideo(e.target.files[0])}/>
           </div>
 
-        { bgVideo && <video controls src={URL.createObjectURL(bgVideo)}></video>}
+        { bgVideo && <video width={300} height={200} controls src={URL.createObjectURL(bgVideo)}></video>}
         </div>
         
     )}

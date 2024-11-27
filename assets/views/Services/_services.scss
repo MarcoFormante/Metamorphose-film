@@ -181,7 +181,11 @@
             max-width: 850px;
             position: relative;
             height: 100%;
-            cursor: pointer;
+
+            &.hasVideo{
+              cursor: pointer;
+                max-width: 100%;
+            }
 
             &:hover{
                 .video-background{

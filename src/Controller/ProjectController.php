@@ -294,7 +294,7 @@ class ProjectController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/admin/project/update', name: 'app_project_update', methods: ['POST'])]
-    public function updateProject(EntityManagerInterface $em, Request $request,SitemapController $sitemapController):JsonResponse{
+    public function updateProject(EntityManagerInterface $em, Request $request,SitemapController $sitemapController){
         try {
             $id = $this->sanitizer->sanitize($request->request->get('id'),"int");
             if (!$id){ 
@@ -381,7 +381,7 @@ class ProjectController extends AbstractController
                 if ($video->getMimeType() !== 'video/mp4') {
                     return $this->json(['error' => 'Invalid video type'], 400);
                 }
-                $RandomVideoName = uniqid("video-", true) . $this->sanitizer->sanitize($video->getClientOriginalName(),'string');
+                $RandomVideoName = uniqid("video-", true) . "." .$video->guessExtension();
                 $project->setBackgroundVideo($RandomVideoName);
                
                 if($oldVideo){  
@@ -406,7 +406,7 @@ class ProjectController extends AbstractController
                     if($oldImage){
                         if(unlink("assets/uploads/images/projects/".$oldImage->getSrc())){
                             $randomImageName = uniqid("p-img",true);
-                            $newImageNames[] = $randomImageName . $this->sanitizer->sanitize($image->getClientOriginalName(),"string");
+                            $newImageNames[] = $randomImageName .  "." . $image->guessExtension();
                             $oldImage->setSrc($newImageNames[$index]);
                         }else{
                             return $this->json(['error' => 'Error updating image'], 500);
@@ -427,12 +427,14 @@ class ProjectController extends AbstractController
             }
 
             $project->setUpdatedAt(new \DateTimeImmutable());
-            $sitemapController->updatePage($em,"/",null,null);
-            $sitemapController->generateSitemap($em);
-            $em->persist($project);
-            $em->flush();
-            $this->cache->delete('project_data_'.$id);
-            $this->cache->delete('home_projects');
+            if ( $sitemapController->updatePage($em,"/",null,null) &&  $sitemapController->generateSitemap($em)) {
+                $em->persist($project);
+                $em->flush();
+                $this->cache->delete('project_data_'.$id);
+                $this->cache->delete('home_projects');
+            }else{
+                throw new Exception("Error updating sitemap");
+            }
             return $this->json(['message' => 'success'], 200);
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while updating project: {$th->getMessage()}", [
@@ -440,6 +442,7 @@ class ProjectController extends AbstractController
             ]);
             return $this->json(['error' => 'Error updating project: ' . $th->getMessage()], 500);
         }
+
     }
 
 
@@ -464,7 +467,6 @@ class ProjectController extends AbstractController
         $images = $request->files->get('images');
         $video = $request->files->get('video');
       
-
         $requiredFields = ['name', 'yt', 'collab', 'slug','abrName', 'images', 'video', 'production', 'madeBy', 'artists', 'montage', 'cadrage', 'droniste', 'phPlateau', 'decorateurs'];
         foreach ($requiredFields as $field) {
             if (!isset($data[$field])  && !isset(${$field})) {
@@ -506,13 +508,11 @@ class ProjectController extends AbstractController
             return $this->json(['error' => 'Invalid number of images'], 400);
         }
 
-      
             $qb = $em->createQueryBuilder();
             $qb->select('MAX(p.orderIndex)')
                 ->from(Project::class, 'p');
             $maxOrderIndex = $qb->getQuery()->getSingleScalarResult();
-            $orderIndex = $maxOrderIndex ? $maxOrderIndex + 1 : 0;
-
+            $orderIndex = $maxOrderIndex ? (int) $maxOrderIndex + 1 : 0;
             $project = new Project();
             $project->setName($this->sanitizer->sanitize($data['name'], 'string'));
             $project->setYoutubeVideo($this->sanitizer->sanitize($data['yt'],'url'));
@@ -520,7 +520,7 @@ class ProjectController extends AbstractController
             $project->setActive(false);
             $project->setAbrName($this->sanitizer->sanitize($data['abrName'],'string'));
             $project->setMadeBy($this->sanitizer->sanitize($data['madeBy'],'string'));
-            $project->setOrderIndex($this->sanitizer->sanitize($orderIndex,'int'));
+            $project->setOrderIndex($orderIndex);
             $project->setUpdatedAt( new \DateTimeImmutable());
             $project->setSlug($this->sanitizer->sanitize($data['slug'],'string'));
             $imageNames = [];
@@ -528,8 +528,8 @@ class ProjectController extends AbstractController
                 $newImage = new ProjectImages();
                 $newImage->setProjectId($project);
                 $randomImageName = uniqid("p-img",true);
-                $imageNames[] =  $randomImageName  . $this->sanitizer->sanitize($image->getClientOriginalName(),'string');
-                $newImage->setSrc($randomImageName  . $this->sanitizer->sanitize($image->getClientOriginalName(),'string'));
+                $imageNames[] =  $randomImageName  .  "." . $image->guessExtension();
+                $newImage->setSrc($randomImageName  .  "." . $image->guessExtension());
                 $em->persist($newImage);
             }
             
@@ -548,24 +548,22 @@ class ProjectController extends AbstractController
             }else{
                 $this->json(['error' => 'Error creating project : More Staff Fields'],400);
             }
-          
         
         $em->persist($staff);
 
         foreach ($imageNames as $index => $imageName) {
             $images[$index]->move("assets/uploads/images/projects/", $imageName);
         }
-        $randomVideoName = uniqid("video-",true) . $this->sanitizer->sanitize($video->getClientOriginalName(),'string');
+        $randomVideoName = uniqid("video-",true) . "." . $video->guessExtension();
         $project->setBackgroundVideo($randomVideoName);
         if ($video->move("assets/uploads/videos/",$randomVideoName)) {
-          
             $em->persist($project);
             $em->flush();
-         
+            return $this->json(['message' => 'Project created'],200);
         }else{
             return $this->json(['message' => 'Error during creating new project,video Error'],200);
         }
-
+       
     } catch (\Throwable $th) {
         $this->logger->error("An error occurred while creating project: {$th->getMessage()}", [
             'exception' => $th
@@ -573,7 +571,6 @@ class ProjectController extends AbstractController
         return $this->json(['error' => 'Error creating project' . $th], 500);
     }
        
-        return $this->json(['message' => 'Project created'],200);
     }
 
 
@@ -654,9 +651,13 @@ class ProjectController extends AbstractController
             $em->flush();
             $this->cache->delete('home_projects');
             $project->setUpdatedAt(new \DateTimeImmutable());
-            $sitemapController->updatePage($em,"/",null,null);
-            $sitemapController->generateSitemap($em);
-            $em->flush();
+
+            if ( $sitemapController->updatePage($em,"/",null,null) && $sitemapController->generateSitemap($em) ) {
+                $em->flush();
+            }else{
+                throw new Exception("Error updating sitemap while toggling project active state");
+            }
+          
             return $this->json(["isActive" => $newActiveState],200);
         } catch (\Throwable $th) {
             $this->logger->error("An error occurred while toggling project active state: {$th->getMessage()}", [

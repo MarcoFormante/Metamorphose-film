@@ -44,7 +44,7 @@ const NewProject = () => {
         500,
         1080,
         "WEBP",
-        90,
+        100,
         0,
         (uri) => {
           resolve(uri);

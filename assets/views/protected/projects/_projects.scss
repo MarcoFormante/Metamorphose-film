@@ -125,9 +125,23 @@
         font-weight: bold;
     }
 
+    .p-images-container{
+        margin: 50px auto;
+        
+        div{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+    }
+
     img{
         cursor:auto;
         width: 100%;
+        max-width: 500px;
+        height: 375px;
     }
 
     input:required{

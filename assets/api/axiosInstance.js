@@ -5,7 +5,7 @@ const errors = [401, 403, 404, 429, 500, 503];
 
 export const axiosInstance = axios.create({
     baseURL: '/api/',
-    timeout: 30000,
+    timeout: 100000,
   });
 
   axiosInstance.interceptors.response.use(response => {
