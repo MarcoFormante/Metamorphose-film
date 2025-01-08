@@ -44,7 +44,7 @@ const Home = () => {
     return  (
     <>
           <SEO
-            title={"Metamorphose Film - Accueil"}
+            title={"Metamorphose Film - Société de production audiovisuelle créative"}
             url={"/"}
             robots={true}
           />

@@ -176,7 +176,8 @@ class ProjectController extends AbstractController
                     'background_video' => $project->getBackgroundVideo(),
                     'collab_with' => $project->getCollabWith(),
                     'isActive' => $project->isActive(),
-                    "made_by" => $project->getMadeBy()
+                    "made_by" => $project->getMadeBy(),
+                    "slug"=> $project->getSlug()
                 ];
                 return $this->json(['project' => $data],200);
             }else{

@@ -7,7 +7,7 @@ import { z } from "zod";
 import { purifyImagesAdminPage } from "../../../security/Dompurify/purify";
 import ImageViewer from "../../../components/UI/imageViewer/ImageViewer";
 
-const galleries = ["Concert", "Tournage", "Studio", "Evenementiel"];
+const galleries = ["Concert", "Plateau", "Shooting", "Mode"];
 
 const Gallery = () => {
   const param = useParams();

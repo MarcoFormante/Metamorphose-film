@@ -21,8 +21,8 @@ const persons = [
     },
 
     {   
-        instaName:"@napy.video",
-        instaLink:"https://www.instagram.com/napy.video/",
+        instaName:"@nap1y",
+        instaLink:"https://www.instagram.com/nap1y/",
         name:'Romain PINNA',
         src:'romain.webp',
         desc_big:

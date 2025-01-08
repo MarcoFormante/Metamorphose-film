@@ -52,7 +52,7 @@ const GalleryImages = () => {
     // check if the gallery name is valid
     useEffect(()=>{
       images.length < 1 ? setIsLoading(true) : setIsFetchingNewImages(true)
-      const galleries=["concert","tournage","studio","evenementiel"]
+      const galleries=["concert","plateau","shooting","mode"]
       if(!galleries.includes(location?.state?.toLowerCase()) && !galleries.includes(params?.name?.toLowerCase())){
           navigate('/galerie')
       }

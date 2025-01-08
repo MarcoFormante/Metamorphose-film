@@ -2,27 +2,27 @@ export const galleries =
 [
     {
       name:'Concert',
-      src:'assets/static/images/gallery/concerts.webp',
+      src:'assets/static/images/gallery/concert.webp',
       link:'/galerie/concert',
       alt:'Galerie Concert Metamorphose Film'
     },
     {
-      name:'Studio',
-      src:'assets/static/images/gallery/studio.webp',
-      link:'/galerie/studio',
-      alt:'Galerie Studio Metamorphose  Film'
+      name:'Shooting',
+      src:'assets/static/images/gallery/shooting.webp',
+      link:'/galerie/shooting',
+      alt:'Galerie Shooting Metamorphose Film'
     },
     {
-      name:'Tournage',
-      src:'assets/static/images/gallery/clip.webp',
-      link:'/galerie/tournage',
-      alt:'Galerie Tournage Metamorphose  Film'  
+      name:'Plateau',
+      src:'assets/static/images/gallery/plateau.webp',
+      link:'/galerie/plateau',
+      alt:'Galerie Plateau Metamorphose Film'  
     },
     {
-      name:'Événementiel',
-      src:'assets/static/images/gallery/events.webp',
-      link:'/galerie/evenementiel',
-      alt:'Galerie Evenements Metamorphose  Film'
+      name:'Mode',
+      src:'assets/static/images/gallery/mode.webp',
+      link:'/galerie/mode',
+      alt:'Galerie Mode Metamorphose Film'
     },
   ]
   

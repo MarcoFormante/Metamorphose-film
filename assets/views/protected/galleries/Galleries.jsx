@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 
 const galleries=[
     "Concert",
-    "Studio",
-    "Tournage",
-    "Evenementiel"
+    "Shooting",
+    "Plateau",
+    "Mode"
   ]
   
 

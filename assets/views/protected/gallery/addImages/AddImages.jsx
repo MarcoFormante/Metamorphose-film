@@ -10,9 +10,9 @@ import { validatedNewImages } from '../../../../security/Zod/zod';
 
 const galleries=[
     "Concert",
-    "Tournage",
-    "Studio",
-    "Evenementiel"
+    "Plateau",
+    "Shooting",
+    "Mode"
 ]
 
 

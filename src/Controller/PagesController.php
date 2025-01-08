@@ -14,10 +14,10 @@ class PagesController extends AbstractController
         try{
             $this->handleNewPage($em, "/", 1.0, true);
             $this->handleNewPage($em, "/galerie",0.5, true);
-            $this->handleNewPage($em, "/galerie/studio",0.7, true);
+            $this->handleNewPage($em, "/galerie/shooting",0.7, true);
             $this->handleNewPage($em, "/galerie/concert",0.7, true);
-            $this->handleNewPage($em, "/galerie/tournage",0.7, true);
-            $this->handleNewPage($em, "/galerie/evenementiel",0.7, true);
+            $this->handleNewPage($em, "/galerie/plateau",0.7, true);
+            $this->handleNewPage($em, "/galerie/mode",0.7, true);
             $this->handleNewPage($em, "/services",0.6, true);
             $this->handleNewPage($em, "/services/drone",0.3, true);
             $this->handleNewPage($em, "/a-propos",0.3, true);

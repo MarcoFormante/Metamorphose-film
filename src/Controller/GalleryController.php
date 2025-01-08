@@ -145,7 +145,7 @@ class GalleryController extends AbstractController
             $this->cache->invalidateTags(['gallery_'.$galleryName]);
         } catch (\Throwable $th) {
             $this->logger->error($th->getMessage());
-            return $this->json(['error' => 'An error occurred deleting Image'], 500);
+            return $this->json(['error' => "An error occurred deleting Image"], 500);
         }
         return $this->json(['success'=>"Image has been deleted"], 200);
     }
@@ -167,9 +167,9 @@ class GalleryController extends AbstractController
         
             $galleries=[
                 "Concert",
-                "Tournage",
-                "Studio",
-                "Evenementiel"
+                "Plateau",
+                "Shooting",
+                "Mode"
             ];
             $galleryName = $this->s->sanitize($request->get('galleryName'),"string");
             if (!$galleryName) {
