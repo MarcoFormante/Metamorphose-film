@@ -2027,6 +2027,9 @@ body:has(.fallback) {
   background-color: #ffffff;
   color: #ffffff;
 }
+.tarifs-content .desc-card-left:hover h3 {
+  color: #FF1100;
+}
 @media screen and (min-width: 1211px) {
   .tarifs-content .desc-card-left {
     transform: scale(1.2);
@@ -2041,7 +2044,8 @@ body:has(.fallback) {
   border-radius: 35px;
   text-align: center;
   font-size: 1.3em;
-  color: #FF1100;
+  color: #000000;
+  transition: color 0.2s ease-in-out;
 }
 @media screen and (max-width: 1355px) {
   .tarifs-content .desc-card-left h3 {

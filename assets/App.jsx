@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import './styles/app.css';
 import { axiosInstance } from './api/axiosInstance';
@@ -13,14 +13,7 @@ const PublicRoutes = lazy(() => import('./Routes/PublicRoutes'));
 const PrivateRoutes = lazy(() => import('./Routes/PrivateRoutes'));
 const CookieBanner = lazy(()=> import('./components/common/CookieBanner/CookieBanner'));
 
-const colorMap = {
-  "/services": "back__orange",
-  "/corporate": "back__orange",
-  "/contact": "back__orange",
-  "/a_propos": "back__black",
-  "/galerie": "back__black",
-  "/error": "back__black",
-};
+
 
 /**
  * 
@@ -31,21 +24,12 @@ const colorMap = {
 function App() {
   const [isShowingPages, setIsShowingPages] = useState(false);
   const [isAuth, setIsAuth] = useState(sessionStorage.getItem("token-ad"));
-  const [headerColor, setHeaderColor] = useState("");
-  const { pathname } = useLocation();
+ 
   const helmetContext = {}
   const token = sessionStorage.getItem("token-ad")
   
   const {cookie} = useContext(CookieContext)
   
-
-  useEffect(() => {
-    if (["/error","/services/"].some((path) => pathname.includes(path))) {
-        setHeaderColor("back__orange");
-    }else{
-      setHeaderColor(colorMap[pathname] || "");
-    }
-  }, [pathname]);
 
 
   useEffect(()=>{
@@ -70,7 +54,6 @@ function App() {
     }
   }
 
-  // useEventListener("focus", window, handleFocus);
   useEventListener("storage", window, eventStorageHandler);
 
   useEffect(()=>{
@@ -82,12 +65,11 @@ function App() {
 
 
 
-
   return (
     <HelmetProvider context={helmetContext}>
        {!cookie && <CookieBanner/>}
-      <div className={`app ${headerColor}`} >
-        <Header isShowingPages={isShowingPages} setIsShowingPages={setIsShowingPages} headerColor={headerColor} />
+      <div className={`app `} >
+        <Header isShowingPages={isShowingPages} setIsShowingPages={setIsShowingPages}  />
         <main className="main">
           <Suspense fallback={<Spinner/>} >
           <Routes>

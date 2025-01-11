@@ -126,6 +126,11 @@
             gap: 10px;
             justify-content: center;
             background-color: $white;
+
+            &:hover h3{
+                color: $orange;
+            }
+
             @media screen and (min-width:1211px) {
                 transform: scale(1.2);
             }
@@ -144,7 +149,9 @@
                 border-radius: 35px ;
                 text-align: center;
                 font-size: 1.3em;
-                color: $orange;
+                color: $black;
+                transition: color 0.2s ease-in-out;
+
                 @media screen and (max-width: 1355px){
                     font-size: clamp(0.5em, 1.5vw, 1.5em);
                     width: 100%;
