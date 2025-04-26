@@ -38,28 +38,21 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                             <li>Installation du matériel</li>
                             <li>Filmer les scènes</li>
                             <li>Direction artistique</li>
-                           
                       </ul>
                   </div>
-                 
                 </article>
-
                 <article className='desc-card'>
                   <div className='desc-card-left desc-card-left__mobile'>
                     <div className='desc-card-left__title'>
                         <h3>2. Production </h3>
                     </div>
-                   
                   </div>
-                  
                 </article>
               </ReactCardFlip>
               <div className='desc-card-right'>
               </div>
               </div>
-
               <div className='desc-card3' onClick={handleClick} >
-
               <ReactCardFlip isFlipped={isFlipped_Card3} flipDirection="horizontal" flipSpeedBackToFront={1} flipSpeedFrontToBack={1}>
               <article className='desc-card'>
                   <div className='desc-card-left'>
@@ -96,7 +89,6 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                   <div className='desc-card-left'>
                     <h2>Publication / Promotion</h2>
                     <ul>
-                     
                           <li>Choisir les plateformes</li>
                           <li>Télécharger et optimiser</li>
                           <li>Marketing</li>
@@ -115,10 +107,9 @@ const TarifsMobileCards = ({handleClick,isFlipped_Card1,isFlipped_Card2,isFlippe
                   
                 </article>
               </ReactCardFlip>
-              <div className='desc-card-right op-0'>
+                <div className=' desc-card-right op-0 ' id='h-5'>
               </div>
               </div>
-              
             </div>
         </div>
     </div>

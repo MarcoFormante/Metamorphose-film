@@ -4,6 +4,18 @@
         color: white;
         padding: 8px 40px;
         z-index: 2;
+
+        @media screen and (max-width: 1024px) {
+            text-align: center;
+        }
+        
+        .mb{
+            margin-bottom: 50px;    
+            @media screen and (max-width: 1024px){
+                margin-bottom: 30px;
+            }
+        }
+
         section{
             position: relative;
             z-index: 2;
@@ -13,6 +25,19 @@
                 @media screen and (max-width: 400px){ 
                     font-size: 20px;
                 }
+
+                @media screen and (480px < width < 601px){ 
+                    margin: 30px 60px;
+                 }
+
+                @media screen and (600px < width < 726px){ 
+                   margin: 30px 120px;
+                }
+
+                @media screen and (max-width: 1024px){ 
+                    margin-top: 30px;
+                }
+
             }
         }
         @media screen and (max-width: 1300px) {
@@ -37,7 +62,7 @@
 
         .card {
             border-radius: 30px;
-            border: 8px solid white;
+            border: 3px solid white;
             height:clamp(300px, 20vw, 400px);
             width: 100%;
             transition: all 0.3s ease-in-out;
@@ -69,7 +94,7 @@
                 text-decoration: none;
                 position: absolute;
 
-                @media screen and (max-width: 1024px){
+                @media screen and (max-width: 1025px){
                     &::after{
                         position: relative;
                         top: 40px;

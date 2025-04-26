@@ -41,13 +41,13 @@ const About = () => {
       const handleMouseEnterIconAnimation = (icon) => {
         switch (icon) {
             case "insta":
-            setIconsFillColor(prev => ({...prev,insta:{class:"bg-white",fill:"#000"}}) )
+            setIconsFillColor(prev => ({...prev,insta:{class:"bg-white",fill:"#f13900"}}) )
             break;
             case "mail":
-            setIconsFillColor(prev => ({...prev,mail:{class:"bg-white",fill:"#000"}}) )
+            setIconsFillColor(prev => ({...prev,mail:{class:"bg-white",fill:"#f13900"}}) )
             break;
             case "linked":
-            setIconsFillColor(prev => ({...prev,linked:{class:"bg-white",fill:"#000"}}) )
+            setIconsFillColor(prev => ({...prev,linked:{class:"bg-white",fill:"#f13900"}}) )
             break;
         }
       }
@@ -65,6 +65,11 @@ const About = () => {
             break;
         }
       }
+
+
+      const handleInstagramPage = (link)=>{
+        window.open(link,"_blank");
+      }
    
   return (
     <>
@@ -79,13 +84,12 @@ const About = () => {
           <section> 
           <div className='hide-mobile'>
             {persons.map((person,index) =>
-            <article key={person.instaName}>
+            <article key={person.instaName} onClick={()=>handleInstagramPage(person.instaLink)} >
             <div className={index === 1 ? "article-container-left" : "article-container"}>
                 <img  src={"/assets/static/images/" + person.src} loading='lazy' width={"100%"} height={"100%"} alt={"Metamorphose Film - équipe - " + person.name} title={"Metamorphose - équipe - " + person.name} />
                 <div className={index === 1 ? "flex-left" : "flex-right"}>
                     <div>
                         <h2 >{person.name}</h2>
-                        <a className='article-insta'  href={person.instaLink}>{person.instaName}</a>
                     </div>
                   
                     <ul>
@@ -111,7 +115,7 @@ const About = () => {
                       <div className='card1'> 
                           <h2 className='art-h1'>{person.name}</h2>
                           <img src={"/assets/static/images/" + person.src} loading='eager' width={"100%"} height={"100%"} alt={"Metamorphose Film - équipe - " + person.name} title={"Metamorphose Film - équipe - " + person.name} />
-                          <span className='show-card'>{"En savoir plus >"}</span>
+                          {/* <span className='show-card'>{"En savoir plus >"}</span> */}
                       </div >
                       <div className='card2'>
                         <ul>

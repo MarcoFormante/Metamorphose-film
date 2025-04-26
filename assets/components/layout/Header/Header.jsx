@@ -2,7 +2,9 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import useEventListener from '../../../hooks/useEventListener'
-import logo_wh from "./logo_white.svg"
+import Logo from './Logo'
+
+
 
 function Header(){
   const [menuActive, setMenuActive] = useState(false)
@@ -22,14 +24,15 @@ function Header(){
   return (
     <header id={`header`}>
       <Link to={"/"} id="header__logo">
-        <img
+        {/* <svg
           src={logo_wh}
           width={250}
           alt="Metamorphose"
           height={42}
           title='Metamorphose'
           loading='eager'
-        />
+        /> */}
+        <Logo />
       </Link>
 
       <div 

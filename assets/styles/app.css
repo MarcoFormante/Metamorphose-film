@@ -6,11 +6,21 @@
   justify-content: space-between;
   align-items: center;
 }
-#header__logo {
+#header svg {
+  fill: #ffffff;
+  max-width: clamp(150px, 15vw, 200px);
   cursor: pointer;
 }
-#header__logo img {
-  max-width: clamp(150px, 15vw, 200px);
+#header svg.desktop {
+  transition: fill 0.3s;
+}
+@media screen and (min-width: 1025px) {
+  #header svg.desktop:hover {
+    fill: #F13900;
+  }
+}
+#header svg:active {
+  fill: #F13900;
 }
 
 .header__menu, .header__menu__active {
@@ -81,7 +91,7 @@
 }
 
 .header__orange {
-  background-color: #FF1100;
+  background-color: #F13900;
 }
 .header__orange .header__menu__item a.active::after {
   content: "";
@@ -315,7 +325,7 @@ button.backButton span {
   z-index: 0;
 }
 .cookie-banner__container {
-  background-color: #FF1100;
+  background-color: #F13900;
   padding: 30px;
   position: relative;
   animation: fadeUp 0.8s ease;
@@ -338,7 +348,7 @@ button.backButton span {
 }
 .cookie-banner__button {
   background-color: #ffffff;
-  color: #FF1100;
+  color: #F13900;
   padding: 7px 10px;
   border: none;
   border-radius: 5px;
@@ -523,6 +533,10 @@ body:has(.fallback) {
   cursor: grabbing;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .carousel__player__container {
   height: 100vh;
   position: relative;
@@ -564,12 +578,12 @@ body:has(.fallback) {
   display: inline;
 }
 .carousel__player__button h2:hover {
-  -webkit-text-stroke: 2px #FF1100;
-  color: #FF1100;
+  -webkit-text-stroke: 2px #F13900;
+  color: #F13900;
   transition: color 0.3s;
 }
 .carousel__player__button h2:active {
-  -webkit-text-fill-color: #FF1100;
+  -webkit-text-fill-color: #F13900;
   transition: color 0.3s;
 }
 .carousel__player__button p {
@@ -598,6 +612,19 @@ body:has(.fallback) {
   padding: 8px 40px;
   z-index: 2;
 }
+@media screen and (max-width: 1024px) {
+  .services__body, .corporate {
+    text-align: center;
+  }
+}
+.services__body .mb, .corporate .mb {
+  margin-bottom: 50px;
+}
+@media screen and (max-width: 1024px) {
+  .services__body .mb, .corporate .mb {
+    margin-bottom: 30px;
+  }
+}
 .services__body section, .corporate section {
   position: relative;
   z-index: 2;
@@ -608,6 +635,21 @@ body:has(.fallback) {
 @media screen and (max-width: 400px) {
   .services__body section .section-title, .corporate section .section-title {
     font-size: 20px;
+  }
+}
+@media screen and (480px < width < 601px) {
+  .services__body section .section-title, .corporate section .section-title {
+    margin: 30px 60px;
+  }
+}
+@media screen and (600px < width < 726px) {
+  .services__body section .section-title, .corporate section .section-title {
+    margin: 30px 120px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .services__body section .section-title, .corporate section .section-title {
+    margin-top: 30px;
   }
 }
 @media screen and (max-width: 1300px) {
@@ -629,7 +671,7 @@ body:has(.fallback) {
 }
 .services__body .card, .corporate .card {
   border-radius: 30px;
-  border: 8px solid white;
+  border: 3px solid white;
   height: clamp(300px, 20vw, 400px);
   width: 100%;
   transition: all 0.3s ease-in-out;
@@ -637,7 +679,7 @@ body:has(.fallback) {
 }
 .services__body .card.btn:hover, .corporate .card.btn:hover {
   background-color: #ffffff;
-  color: #FF1100;
+  color: #F13900;
 }
 .services__body .art-h1, .corporate .art-h1 {
   font-size: clamp(16px, 3.5vw, 4rem);
@@ -655,7 +697,7 @@ body:has(.fallback) {
   text-decoration: none;
   position: absolute;
 }
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1025px) {
   .services__body .art-h1 a::after, .corporate .art-h1 a::after {
     position: relative;
     top: 40px;
@@ -667,7 +709,7 @@ body:has(.fallback) {
   }
 }
 .services__body .art-h1:hover a, .corporate .art-h1:hover a {
-  color: #FF1100;
+  color: #F13900;
 }
 .services__body .art-pr, .corporate .art-pr {
   font-size: 1.4rem;
@@ -886,9 +928,24 @@ body:has(.fallback) {
   position: relative;
   margin-bottom: 20px;
 }
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 1024px) {
+  .about .page-title.mt {
+    margin-top: 30px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .about .page-title.mb {
+    margin-bottom: 20px;
+  }
+}
+@media screen and (max-width: 1024px) {
   .about {
-    padding: 8px 30px;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 768px) {
+  .about {
+    padding: 8px 20px;
   }
 }
 .about .title {
@@ -916,7 +973,7 @@ body:has(.fallback) {
 }
 .about .cards-container-flex-col .card1 {
   border-radius: 30px;
-  border: 4px solid white;
+  border: 3px solid white;
   height: clamp(196px, 30vw, 220px);
   cursor: pointer;
   color: #000000;
@@ -1041,13 +1098,14 @@ body:has(.fallback) {
 }
 .about article .article-container, .about article .article-container-left {
   transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
   border: 3px solid white;
 }
 .about article .article-container:hover, .about article .article-container-left:hover {
   background-color: #ffffff;
 }
 .about article .article-container:hover h2, .about article .article-container:hover ul, .about article .article-container-left:hover h2, .about article .article-container-left:hover ul {
-  color: #000000;
+  color: #F13900;
 }
 .about article img {
   width: clamp(230px, 20vw, 330px);
@@ -1093,7 +1151,7 @@ body:has(.fallback) {
   text-decoration: none;
   color: black;
   font-size: clamp(1em, 2.5vw, 1.2em);
-  color: #FF1100;
+  color: #F13900;
 }
 .about .person-desc {
   width: 90%;
@@ -1199,7 +1257,7 @@ body:has(.fallback) {
   }
 }
 .about-valeurs .flex-resp-start-row .quality__box--orange {
-  background-color: #FF1100;
+  background-color: #F13900;
   transition: color 0.3s, background-color 0.3s;
 }
 .about-valeurs .flex-resp-start-row .quality__box--orange h2, .about-valeurs .flex-resp-start-row .quality__box--orange p {
@@ -1210,7 +1268,7 @@ body:has(.fallback) {
   background-color: #ffffff;
 }
 .about-valeurs .flex-resp-start-row .quality__box--orange:hover h2, .about-valeurs .flex-resp-start-row .quality__box--orange:hover p {
-  color: #FF1100;
+  color: #F13900;
 }
 @media screen and (max-width: 1277px) {
   .about-valeurs h2 {
@@ -1267,10 +1325,13 @@ body:has(.fallback) {
   transition: all 0.2s ease-in-out;
 }
 .gallery__item:hover a {
-  color: #FF1100;
+  color: #F13900;
 }
 .gallery__item:hover {
   transform: scale(1.05);
+}
+.gallery__item img {
+  border-radius: 30px;
 }
 .gallery a {
   color: #ffffff;
@@ -1437,6 +1498,7 @@ body:has(.fallback) {
   -o-object-fit: cover;
      object-fit: cover;
   animation: fadein 1s linear;
+  border-radius: 4px;
 }
 
 @keyframes spin {
@@ -1702,11 +1764,11 @@ body:has(.fallback) {
   transform: rotate(180deg) scale(0.8);
 }
 .production__show-assets__on {
-  border: 2px solid #FF1100;
+  border: 2px solid #F13900;
 }
 .production__show-assets__on span {
   margin-top: 15px;
-  background-color: #FF1100;
+  background-color: #F13900;
 }
 .production__project-assets__hidden {
   display: none;
@@ -1809,7 +1871,7 @@ body:has(.fallback) {
   z-index: 20;
 }
 .projet-video .yt-svg svg {
-  fill: #FF1100;
+  fill: #F13900;
   transition: fill 0.3s ease-in-out;
   position: relative;
   width: 120px;
@@ -1861,7 +1923,7 @@ body:has(.fallback) {
   color: #000000;
 }
 #login-form #submit-btn:hover {
-  background-color: #FF1100;
+  background-color: #F13900;
   color: #ffffff;
 }
 
@@ -1921,8 +1983,18 @@ body:has(.fallback) {
   position: relative;
   z-index: 1;
 }
+@media screen and (max-width: 1024px) {
+  .tarifs {
+    margin-bottom: 0px;
+  }
+}
 .tarifs .mt {
   margin-top: 60px;
+}
+@media screen and (max-width: 1024px) {
+  .tarifs .mt {
+    margin-top: 10px;
+  }
 }
 @media screen and (max-width: 577px) {
   .tarifs .title span {
@@ -1995,13 +2067,18 @@ body:has(.fallback) {
   left: 50%;
   transform: translate(-50%, 0);
 }
+@media screen and (max-width: 1024px) {
+  .tarifs-content .desc-card-right:is(#h-5) {
+    height: 5px;
+  }
+}
 .tarifs-content .desc-card-right.d-none {
   display: none;
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1025px) {
   .tarifs-content .desc-card-right {
     transform: rotate(-90deg);
-    top: -90px;
+    top: -100px;
     left: 105%;
     transform: translate(-50%, 0);
     transform: rotate(-90deg);
@@ -2014,8 +2091,8 @@ body:has(.fallback) {
   }
 }
 .tarifs-content .desc-card-left {
-  border: 4px solid #ffffff;
-  border-radius: 35px;
+  border: 3px solid #ffffff;
+  border-radius: 30px;
   width: 200px;
   height: 100%;
   overflow: hidden;
@@ -2028,7 +2105,7 @@ body:has(.fallback) {
   color: #ffffff;
 }
 .tarifs-content .desc-card-left:hover h3 {
-  color: #FF1100;
+  color: #F13900;
 }
 @media screen and (min-width: 1211px) {
   .tarifs-content .desc-card-left {
@@ -2041,7 +2118,7 @@ body:has(.fallback) {
   }
 }
 .tarifs-content .desc-card-left h3 {
-  border-radius: 35px;
+  border-radius: 30px;
   text-align: center;
   font-size: 1.3em;
   color: #000000;
@@ -2189,7 +2266,7 @@ body:has(.fallback) {
   transition: all 0.3s ease-in-out;
 }
 .admin-home .admin-pages a:hover {
-  background-color: #FF1100;
+  background-color: #F13900;
   color: #ffffff;
 }
 
@@ -2302,7 +2379,7 @@ body:has(.fallback) {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: #FF1100;
+  background-color: #F13900;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -2362,11 +2439,11 @@ body:has(.fallback) {
   cursor: pointer;
   padding: 8px 15px;
   font-weight: bold;
-  border: 1px solid #FF1100;
+  border: 1px solid #F13900;
   color: #ffffff;
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
-  background-color: #FF1100;
+  background-color: #F13900;
   color: #ffffff;
 }
 .admin-gallery-addImages form input:last-child:hover {
@@ -2390,12 +2467,12 @@ body:has(.fallback) {
   color: #ffffff;
   font-weight: bold;
   cursor: pointer;
-  border: 1px solid #FF1100;
+  border: 1px solid #F13900;
   padding: 2px 10px;
   border-radius: 50%;
   position: absolute;
   right: 0;
-  background-color: #FF1100;
+  background-color: #F13900;
 }
 .admin-gallery-addImages img.new-image {
   width: 100%;
@@ -2621,7 +2698,7 @@ body:has(.fallback) {
 }
 #p-update .flex-container .active-btn-off {
   color: #ffffff;
-  background-color: #FF1100;
+  background-color: #F13900;
 }
 #p-update .flex-container .active-btn-on {
   color: #000000;
@@ -2634,7 +2711,7 @@ body:has(.fallback) {
   border: none;
   padding: 10px 20px;
   color: #ffffff;
-  background-color: #FF1100;
+  background-color: #F13900;
   font-weight: bold;
   cursor: pointer;
 }
@@ -2658,7 +2735,7 @@ body:has(.fallback) {
   border: none;
   padding: 10px 20px;
   color: #ffffff;
-  background-color: #FF1100;
+  background-color: #F13900;
   font-weight: bold;
 }
 #p-update .p-images-container {
@@ -2700,7 +2777,7 @@ body:has(.fallback) {
   }
 }
 .policy-body a {
-  color: #FF1100;
+  color: #F13900;
 }
 
 #privacy-policy {
@@ -2749,7 +2826,7 @@ body:has(.fallback) {
   background-color: gray;
 }
 #privacy-policy button.lang-on {
-  background-color: #FF1100;
+  background-color: #F13900;
   color: #ffffff;
   text-decoration: underline;
 }
@@ -2790,7 +2867,7 @@ body:has(.fallback) {
 }
 
 .app.back__orange {
-  background-color: #FF1100;
+  background-color: #F13900;
 }
 
 .app.back__black {
@@ -2814,7 +2891,7 @@ body:has(.fallback) {
 }
 
 .bg-orange {
-  background-color: #FF1100;
+  background-color: #F13900;
 }
 
 .text-center {
@@ -2861,7 +2938,7 @@ html {
 }
 
 .logout-btn {
-  color: #FF1100;
+  color: #F13900;
   cursor: pointer;
   text-decoration: underline;
   margin-left: 20px;

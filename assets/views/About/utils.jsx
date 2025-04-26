@@ -2,7 +2,7 @@ import React from 'react'
 
 const persons = [
     {
-        instaName:"@thibaud.richard",
+        instaName:"thibaud.richard",
         instaLink:"https://www.instagram.com/thibaud.richard/",
         name:'Thibaud RICHARD',
         src:'thibaud.webp',
@@ -21,9 +21,9 @@ const persons = [
     },
 
     {   
-        instaName:"@nap1y",
-        instaLink:"https://www.instagram.com/nap1y/",
-        name:'Romain PINNA',
+        instaName:"napy.video",
+        instaLink:"https://www.instagram.com/napy.video/",
+        name:'NAPY',
         src:'romain.webp',
         desc_big:
         <>
@@ -38,7 +38,7 @@ const persons = [
    
 
     {
-        instaName:"@vincii_pauly",
+        instaName:"vincii_pauly",
         instaLink:"https://www.instagram.com/vincii_pauly/",
         name:'Vincent PAULY',
         src:'vincent.webp',
@@ -48,14 +48,12 @@ const persons = [
         permet de développer notre savoir faire et nos connaissances. 
         Elle reflète notre envie commune d’aller le plus loin possible dans cette aventure.
         </>,
-        skills: ["RÉALISATION","CADRAGE","MONTAGE", "SCENARISATION"]
+        skills: ["RÉALISATION","CADRAGE","MONTAGE", "STORYBOARD"]
     },
 ]
 
 const aboutDescFirst = <>
-Bienvenue dans l'univers Metamorphose, un endroit débordant de créativité, où notre passion pour l'art prend vie.
-<br/>
-<span className='hide-mobile'>
+<span className=''>
 Tout a commencé avec 3 esprits créatifs et passionnés, qui ont uni leurs forces pour
 donner naissance à une aventure unique.
 </span>

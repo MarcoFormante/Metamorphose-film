@@ -44,6 +44,10 @@
       transform: scale(1.05);
     }
 
+    img{
+      border-radius: 30px;
+    }
+
     img, .img-spinner{
       // object-fit: cover;
       // max-width: 300px;
@@ -242,6 +246,7 @@
       width: 100%;
       object-fit: cover;
       animation: fadein 1s linear;  
+      border-radius: 4px;
     }
    }
   }

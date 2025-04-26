@@ -6,14 +6,26 @@
     justify-content: space-between;
     align-items: center;
 
-        &__logo{
-            cursor: pointer;
-            // z-index: 13;
-            img{
-                max-width: clamp(150px, 15vw, 200px);
+    svg{
+        fill: $white;
+        max-width: clamp(150px, 15vw, 200px);
+        cursor: pointer;
+        
+        &.desktop{
+            transition: fill 0.3s;
+            &:hover{
+            @media screen and (min-width: 1025px){
+                fill: $orange;
             }
         }
+    }
+
+        &:active{
+            fill: $orange;
+         }
+    }   
 }
+
 
 
 

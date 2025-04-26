@@ -3,8 +3,25 @@
     position: relative;
     margin-bottom: 20px;
 
-    @media screen and (max-width: 1300px) {
-        padding: 8px 30px;
+    .page-title.mt{
+        @media screen and (max-width: 1024px){
+            margin-top: 30px;
+        }
+    }
+
+    .page-title.mb{
+        @media screen and (max-width: 1024px){
+            margin-bottom: 20px;
+        }
+    }
+
+    @media screen and (max-width: 1024px){
+        text-align: center;
+    }
+
+     
+    @media screen and (max-width: 768px) {
+        padding: 8px 20px;
     }
 
     .title{
@@ -36,7 +53,7 @@
         
         .card1 {
             border-radius: 30px;
-            border: 4px solid white;
+            border: 3px solid white;
             height:clamp(196px, 30vw, 220px);
             cursor: pointer;
             color: $black;
@@ -170,12 +187,12 @@
 
         .article-container, .article-container-left{
             transition: background-color 0.3s, color 0.3s;
-            
+            cursor: pointer;
             border: 3px solid white;
             &:hover{
                 background-color:$white;
                 h2,ul{
-                    color:$black;
+                    color:$orange;
                 }
             }
         }
