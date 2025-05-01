@@ -2902,6 +2902,10 @@ body:has(.fallback) {
   display: none;
 }
 
+.mt-50 {
+  margin-top: 50px;
+}
+
 *, *::after, *::before {
   box-sizing: border-box;
   margin: 0;
