@@ -3,13 +3,13 @@ import { Helmet } from 'react-helmet-async';
 
 
 const SEO = ({ title,url,robots}) => {
-   
-
+  
+  
     return (
-    <Helmet>
-      <title>{title}</title>
-      <meta name="robots" content={robots  ? "index, follow" : "noindex, nofollow"} />
-      <link rel="canonical" href={"https://metamorphosefilm.com" + url} />
+      <Helmet>
+        <title>{title}</title>
+          <meta name="robots" content={robots  ? "index, follow" : "noindex, nofollow"} />
+        <link rel="canonical" href={"https://metamorphosefilm.com" + url} />
       </Helmet>
     );
   }

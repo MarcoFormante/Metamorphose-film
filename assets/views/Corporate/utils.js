@@ -1,5 +1,5 @@
 
-const qualities = 
+export const qualities = 
     [
         {
             title: "Expertise",
