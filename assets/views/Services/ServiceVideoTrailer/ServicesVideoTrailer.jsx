@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{Suspense, useEffect} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import BackButton from '../../../components/common/BackButton/BackButton'
 import SEO from '../../../components/Seo/SEO'
@@ -36,7 +36,10 @@ window.scrollTo({
     <div id='service-video-trailer' >
       <SEO title={`Metamorphose Film - service ${name.replace("-","")}`} robots={true} url={`/services/${name}`}/>
       <BackButton callback={()=>navigate("/services")} label={"Retour"} props={{width: "30", height: "30"}}/>
-        {ServiceComponent[name] ?? null}
+        <Suspense fallback={<div color='red'>LOADING</div>}>
+          {ServiceComponent[name] ?? null}
+        </Suspense>
+        
     </div>
   )
 } 

@@ -10,7 +10,9 @@ export  const purifyProjects = (projects) => {
         youtube_video: DOMPurify.sanitize(p.youtube_video),
         background_video: DOMPurify.sanitize(p.background_video),
         isActive: DOMPurify.sanitize(p.isActive),
-        slug: DOMPurify.sanitize(p.slug)
+        slug: DOMPurify.sanitize(p.slug),
+        thumb: DOMPurify.sanitize(p.thumb),
+        updated_at:DOMPurify.sanitize(p.updated_at)
     }))
 }
 

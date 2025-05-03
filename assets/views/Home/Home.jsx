@@ -51,35 +51,34 @@ const Home = () => {
             robots={true}
           />
 
-         {/* <Helmet>
-          <link rel="stylesheet"  />
-        
-        <script type="application/ld+json">{
-          JSON.stringify(projects.map(project => ({
-            "@context": "https://schema.org",
-            "@type": "VideoObject",
-            name: project.name,
-            description: `Realizzato da Metamorphose Film`,
-            contentUrl: `https://metamorphosefilm.com/assets/uploads/videos/${project.background_video}`,
-            embedUrl: project.youtube_video?.includes("watch?v=")
-            ? project.youtube_video.replace("watch?v=", "embed/")
-            : project.youtube_video?.includes("youtu.be/")
-              ? `https://www.youtube.com/embed/${project.youtube_video.split("youtu.be/")[1].split("?")[0]}`
-              : project.youtube_video || "",
-            uploadDate: new Date().toISOString(),
-            publisher: {
-              "@type": "Organization",
-              name: "Metamorphose Film",
-              logo: {
-                "@type": "ImageObject",
-                url: "https://metamorphosefilm.com/android-chrome-192x192.png",
-                width: 192,
-                height: 192
+         {projects.length && <Helmet>
+          <script type="application/ld+json">{
+            JSON.stringify(projects.map(project => ({
+              "@context": "https://schema.org",
+              "@type": "VideoObject",
+              name: project.name,
+              description: `Realizzato da Metamorphose Film`,
+              contentUrl: `https://metamorphosefilm.com/assets/uploads/videos/${project.background_video}`,
+              embedUrl: project.youtube_video?.includes("watch?v=")
+              ? project.youtube_video.replace("watch?v=", "embed/")
+              : project.youtube_video?.includes("youtu.be/")
+                ? `https://www.youtube.com/embed/${project.youtube_video.split("youtu.be/")[1].split("?")[0]}`
+                : project.youtube_video || "",
+                thumbnailUrl:"https://metamorphosefilm.com/assets/uploads/images/projects/" + project.thumb,
+              uploadDate: project.updated_at,
+              publisher: {
+                "@type": "Organization",
+                name: "Metamorphose Film",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://metamorphosefilm.com/android-chrome-192x192.png",
+                  width: 192,
+                  height: 192
+                }
               }
-            }
-          })))
-        }</script>
-          </Helmet> */}
+            })))
+          }</script>
+          </Helmet> }
 
         
         <div id='home'>

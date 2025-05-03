@@ -20,6 +20,9 @@ class Project
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $thumb = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $youtube_video = null;
 
     #[ORM\Column(length: 255)]
@@ -28,7 +31,6 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $made_by = null;
 
-    
 
 
     #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
@@ -84,6 +86,18 @@ class Project
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getThumb(): ?string
+    {
+        return $this->thumb;
+    }
+
+    public function setThumb(string $thumb): static
+    {
+        $this->thumb = $thumb;
 
         return $this;
     }

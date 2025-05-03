@@ -1,5 +1,9 @@
 
-      
+.tarifs-content{
+    @media screen and (max-width:768px) {
+        margin-top: 70px;
+    }
+}    
     .services__body {
         color: white;
         padding: 8px 40px;
@@ -367,4 +371,7 @@
     }
 }
 
+
+
 @import "./ServiceVideoTrailer/servicesVideos"
+

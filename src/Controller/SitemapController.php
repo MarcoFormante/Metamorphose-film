@@ -36,7 +36,7 @@ class SitemapController extends AbstractController
                 foreach ($projects as $project) {
                     $sitemap->addItem(
                         $hostname . "/projet/" .  $project->getSlug(),
-                        $project->getUpdatedat()->getTimestamp(),
+                        $project->getUpdatedAt()->getTimestamp(),
                         Sitemap::MONTHLY,
                         0.8
                     );

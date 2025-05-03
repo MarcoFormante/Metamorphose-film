@@ -170,7 +170,9 @@ const handleSubmit = async(e) => {
     .then(res => {
       console.log(res.data);
       console.log(res);
-      
+      if (res.status !== 200) {
+        throw new Error('An error occured! Status: ' + res.status);
+      }
         alert('Project created successfully')
         setProduction('')
         setMadeBy('')
@@ -201,6 +203,7 @@ const handleSubmit = async(e) => {
     setLoading(false)
   })
     } catch (error) {
+      alert('An error occured : '+ error)
       console.log(error)
       setLoading(false)
       setIsSubmit(false)

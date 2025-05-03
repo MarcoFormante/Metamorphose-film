@@ -607,6 +607,12 @@ body:has(.fallback) {
   left: 0;
 }
 
+@media screen and (max-width: 768px) {
+  .tarifs-content {
+    margin-top: 70px;
+  }
+}
+
 .services__body, .corporate {
   color: white;
   padding: 8px 40px;

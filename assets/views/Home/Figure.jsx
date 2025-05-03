@@ -39,7 +39,6 @@ const Figure = ({project,index,allProjects,swiperRealIndex}) => {
               playsinline
               width="100%"
               height="100vh"
-              
           />
           }
         <figcaption className='carousel__player__button'>

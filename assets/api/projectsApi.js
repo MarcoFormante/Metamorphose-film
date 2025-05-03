@@ -12,6 +12,8 @@ export async function getProjects() {
         }
         return response.data.projects;
     } catch (error) {
+        console.log(error);
+        
         throw error; 
     }
 }

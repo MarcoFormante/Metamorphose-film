@@ -119,7 +119,9 @@ class ProjectController extends AbstractController
                                 'collab_with' => $project->getCollabWith(),
                                 'isActive' => $project->isActive(),
                                 "made_by" => $project->getMadeBy(),
-                                "slug" => $project->getSlug()
+                                "slug" => $project->getSlug(),
+                                "thumb"=>$project->getThumb(),
+                                "updated_at"=>$project->getUpdatedAt()
                             ];
                     }
                     return ["projects"=>$arrayOfProjects];
@@ -177,7 +179,8 @@ class ProjectController extends AbstractController
                     'collab_with' => $project->getCollabWith(),
                     'isActive' => $project->isActive(),
                     "made_by" => $project->getMadeBy(),
-                    "slug"=> $project->getSlug()
+                    "slug"=> $project->getSlug(),
+                    "thumb"=>$project->getThumb()
                 ];
                 return $this->json(['project' => $data],200);
             }else{
@@ -218,6 +221,7 @@ class ProjectController extends AbstractController
                 'name' => $project->getName(),
                 "abrName" => $project->getAbrName(),
                 "slug" => $project->getSlug(),
+                "thumb"=>$project->getThumb(),
                 'youtube_video' => $project->getYoutubeVideo(),
                 'background_video' => $project->getBackgroundVideo(),
                 'collab_with' => $project->getCollabWith(),
@@ -338,6 +342,8 @@ class ProjectController extends AbstractController
                 $project->getProjectStaff()->setProduction($this->sanitizer->sanitize($data['production'],"string"));
             }
 
+          
+
             if (isset($data['artists']) && is_string($data['artists']) ) {
                 $project->getProjectStaff()->setArtists($this->sanitizer->sanitize($data['artists'],"string"));
             }
@@ -428,6 +434,7 @@ class ProjectController extends AbstractController
             }
 
             $project->setUpdatedAt(new \DateTimeImmutable());
+            $project->setThumb($newImageNames[0]);
             if ( $sitemapController->updatePage($em,"/",null,null) &&  $sitemapController->generateSitemap($em)) {
                 $em->persist($project);
                 $em->flush();
@@ -533,6 +540,7 @@ class ProjectController extends AbstractController
                 $newImage->setSrc($randomImageName  .  "." . $image->guessExtension());
                 $em->persist($newImage);
             }
+            $project->setThumb($imageNames[0]);
             
             $staff = new ProjectStaff();
             $staff->setProject($project);
@@ -562,7 +570,7 @@ class ProjectController extends AbstractController
             $em->flush();
             return $this->json(['message' => 'Project created'],200);
         }else{
-            return $this->json(['message' => 'Error during creating new project,video Error'],200);
+            return $this->json(['message' => 'Error during creating new project,video Error'],500);
         }
        
     } catch (\Throwable $th) {

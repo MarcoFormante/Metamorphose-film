@@ -4,6 +4,48 @@ import ReactCardFlip from 'react-card-flip';
 import Contact from '../Contact/Contact'
 import PageTitle from '../../components/common/PageTitle/PageTitle';
 import SEO from '../../components/Seo/SEO';
+import { Helmet } from 'react-helmet-async';
+
+const schemaAbout = 
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Metamorphose Film",
+    "url": "https://metamorphosefilm.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://metamorphosefilm.com/android-chrome-192x192.png",
+      "width": 192,
+      "height": 192
+    },
+    "description": "Metamorphose Film est une société de production audiovisuelle fondée par trois esprits créatifs et passionnés.",
+    "member": [
+      {
+        "@type": "Person",
+        "name": "Thibaud RICHARD",
+        "jobTitle": "Réalisation, Cadrage, Montage, Effets spéciaux"
+      },
+      {
+        "@type": "Person",
+        "name": "NAPY",
+        "jobTitle": "Réalisation, Photographie, Étalonnage, Pilotage drone"
+      },
+      {
+        "@type": "Person",
+        "name": "Vincent PAULY",
+        "jobTitle": "Réalisation, Cadrage, Montage, Storyboard"
+      }
+    ],
+      "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Service Client",
+      "email": "metamorphoseproductions@gmail.com",
+      "url": "https://metamorphosefilm.com/a-propos",
+      "availableLanguage": ["French"],
+      "description": "Pour partenariats ou demandes d'informations."
+    }
+  }
+
 
 
 const About = () => {
@@ -74,6 +116,12 @@ const About = () => {
   return (
     <>
         <SEO title={"Metamorphose Film - À propos "} url={"/a-propos"} robots={true} />
+
+              <Helmet>
+                 <script type="application/ld+json">{
+                   JSON.stringify(schemaAbout)
+                 }</script>
+                </Helmet> 
    
       <div className='about '>
         <section className='about-valeurs'>
@@ -136,7 +184,7 @@ const About = () => {
         <div className='about-contact'>
             <ul className='about-contact__list'>
                 <li className={iconsFillColor.insta.class} onMouseLeave={()=>handleMouseLeaveIconAnimation("insta")} onMouseEnter={()=>handleMouseEnterIconAnimation("insta")}><a target='_blank' rel='noreferrer' href={"https://www.instagram.com/metamorphosefilm/"}><SVG type={"insta"} fill={iconsFillColor.insta.fill}/></a></li>
-                <li className={iconsFillColor.mail.class} onMouseLeave={()=>handleMouseLeaveIconAnimation("mail")}  onMouseEnter={()=>handleMouseEnterIconAnimation("mail")}><a target='_blank' rel='noreferrer' href={"mailto:metamorphoseproduction@gmail.com"}><SVG type={"mail"} fill={iconsFillColor.mail.fill}/></a></li>
+                <li className={iconsFillColor.mail.class} onMouseLeave={()=>handleMouseLeaveIconAnimation("mail")}  onMouseEnter={()=>handleMouseEnterIconAnimation("mail")}><a title='metamorphoseproduction@gmail.com' target='_blank' rel='noreferrer' href={"mailto:metamorphoseproduction@gmail.com"}><SVG type={"mail"} fill={iconsFillColor.mail.fill}/></a></li>
                 <li className={iconsFillColor.linked.class} onMouseLeave={()=>handleMouseLeaveIconAnimation("linked")} onMouseEnter={()=>handleMouseEnterIconAnimation("linked")}><a target='_blank' rel='noreferrer' href={"https://www.linkedin.com/company/metamorphose-film/"} ><SVG type={"linked"} fill={iconsFillColor.linked.fill}/></a></li>
             </ul>
         </div>
