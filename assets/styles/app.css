@@ -321,7 +321,7 @@ button.backButton span {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 0;
 }
 .cookie-banner__container {
@@ -607,6 +607,16 @@ body:has(.fallback) {
   left: 0;
 }
 
+.figure-animated {
+  animation: video-visibility 1.5s ease;
+  animation-delay: 0.5s;
+}
+
+@keyframes video-visibility {
+  50% {
+    transform: translateX(-25vw);
+  }
+}
 @media screen and (max-width: 768px) {
   .tarifs-content {
     margin-top: 70px;
@@ -1096,8 +1106,8 @@ body:has(.fallback) {
   margin: auto;
   -o-object-fit: cover;
      object-fit: cover;
-  -o-object-position: top;
-     object-position: top;
+  -o-object-position: 0 0%;
+     object-position: 0 0%;
   border-radius: 50%;
   -webkit-user-drag: none;
 }
@@ -1201,8 +1211,8 @@ body:has(.fallback) {
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
-  -o-object-position: top;
-     object-position: top;
+  -o-object-position: 0 0%;
+     object-position: 0 0%;
 }
 .about article .flex-right {
   display: flex;

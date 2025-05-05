@@ -96,3 +96,14 @@
     left: 0;
 }
 
+
+.figure-animated{
+    animation: video-visibility 1.5s ease ;
+    animation-delay: 0.5s;
+}
+
+@keyframes video-visibility {
+    50%{
+        transform: translateX(-25vw);
+    }
+}

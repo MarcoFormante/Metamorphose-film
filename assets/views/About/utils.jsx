@@ -5,7 +5,7 @@ const persons = [
         instaName:"thibaud.richard",
         instaLink:"https://www.instagram.com/thibaud.richard/",
         name:'Thibaud RICHARD',
-        src:'thibaud.webp',
+        src:'thibaud-metamorphose.webp',
         desc_big:
         <>
         Je me suis toujours évadé grâce au cinéma, profondément animé par mon 
@@ -24,7 +24,7 @@ const persons = [
         instaName:"napy.video",
         instaLink:"https://www.instagram.com/napy.video/",
         name:'NAPY',
-        src:'romain.webp',
+        src:'napy-metamorphose.webp',
         desc_big:
         <>
         "Moi c'est Romain, un passionné de vidéo, de drone et de photographie.
@@ -41,7 +41,7 @@ const persons = [
         instaName:"vincii_pauly",
         instaLink:"https://www.instagram.com/vincii_pauly/",
         name:'Vincent PAULY',
-        src:'vincent.webp',
+        src:'vincent-metamorphose.webp',
         desc_big: <>
         Fan absolu de cinéma, cet art a toujours eu un effet salvateur sur moi.
         Très rigoureux et motivé dans tout ce que j'entreprends, pour moi cette entreprise 

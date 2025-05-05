@@ -2,6 +2,7 @@ import React, { useEffect, useState }  from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactPlayer from 'react-player'
 import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 const Figure = ({project,index,allProjects,swiperRealIndex}) => {
   const collabWith = project.collab_with.replace("&amp;","&").toUpperCase()
@@ -10,6 +11,8 @@ const Figure = ({project,index,allProjects,swiperRealIndex}) => {
   const indicesToLoad = [swiperRealIndex, swiperRealIndex + 1, swiperRealIndex - 1];
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoUrl, setVideoUrl] = useState("");
+  const [newClass,setNewClass] = useState("")
+  const [isCookieAccepted,setIsCookieAccepted] = useState(false)
 
   useEffect(() => {
     if (indicesToLoad.includes(index)) {
@@ -24,13 +27,21 @@ const Figure = ({project,index,allProjects,swiperRealIndex}) => {
     }
   }, [index, indicesToLoad, project.background_video, videoUrl]);
 
+  useEffect(()=>{
+    const cookie = Cookies.get("cookie")
+    if (cookie === "accepted") {
+      setIsCookieAccepted(true)
+    }
+  },[Cookies.get("cookie")])
+
  
 
   return project && (
     <>
-      <figure  className={`carousel__player__container ${isMobile ? "carousel__player__container__mobile" : ""}`}>
+      <figure  className={`carousel__player__container  ${isMobile ? "carousel__player__container__mobile" : ""} ${(index <= 1 && !swiperRealIndex <= 1) && isCookieAccepted ? newClass : ""}`}>
         { videoUrl &&  
         <ReactPlayer  
+              onReady={()=>index <= 1 && setNewClass("figure-animated")}
               className="carousel__player"  
               url={  videoUrl }
               playing = {isPlaying}
@@ -41,7 +52,7 @@ const Figure = ({project,index,allProjects,swiperRealIndex}) => {
               height="100vh"
           />
           }
-        <figcaption className='carousel__player__button'>
+        <figcaption className={`carousel__player__button`}>
            
                 <Link to={"/projet/" + project.slug} state={{project,index,allProjects}}>
                   <h2>

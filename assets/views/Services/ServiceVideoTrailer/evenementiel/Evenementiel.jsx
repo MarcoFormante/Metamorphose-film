@@ -14,7 +14,7 @@ export default function Evenementiel(){
                 </div>
                 <div className="video-flex">
                     <ReactPlayer url={`https://youtu.be/p5lTD22xmV8`} playsinline  controls/>
-                    <ReactPlayer url={`https://youtu.be/AVwIUZRrT_U?si=If-0s1jQjEtDPb98`} playsinline   controls/>
+                    <ReactPlayer url={`https://youtu.be/3_3cz-N5VjA`} playsinline   controls/> {/*bodyKarate*/}
                 </div>
                 
                 <div className="video-flex">
