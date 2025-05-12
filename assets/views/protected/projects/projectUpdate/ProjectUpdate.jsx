@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Resizer from "react-image-file-resizer";
 import { axiosInstance } from '../../../../api/axiosInstance';
 import Fallback from '../../../../components/UI/Spinner/Spinner';
 import { purifyProjectDataAdminPage } from '../../../../security/Dompurify/purify';
 import {set, z} from 'zod'
+
 
 const ProjectUpdate = () => {
   const location = useLocation()
@@ -33,6 +34,7 @@ const ProjectUpdate = () => {
   const [updatedValues, setUpdatedValues] = useState({imgs:[],video:false,projectName:false,slug:false,abrName:false,youtubeLink:false,collab:false,production:false,madeBy:false,artists:false,montage:false,cadrage:false,droniste:false,phPlateau:false,decorateurs:false,lastMoreStaffFields:[],newMoreStaffFields:[],lastStaff:false,newStaff:false})
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
+
 
   useEffect(()=>{
     axiosInstance.get('admin/projectData/' + location.state)

@@ -7,7 +7,6 @@ import { purifyProjects } from '../../security/Dompurify/purify';
 import { getProjects } from '../../api/projectsApi';
 import { useContext } from 'react';
 import { ProjectsContext } from '../../contexts/ProjectsContext';
-import SchemaHome from '../../components/Seo/Schema/SchemaHome';
 import { Helmet } from 'react-helmet-async';
 
 const Home = () => {

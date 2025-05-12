@@ -24,7 +24,7 @@ const persons = [
         instaName:"napy.video",
         instaLink:"https://www.instagram.com/napy.video/",
         name:'NAPY',
-        src:'napy-metamorphose.webp',
+        src:'napy-metamorphose-web.webp',
         desc_big:
         <>
         "Moi c'est Romain, un passionné de vidéo, de drone et de photographie.

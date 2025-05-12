@@ -427,6 +427,8 @@ class ProjectController extends AbstractController
                 foreach ($newImageNames as $index => $newImageName) {
                     $images[$index]->move("assets/uploads/images/projects/", $newImageName);
                 }
+                
+                 $project->setThumb($newImageNames[0]);
             }
 
             if($video){
@@ -434,7 +436,7 @@ class ProjectController extends AbstractController
             }
 
             $project->setUpdatedAt(new \DateTimeImmutable());
-            $project->setThumb($newImageNames[0]);
+           
             if ( $sitemapController->updatePage($em,"/",null,null) &&  $sitemapController->generateSitemap($em)) {
                 $em->persist($project);
                 $em->flush();
