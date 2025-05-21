@@ -58,7 +58,7 @@ const NewProjectStaffPage = ({
           </div>
 
           <div className='inpt-container'>
-            <label htmlFor='p-staff-decorateurs'>Directeur de la photographie</label>
+            <label htmlFor='p-staff-decorateurs'>Chef Opérateur</label>
             <input type='text'  id='p-staff-decorateurs' name='p-staff-decorateurs' value={decorateurs} onChange={(e)=>setDecorateurs(e.target.value)} />
           </div>
 

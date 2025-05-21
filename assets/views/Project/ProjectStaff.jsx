@@ -38,7 +38,7 @@ if (loading) return <Spinner inline={true} />;
       <StaffList title={"Cadrage"} items={projectData.staff?.cadrage} className={"cadrage"} />
       <StaffList title={"Pilote de drone"} items={projectData.staff?.droniste} className={"droniste"} />
       <StaffList title="Photographe de plateau" items={projectData.staff?.ph_plateau} className="photoplateau" />
-      <StaffList title="Directeur de la photographie" items={projectData.staff?.decorateurs} className="deco" />
+      <StaffList title="Chef Opérateur" items={projectData.staff?.decorateurs} className="deco" />
 
     
 
