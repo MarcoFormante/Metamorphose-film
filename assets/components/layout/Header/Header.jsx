@@ -24,14 +24,6 @@ function Header(){
   return (
     <header id={`header`}>
       <Link to={"/"} id="header__logo">
-        {/* <svg
-          src={logo_wh}
-          width={250}
-          alt="Metamorphose"
-          height={42}
-          title='Metamorphose'
-          loading='eager'
-        /> */}
         <Logo />
       </Link>
 

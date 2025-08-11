@@ -96,6 +96,9 @@ const Home = () => {
                 mousewheel={true}
                 onSlideChange={
                   (swiper) => {
+                    if (!localStorage.getItem("scroll")) {
+                       localStorage.setItem("scroll","true")
+                    }
                     setSwiperRealIndex(swiper.realIndex )
                   }
                 

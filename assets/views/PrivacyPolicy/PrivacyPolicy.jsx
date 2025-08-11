@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import PrivacyFR from './PrivacyFR'
 import PrivacyEN from './PrivacyEN'
 import BackButton from '../../components/common/BackButton/BackButton'
-import Cookies from 'js-cookie'
+import { Cookies } from 'react-cookie-consent'
 import SEO from '../../components/Seo/SEO'
 import {  useNavigate } from 'react-router-dom'
 import { CookieContext } from '../../contexts/CookieProvider'
@@ -10,19 +10,17 @@ import { CookieContext } from '../../contexts/CookieProvider'
 const PrivacyPolicy = ({setShowPrivacyPolicy}) => {
     const [language, setLanguage] = useState('fr')
     const {cookie,setCookie} = useContext(CookieContext)
-    
     const navigate = useNavigate()
-    
-
     const deleteCookies = () => {
         document.cookie = "cookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        setCookie(true)
         window.location.reload()
     }
 
     const acceptCookies = () => {
-        Cookies.set('cookie','accepted',{expires:365,path:'/',secure:true})
+        Cookies.set('cookie','accepted',{expires:365,path:'/',secure:true,sameSite:"Lax"})
         setCookie(true)
-        navigate("/")
+        window.location.reload()
     }
     
   return (
@@ -46,7 +44,7 @@ const PrivacyPolicy = ({setShowPrivacyPolicy}) => {
                 </div>
             </div>
             <div>
-                {cookie === true ?
+                {cookie === "accepted" ?
                 <div>
                     <button className='lang-on' onClick={deleteCookies}>{language === "fr" ? "Supprimer les Cookies" : " Delete Cookies"}</button>
                     <br />
@@ -64,7 +62,7 @@ const PrivacyPolicy = ({setShowPrivacyPolicy}) => {
                 <h2 className='sub-title'>Metamorphose Film</h2>
                
             </div>
-            <div className='policy-body'>
+            <div className='policy-body'  style={{textAlign:"left"}}>
             <p> <strong>Page:</strong> /privacy-policy</p>
                 {language === 'fr' ?
                 <PrivacyFR/>

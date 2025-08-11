@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router} from "react-router-dom";
 import 'vite/modulepreload-polyfill'
 import CookieProvider from './contexts/CookieProvider';
-import App from './app';
+import App from './App.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

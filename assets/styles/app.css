@@ -314,16 +314,6 @@ button.backButton span {
   flex-direction: column;
   bottom: 0;
 }
-.cookie-banner::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 0;
-}
 .cookie-banner__container {
   background-color: #F13900;
   padding: 30px;
@@ -957,11 +947,35 @@ body:has(.fallback) {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  position: relative;
 }
 .video-flex div {
   min-width: calc(50vw - 40px);
   min-height: 28vw;
   max-width: 100%;
+}
+.video-flex div p {
+  font-size: clamp(16px, 5vw, 32px);
+  font-weight: bold;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  color: white;
+  text-align: center;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.animation4videos {
+  display: flex;
+  margin: 80px auto;
+  justify-content: space-between;
+  gap: 30px;
+}
+.animation4videos img.cover {
+  max-height: 310px;
+  width: clamp(250px, 20vw, 370px);
+  height: clamp(250px, 20vw, 360px);
 }
 
 @media screen and (max-width: 768px) {
@@ -970,6 +984,7 @@ body:has(.fallback) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 20px auto;
   }
   .video-flex div {
     min-width: calc(100vw - 40px);
@@ -977,14 +992,7 @@ body:has(.fallback) {
     max-height: 50vw;
   }
 }
-.animation4videos {
-  display: flex;
-  margin: 80px auto;
-  justify-content: space-between;
-  gap: 30px;
-}
-
-@media screen and (max-width: 910px) {
+@media screen and (max-width: 1200px) {
   .animation4videos {
     display: grid;
     grid-template-columns: auto auto;
@@ -992,27 +1000,58 @@ body:has(.fallback) {
   }
   .animation4videos div {
     max-width: 45vw;
-    max-height: 200px;
+    max-height: 400px;
     margin: auto;
   }
   .animation4videos button {
     display: none;
   }
+  .animation4videos img.cover {
+    max-height: none;
+    width: clamp(380px, 45vw, 680px);
+    height: clamp(260px, 30vw, 340px);
+  }
 }
 @media screen and (max-width: 768px) {
   .animation4videos {
+    display: flex;
+    flex-direction: column;
+  }
+  .animation4videos .react-player__preview {
+    min-height: -moz-fit-content;
+    min-height: fit-content;
+  }
+  .animation4videos .videosAnimated {
     display: block;
+    max-height: -moz-fit-content;
+    max-height: fit-content;
   }
-  .animation4videos div {
-    margin-top: 20px;
-    min-height: 50vw;
+  .animation4videos .videosAnimated .react-player__preview {
     max-height: 200px;
-    min-width: calc(100vw - 40px);
   }
-  .animation4videos button {
+  .animation4videos div img.cover {
+    width: calc(100vw - 40px);
+    height: unset;
+  }
+  .animation4videos div button {
     display: none;
   }
 }
+.corporate-videos {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+@media screen and (max-width: 768px) {
+  .corporate-videos {
+    flex-direction: column;
+  }
+  .corporate-videos div {
+    max-width: 100%;
+  }
+}
+
 @keyframes fade-in {
   0% {
     opacity: 0;
@@ -1831,6 +1870,40 @@ body:has(.fallback) {
   .production .react-player div {
     margin-top: 50px;
   }
+}
+.production .react-player .playIconCover {
+  margin: 0;
+}
+.production .react-player .playIconCover img {
+  position: relative;
+  z-index: 1;
+  top: -15px;
+  left: 2px;
+  cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+  .production .react-player .playIconCover img {
+    width: 65px;
+    height: 65px;
+  }
+}
+.production .react-player .playIconCover span {
+  position: absolute;
+  color: white;
+  font-weight: bold;
+  right: 10px;
+  bottom: 10px;
+}
+.production .react-player .playIconCover .playIconCover__container {
+  position: absolute;
+  background: black;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0.4;
+  z-index: 0;
+  margin: 0;
 }
 .production__show-assets {
   display: flex;

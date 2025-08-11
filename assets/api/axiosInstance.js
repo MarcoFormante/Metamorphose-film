@@ -15,5 +15,9 @@ export const axiosInstance = axios.create({
    if (errors.includes(error?.response?.status) && !window.location.pathname.includes("admin")) {
       window.location.href = '/error/' + error.response.status;
    }
+
+   if (error?.response?.status === 401 && window.location.pathname.includes("admin")) {
+    window.location.href = "/login"      
+   }
    return error;
  });

@@ -19,6 +19,7 @@ const ProtectedRoute = ({isAuth,setIsAuth})=>{
       const pathname = window.location.pathname === "/admin/home" ? null : -1
       navigate(pathname,{replace:true})
     }
+    
   
     if (isAuth) {
         return (

@@ -62,10 +62,10 @@ const PrivacyEN = () => {
         <li><h4>Usage Data</h4></li>
     </ul>
     <p>Usage Data is collected automatically when using the Service.</p>
-    <p>Usage Data may include information such as Your Device's IP address (e.g., IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, device identifiers, and other diagnostic data.</p>
-    <p>When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device's unique identifier, Your mobile device's IP address, Your mobile operating system, the type of mobile Internet browser You use, device identifiers, and other diagnostic data.</p>
-    <p>We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.</p>
-    
+    <p>This data may include aggregated technical information related to access to our Service, such as the type of device (e.g., computer, phone, tablet), operating system, browser type, and information about the pages you visit, the time and date of your visit, the time spent on those pages, and other similar technical data. This information is generally collected in an aggregated and anonymous form.</p>
+    <p>Our hosting provider may record visitors' IP addresses for technical and security reasons. However, we do not directly collect or use users' IP addresses internally.</p>
+    <p>We use a rate-limiting system to protect our Service from an excessive number of requests, but this process does not involve the storage of users' IP addresses by us.</p>
+        
     <h4>Tracking Technologies and Cookies</h4>
     <p>We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. Tracking technologies used are beacons, tags, and scripts to collect and track information and to improve and analyze Our Service. The technologies We use may include:</p>
     <ul>
@@ -75,13 +75,13 @@ const PrivacyEN = () => {
     <p>Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser.</p>
     <p>We use Cookies to manage user consent to cookies on our site:</p>
     <ul>
-        <li><strong>cookie : accepted</strong> This cookie is set when You accept or refuse cookies via the consent button. It is valid for 300 days and remembers Your choice (accepted or refused).</li>
+        <li><strong>cookie : accepted or refused</strong> This cookie is set when You accept or refuse cookies via the consent button. It is valid for 300 days and remembers Your choice (accepted or refused).</li>
     </ul>
     <ul>
         <li><strong>Third-party Cookie (YouTube):</strong>
-            <span>On our site, some pages embed YouTube videos (if cookies are accepted), which involves setting YouTube cookies. If You refuse cookies, a link to the video on YouTube is displayed instead of direct embedding.</span>
-            <span>For more information on the cookies that YouTube sets, please see YouTube's privacy policy available on their website. You will find details on the types of cookies used, their purpose, and how you can manage your cookie preferences. <a href="https://policies.google.com/privacy?hl=en">https://policies.google.com/privacy</a></span>
-        </li>
+ <span>On our site, some pages embed YouTube videos (if you accept cookies), which involves the installation of YouTube cookies. If you refuse cookies, an image of the video content will be displayed instead of the direct integration.</span>
+  <span> By clicking on this image, you consent to the activation of YouTube cookies and tracking by YouTube.</span>
+  <span> For more information about the cookies that YouTube installs, please consult YouTube's privacy policy available on their website. You will find details on the types of cookies used, their purpose, and how you can manage your cookie preferences. <a href="https://policies.google.com/privacy?hl=en">https://policies.google.com/privacy</a></span>        </li>
     </ul>
     
     <h3>Use of Your Personal Data</h3>
@@ -134,7 +134,7 @@ const PrivacyEN = () => {
 <section>
     <h2>Consent to the Use of Cookies</h2>
     <p>
-        Before continuing on this website, we ask you to accept the use of these cookies. You may choose not to accept them, but in that case, you will not be able to view the embedded videos.
+        Before continuing on this website, we ask you to accept the use of these cookies. You may choose not to accept them, but in that case, you will not be able to directly  view the embedded YOUTUBE videos.
     </p>
 </section>
 

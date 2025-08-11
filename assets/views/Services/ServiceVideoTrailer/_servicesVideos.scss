@@ -16,13 +16,39 @@
     display: flex;
     justify-content: space-between;
     gap: 20px;
+    position: relative;
     div{
         min-width: calc(50vw - 40px);
         min-height: 28vw;
         max-width: 100%;
-    }
-    
+        p{
+            font-size: clamp(16px,5vw,32px);
+            font-weight:bold;
+            position:absolute;
+            bottom:10px;
+            left: 0;
+            color:white;
+            text-align: center;
+            width: 100%;
+            background: rgba($color: #000000, $alpha: 0.4);
+        }
+    }    
 }
+
+
+.animation4videos{
+    display:flex;
+    margin:80px auto;
+    justify-content:space-between;
+    gap:30px;
+    
+    img.cover{
+        max-height: 310px;
+        width: clamp(250px,20vw,370px);
+        height: clamp(250px,20vw,360px);
+    }
+}
+
 
 @media screen and (max-width:768px) {
     .video-flex{
@@ -30,6 +56,7 @@
        flex-direction: column;
        justify-content: center;
        align-items: center;
+       margin: 20px auto;
       
        div{
         min-width: calc(100vw - 40px);
@@ -37,53 +64,87 @@
         max-height: 50vw;
        }
     }
-    
-}
-
-.animation4videos{
-    display:flex;
-    margin:80px auto;
-    justify-content:space-between;
-    gap:30px;
 }
 
 
 
 
-@media screen and (max-width:910px) {
+
+@media screen and (max-width:1200px) {
     .animation4videos{
         display: grid;
         grid-template-columns: auto auto;
         gap: 20px 5px;
         div{
             max-width: 45vw;
-            max-height: 200px;
+            max-height: 400px;
             margin: auto;
-           
         }
         button{
             display: none;
         }
+
+         img.cover{
+        max-height:none;
+        width:  clamp(380px,45vw,680px);;
+        height: clamp(260px,30vw,340px);
+    }
+        
     }
     
     
 }
+
+
 
 
 @media screen and (max-width:768px) {
+
     .animation4videos{
-        display: block;
-        div{
-            margin-top: 20px;
-            min-height: 50vw;
-            max-height: 200px;
-            min-width: calc(100vw - 40px);
-        }
-        button{
-            display: none;
+            display: flex;
+            flex-direction: column;
+            
+           .react-player__preview{
+                min-height: fit-content;
+            }
+
+            .videosAnimated{
+                display: block;
+                    max-height: fit-content;
+                    .react-player__preview{
+                        max-height: 200px;
+                    }
+            }
+
+            div{
+           
+                img.cover{
+                    width: calc(100vw - 40px);
+                    height: unset;
+            }
+            button{
+                display: none;
+            }
         }
     }
 }
+
+
+.corporate-videos{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    
+    @media screen and (max-width:768px) {
+        flex-direction: column;
+        
+        div{
+            max-width: 100%;
+        }
+    }
+}
+
 
 
 

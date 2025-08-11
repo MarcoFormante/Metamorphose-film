@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ReactPlayer from 'react-player';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom'
 import ProjectStaff from './ProjectStaff';
@@ -6,10 +6,14 @@ import { isMobile } from 'react-device-detect';
 import SEO from '../../components/Seo/SEO';
 import { getProjectByName, getProjectData } from '../../api/projectsApi';
 import { purifyProjectData } from '../../security/Dompurify/purify';
+import { CookieContext } from '../../contexts/CookieProvider';
+import Cookies from 'js-cookie'
 
 
 
-const Project = ({cookie}) => {
+
+
+const Project = () => {
     const location = useLocation()
     const [showAssets, setShowAssets] = useState(false)
     const [nextProject,SetNextProject] = useState(null)
@@ -18,9 +22,15 @@ const Project = ({cookie}) => {
     const [projectIndex,setProjectIndex] = useState(location.state?.index)
     const [fade,setFade] = useState(false)
     const [projectData,setProjectData] = useState(null)
+    const [video,setVideo] = useState(null)
     const param = useParams()
     const allProjects = location.state?.allProjects
     const navigate = useNavigate()
+    const {cookie,setCookie} = useContext(CookieContext)
+    const [cookieIsAccepted,setCookieIsAccepted] = useState(false)
+    const blockVideo = cookieIsAccepted
+    const [canPlay,setCanPlay] = useState(false)
+    
 
     useEffect(()=>{
       if (param.name && !location.state?.project) {
@@ -76,11 +86,12 @@ const Project = ({cookie}) => {
                 setLastProject(null)
             }
             location.state.index = projectIndex
-        
         }
-
         return ()=> clearTimeout(timeout)
     },[projectIndex,allProjects,location.state?.project.name])
+
+
+
 
 
 
@@ -101,6 +112,18 @@ useEffect(() => {
 }, [showAssets])
 
 
+useEffect(()=>{
+  if (cookie === "accepted") {
+      setCookieIsAccepted(true)
+  }else{
+    setCookieIsAccepted(false)
+  }
+},[cookie])
+
+
+
+
+
   return (
     project && (
       <>
@@ -109,9 +132,12 @@ useEffect(() => {
           <div className={`last-next-btns-container ${isMobile ? "" : "desktop"}`}>
             {lastProject && (
               <span className="last">
+
                 <Link
-                  onClick={() =>
+                  onClick={() =>{
+                    setCanPlay(false)
                     setProjectIndex((prev) => (prev > 0 ? prev - 1 : 0))
+                  }
                   }
                   to={"/projet/" + lastProject.slug}
                   state={{ project: lastProject, index: projectIndex - 1 ,allProjects}}
@@ -124,7 +150,10 @@ useEffect(() => {
             {nextProject && (
               <span className="next">
                 <Link
-                  onClick={() => setProjectIndex((prev) => prev + 1)}
+                  onClick={() => {
+                    setCanPlay(false)
+                    setProjectIndex((prev) => prev + 1)
+                  }}
                   to={"/projet/" + nextProject.slug}
                   state={{ project: nextProject, index: projectIndex + 1 ,allProjects}}
                 >
@@ -149,6 +178,7 @@ useEffect(() => {
           </div>
           <h1 className="production__title">{project?.name}</h1>
           <h2>Realisé par</h2>
+
           {project?.made_by && (
             <ul className='made-by-list'>
               {project?.made_by?.split(",").map((r, i) => (
@@ -158,27 +188,39 @@ useEffect(() => {
           )}
           <div>
             <div className={"projet-video"}>
-            <ReactPlayer
+              
+           <ReactPlayer
               className={`react-player`}
               width={1000}
               height={500}
-              controls={true}
-              url={cookie && project.youtube_video}
-              loop={false}
-              playing={true}
-              muted={false}
-              preload="none"
+              controls
+              url={ project?.youtube_video }
+              playing={blockVideo || canPlay}
+              playsinline
+              preload={"none"}
               style={{ margin: "10px auto", height: 500, objectFit: "cover" }}
-              light={project?.thumbnail}
+              light={!cookieIsAccepted ? true : false}
+              onClickPreview={()=>setCanPlay(true)}
+              playIcon={
+                <div>
+                  <div className='playIconCover'> 
+                    <div className='playIconCover__container'></div>
+                    <img src={"/assets/static/icons/yt-icon.svg"} width={100}></img>
+                    <span>You Tube</span>
+                    </div>
+                </div>
+              }
+             
               config={{
                 youtube: {
                   embedOptions:{
-                    host: "https://www.youtube-nocookie.com"
+                    host: "https://www.youtube-nocookie.com",
                   }
                 },
               }}
             >
             </ReactPlayer>
+
             </div>
             <div
               className={`production__show-assets ${

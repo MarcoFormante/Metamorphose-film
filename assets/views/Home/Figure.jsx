@@ -34,14 +34,15 @@ const Figure = ({project,index,allProjects,swiperRealIndex}) => {
     }
   },[Cookies.get("cookie")])
 
+
  
 
   return project && (
     <>
-      <figure  className={`carousel__player__container  ${isMobile ? "carousel__player__container__mobile" : ""} ${(index <= 1 && !swiperRealIndex <= 1) && isCookieAccepted ? newClass : ""}`}>
+      <figure  className={`carousel__player__container  ${isMobile ? "carousel__player__container__mobile" : ""} ${(index <= 1 && !swiperRealIndex <= 1)  ? newClass : ""}`}>
         { videoUrl &&  
         <ReactPlayer  
-              onReady={()=>index <= 1 && setNewClass("figure-animated")}
+              onReady={()=>(index <= 1 && !localStorage.getItem("scroll")) &&  setNewClass("figure-animated")}
               className="carousel__player"  
               url={  videoUrl }
               playing = {isPlaying}

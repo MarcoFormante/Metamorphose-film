@@ -56,9 +56,9 @@ const PrivacyTest = () => {
 <li><h4>Données d'Utilisation</h4></li>
 </ul>
 <p>Les Données d'Utilisation sont collectées automatiquement lors de l'utilisation du Service.</p>
-<p>Les Données d'Utilisation peuvent inclure des informations telles que l'adresse IP de Votre Appareil (par exemple, adresse IP), le type de navigateur, la version du navigateur, les pages de notre Service que Vous visitez, l'heure et la date de Votre visite, le temps passé sur ces pages, les identifiants uniques des appareils et d'autres données de diagnostic.</p>
-<p>Lorsque Vous accédez au Service par ou via un appareil mobile, Nous pouvons collecter certaines informations automatiquement, y compris, mais sans s'y limiter, le type d'appareil mobile que Vous utilisez, l'identifiant unique de Votre appareil mobile, l'adresse IP de Votre appareil mobile, Votre système d'exploitation mobile, le type de navigateur Internet mobile que Vous utilisez, les identifiants uniques des appareils et d'autres données de diagnostic.</p>
-<p>Nous pouvons également collecter des informations que Votre navigateur envoie chaque fois que Vous visitez notre Service ou lorsque Vous accédez au Service par ou via un appareil mobile.</p>
+<p>Ces données peuvent inclure des informations techniques agrégées relatives aux accès à notre Service, telles que le type d'appareil (par ex. ordinateur, téléphone, tablette), le système d'exploitation, le type de navigateur et des informations sur les pages que Vous visitez, l'heure et la date de Votre visite, le temps passé sur ces pages et d'autres données techniques similaires. Ces informations sont généralement collectées de manière agrégée et anonyme.</p>
+<p>Notre fournisseur d'hébergement pourrait enregistrer les adresses IP des visiteurs pour des raisons techniques et de sécurité. Cependant, nous ne collectons ni n'utilisons directement les adresses IP des utilisateurs en interne.</p>
+<p>Nous utilisons un système de limitation de débit pour protéger notre Service contre un nombre excessif de requêtes, mais ce processus n'implique pas la mémorisation des adresses IP des utilisateurs de notre part.</p>
 <h4>Technologies de Suivi et Cookies</h4>
 <p>Nous utilisons des Cookies et des technologies de suivi similaires pour suivre l'activité sur Notre Service et stocker certaines informations. Les technologies de suivi utilisées sont des balises, des tags et des scripts pour collecter et suivre les informations et pour améliorer et analyser Notre Service. Les technologies que Nous utilisons peuvent inclure :</p>
 <ul>
@@ -68,13 +68,14 @@ const PrivacyTest = () => {
 <p>Les Cookies peuvent être « Persistants » ou « de Session ». Les Cookies Persistants restent sur Votre ordinateur personnel ou appareil mobile lorsque Vous êtes hors ligne, tandis que les Cookies de Session sont supprimés dès que Vous fermez Votre navigateur web.</p>
 <p>Nous utilisons les Cookies pour gérer le consentement de l'utilisateur aux cookies sur notre site :</p>
 <ul>
-<li><strong>cookie : accepted</strong> Ce cookie est installé lorsque Vous acceptez ou refusez les cookies via le bouton de consentement. Il est valide pour 365 jours et mémorise Votre choix (accepté ou refusé).</li>
+<li><strong>cookie : accepted ou refused</strong> Ce cookie est installé lorsque Vous acceptez ou refusez les cookies via le bouton de consentement. Il est valide pour 365 jours et mémorise Votre choix (accepté ou refusé).</li>
 
 </ul>
 <ul>
 <li> <strong>Third-party Cookie(youtube) : </strong>
-    <span>Sur notre site, certaines pages intègrent des vidéos YouTube (en cas d'acceptation des cookies), ce qui implique l'installation de cookies de YouTube. Si Vous refusez les cookies, un lien vers la vidéo sur YouTube est affiché à la place de l'intégration directe.</span>
-    <span>Pour plus d'informations sur les cookies que YouTube installe, veuillez consulter la politique de confidentialité de YouTube disponible sur leur site web. Vous y trouverez des détails sur les types de cookies utilisés, leur finalité et comment vous pouvez gérer vos préférences en matière de cookies. <a  href="https://policies.google.com/privacy?hl=fr">https://policies.google.com/privacy</a></span>
+    <span>Sur notre site, certaines pages intègrent des vidéos YouTube (en cas d'acceptation des cookies), ce qui implique l'installation de cookies de YouTube. Si vous refusez les cookies, une image du contenu vidéo sera affichée à la place de l'intégration directe.</span>
+    <span> En cliquant sur cette image, vous consentez à l'activation des cookies de YouTube et au suivi par ce dernier.</span>
+    <span> Pour plus d'informations sur les cookies que YouTube installe, veuillez consulter la politique de confidentialité de YouTube disponible sur leur site web. Vous y trouverez des détails sur les types de cookies utilisés, leur finalité et comment vous pouvez gérer vos préférences en matière de cookies. <a  href="https://policies.google.com/privacy?hl=fr">https://policies.google.com/privacy</a></span>
 </li>
 </ul>
 <h3>Utilisation de Vos Données Personnelles</h3>
@@ -128,7 +129,7 @@ const PrivacyTest = () => {
 
 <h2>Consentement à l'Utilisation des Cookies</h2>
 <p>
-    Avant de continuer dans ce site web, nous vous demandons d'accepter l'utilisation de ces cookies. Vous pouvez choisir de ne pas les accepter, mais dans ce cas, vous ne pourrez pas visualiser les vidéos intégrées.
+    Avant de continuer dans ce site web, nous vous demandons d'accepter l'utilisation de ces cookies. Vous pouvez choisir de ne pas les accepter, mais dans ce cas, vous ne pourrez pas visualiser directement les vidéos intégrées YOUTUBE.
 </p>
 </section>
 
