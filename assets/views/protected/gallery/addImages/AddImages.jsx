@@ -151,7 +151,7 @@ const AddImages = () => {
 
         <form onSubmit={submit}>
             <span className='n-files'>{images.length > 0 && images.length + " files"}</span>
-            <label htmlFor='file'>Choose images </label>
+            <label htmlFor='file'>Choisir des images</label>
             <input type='file' id='file' onChange={onChange} multiple accept='.jpg,.png,.webm,.jpeg' />
             <input type='submit' value={"ENVOIS"}/>
         </form>

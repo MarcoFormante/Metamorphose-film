@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const pages = [
-  {id:1, name:"New Project", path:"/admin/newProject"},
-  {id:2, name:"Projects", path:"/admin/projects"},
-  {id:3, name:"Galleries", path:"/admin/galleries"},
+  {id:1, name:"Nouveau Projet", path:"/admin/newProject"},
+  {id:2, name:"Projets", path:"/admin/projects"},
+  {id:3, name:"Galeries", path:"/admin/galleries"},
 ]
 
 const AdminHome = () => {

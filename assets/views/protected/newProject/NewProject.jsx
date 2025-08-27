@@ -73,11 +73,11 @@ const NewProject = () => {
 
 useEffect(()=>{
   if(pageCounter === 0){
-    setTitle('New Project')
+    setTitle('Nouveau projet')
   }else if (pageCounter === 1) {
-    setTitle('Project Images')
+    setTitle('Images du Projet')
   }else if (pageCounter === 2) {
-    setTitle('Project Staff')
+    setTitle('Staff du Projet')
   }
 },[pageCounter])
 
@@ -168,8 +168,6 @@ const handleSubmit = async(e) => {
     
     axiosInstance.post('admin/project/new',formdata)
     .then(res => {
-      console.log(res.data);
-      console.log(res);
       if (res.status !== 200) {
         throw new Error('An error occured! Status: ' + res.status);
       }

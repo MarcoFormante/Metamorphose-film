@@ -24,8 +24,8 @@ const ProtectedRoute = ({isAuth,setIsAuth})=>{
     if (isAuth) {
         return (
           <div>
-              <span className='logout-btn' onClick={logout}>Logout</span>
-              <span className='back-btn' onClick={back}>Back</span>
+              <span className='logout-btn' onClick={logout}>Déconnexion</span>
+              <span className='back-btn' onClick={back}>Précédent</span>
               <Outlet/>
           </div>
         )

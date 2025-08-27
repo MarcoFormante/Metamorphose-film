@@ -13,7 +13,7 @@ const Galleries = () => {
     
   return (
     <div className='admin-galleries'>
-      <h1 className='c-white ad-page-title'>Galleries</h1>
+      <h1 className='c-white ad-page-title'>Galeries</h1>
         <ul className='admin-galleries__list'>
             {galleries.map((gallery)=>
             <div className='admin-galleries__list__item' key={gallery}>

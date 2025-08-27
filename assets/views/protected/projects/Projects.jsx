@@ -74,7 +74,7 @@ const Projects = () => {
 
   return (
     <div className='ad-projects'>
-      <h1>Projects</h1>
+      <h1>Projets</h1>
      { loading &&  <Fallback/>}
       <ul>
        { projects.length > 0 && !loading && 

@@ -164,9 +164,9 @@ const Gallery = () => {
 
       {isLoading && <Fallback />}
       <div className="admin-gallery__header">
-        <h1>Gallery {param.name}</h1>
+        <h1>Galerie {param.name}</h1>
         <Link to={"/admin/gallery/add"} state={{ name: param.name }}>
-          + Add
+          + Ajouter
         </Link>
       </div>
 
