@@ -52,7 +52,7 @@ class GalleryController extends AbstractController
                     ->select('COUNT(g)')
                     ->from(GalleryImages::class, 'g')
                     ->where('g.gallery_name = :gallery_name')
-                    ->setParameter('gallery_name', $galleryName)                
+                    ->setParameter('gallery_name', $galleryName)
                     ->getQuery()
                     ->getResult();
                     $this->logger->info('Gallery images retrieved:');
@@ -60,7 +60,7 @@ class GalleryController extends AbstractController
                         $totalImages = $imagesCount[0][1];
                     }
                 }
-                $galleryImages =  $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $galleryName], ['order_index' => 'ASC'],$limit, $offset * $limit);
+                $galleryImages =  $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $galleryName], ['order_index' => 'DESC'],$limit, $offset * $limit);
                 foreach ($galleryImages as $gallery) {
                     if ($this->isGranted("ROLE_ADMIN")) {
                         $images[] = ["src" => $gallery->getSrc(),"id" => $gallery->getId()];
@@ -92,7 +92,7 @@ class GalleryController extends AbstractController
       
         try {
             
-            $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $this->s->sanitize($name,"string")], ['order_index' => 'ASC']);
+            $gallery = $em->getRepository(GalleryImages::class)->findBy(['gallery_name' => $this->s->sanitize($name,"string")], ['order_index' => 'DESC']);
 
             if (!$gallery) {
                 throw new NotFoundHttpException('The gallery was not found.');
