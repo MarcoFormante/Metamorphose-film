@@ -7,7 +7,6 @@ import SEO from '../../components/Seo/SEO';
 import { getProjectByName, getProjectData } from '../../api/projectsApi';
 import { purifyProjectData } from '../../security/Dompurify/purify';
 import { CookieContext } from '../../contexts/CookieProvider';
-import Cookies from 'js-cookie'
 
 
 
@@ -22,7 +21,6 @@ const Project = () => {
     const [projectIndex,setProjectIndex] = useState(location.state?.index)
     const [fade,setFade] = useState(false)
     const [projectData,setProjectData] = useState(null)
-    const [video,setVideo] = useState(null)
     const param = useParams()
     const allProjects = location.state?.allProjects
     const navigate = useNavigate()
@@ -30,8 +28,10 @@ const Project = () => {
     const [cookieIsAccepted,setCookieIsAccepted] = useState(false)
     const blockVideo = cookieIsAccepted
     const [canPlay,setCanPlay] = useState(false)
+    const [videoError,setVideoError] = useState(false)
+    const [videoIsLoading,setVideoIsLoading] = useState(true)
     
-
+  
     useEffect(()=>{
       if (param.name && !location.state?.project) {
             getProjectByName(param.name)
@@ -41,28 +41,12 @@ const Project = () => {
       }
   },[])
   
-
-    useEffect(()=>{
-        if (showAssets) {
-            window.scrollTo({
-                top: 700,
-                behavior: 'smooth'
-            })
-        }else{
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            })
-        }
-    },[showAssets])
-
-   
-
+  
     useEffect(()=>{
         const timeout = setTimeout(()=>{
             setFade(false)
         },400)
-
+   
         if (location.state?.project.name && projectIndex !== null && projectIndex !== undefined && allProjects) {
             setFade(true)
             setProject(null)
@@ -72,14 +56,15 @@ const Project = () => {
                 return
             }
             setProject(location.state.project)
+          
             const next = allProjects[projectIndex + 1]
             if (next) {
                 SetNextProject(next)
-              
             }else{
                 SetNextProject(null)
             }
             const last = projectIndex > 0 ?  allProjects[projectIndex - 1] : null
+
             if (last) {
                 setLastProject(last)
             }else{
@@ -92,24 +77,40 @@ const Project = () => {
 
 
 
+    useEffect(()=>{
+      if (videoError) {
+          setVideoError(false)
+      }
+      
+    },[location.pathname])
 
 
 
 useEffect(() => {
-  if (projectData && showAssets) {
-      return
+  if (showAssets) {
+    window.scrollTo({
+      top: 700,
+      behavior: "smooth",
+    });
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
-  const getData = async ()=>{
-    const data = await getProjectData(project.id)
+
+  if (projectData && showAssets) {
+    return;
+  }
+  const getData = async () => {
+    const data = await getProjectData(project.id);
     const purifiedData = purifyProjectData(data);
     setProjectData(purifiedData || null);
-    
-  } 
+  };
   if (showAssets && !projectData) {
-      getData()
+    getData();
   }
-  
-}, [showAssets])
+}, [showAssets]);
 
 
 useEffect(()=>{
@@ -122,11 +123,22 @@ useEffect(()=>{
 
 
 
+useEffect(()=>{
+  if (videoError && canPlay) {
+      window.open(project?.youtube_video,"_blank")
+  }
+
+},[videoError,canPlay])
+
+
+
+
+
 
 
   return (
     project && (
-      <>
+      <div key={project?.name}>
        <SEO title={"Metamorphose Film - Projet " + project?.name } url={"/projet/" + project?.slug} robots={true} />
         <article className={`production ${fade ? "production-fadein" : ""}`}>
           <div className={`last-next-btns-container ${isMobile ? "" : "desktop"}`}>
@@ -189,8 +201,10 @@ useEffect(()=>{
           <div>
             <div className={"projet-video"}>
               
-           <ReactPlayer
-              className={`react-player`}
+         {  !videoError && <ReactPlayer
+              onError={()=> {setVideoError(true)}}
+              ref={()=>!cookieIsAccepted && setVideoIsLoading(false)}
+              className={'react-player'}
               width={1000}
               height={500}
               controls
@@ -199,18 +213,17 @@ useEffect(()=>{
               playsinline
               preload={"none"}
               style={{ margin: "10px auto", height: 500, objectFit: "cover" }}
-              light={!cookieIsAccepted ? true : false}
-              onClickPreview={()=>setCanPlay(true)}
+              light={!cookieIsAccepted || videoError ? true : false}
+              onClickPreview={()=> setCanPlay(true)}
               playIcon={
                 <div>
                   <div className='playIconCover'> 
                     <div className='playIconCover__container'></div>
                     <img src={"/assets/static/icons/yt-icon.svg"} width={100}></img>
-                    <span>You Tube</span>
+                    <span> {videoError && "Regarder sur "}You Tube</span>
                     </div>
                 </div>
               }
-             
               config={{
                 youtube: {
                   embedOptions:{
@@ -219,8 +232,38 @@ useEffect(()=>{
                 },
               }}
             >
-            </ReactPlayer>
+            </ReactPlayer>}
 
+             { videoError &&  <ReactPlayer
+              className={`react-player`}
+              width={1000}
+              height={500}
+              controls
+              url={ project?.youtube_video }
+              preload={"none"}
+              style={{ margin: "10px auto", height: 500, objectFit: "cover" }}
+              light={true}
+              playIcon={
+                <div>
+                  <div className='playIconCover'> 
+                    <div className='playIconCover__container'></div>
+                    <img src={"/assets/static/icons/yt-icon.svg"} width={100}></img>
+                    <span> {videoError && "Regarder sur "}You Tube</span>
+                    </div>
+                </div>
+              }
+              config={{
+                youtube: {
+                  embedOptions:{
+                    host: "https://www.youtube-nocookie.com",
+                  }
+                },
+              }}
+            >
+            </ReactPlayer>}
+
+            {videoError && <div className='onError-container' onClick={()=> window.open(project?.youtube_video,"_blank")}></div>}
+         { videoIsLoading && <div className='video-loading'></div>}
             </div>
             <div
               className={`production__show-assets ${
@@ -246,7 +289,7 @@ useEffect(()=>{
             )}
           </div>
         </article>  
-      </>
+      </div>
     )
   );
 }
